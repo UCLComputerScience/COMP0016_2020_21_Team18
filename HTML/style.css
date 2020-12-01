@@ -1,0 +1,72 @@
+table{
+    border-color: black;
+    border:solid;
+    width: 50%;
+}
+td{ border: 3px black; }
+
+
+div.search-bar{
+    margin-top:200px;
+    margin-bottom: 10px;
+}
+
+img#voice-record{
+    height:25px;
+}
+
+img#send-button{
+    height:25px;
+}
+
+.container {
+  width: 50%;
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+    margin-top:10px;
+  margin-bottom: 10px;
+}
+
+/* Darker chat container */
+.darker {
+    margin-left: 100px;
+  border-color: #00BFFF	;
+  background-color: #00BFFF	;
+}
+
+/* Clear floats */
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Style images */
+.container img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+/* Style the right image */
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+
+/* Style time text */
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+/* Style time text */
+.time-left {
+  float: left;
+  color: black;
+}

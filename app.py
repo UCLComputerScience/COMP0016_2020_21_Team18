@@ -8,14 +8,27 @@ from flask_request_validator import (
     Pattern,
     validate_params
 )
+
 app = Flask(__name__)
 
 driver = GraphDatabase.driver(getenv("DB_HOST"), auth=(getenv("DB_USER"), getenv("DB_PASS")), encrypted=False)
 
+
 def get_drugs(tx, name):
-    result = tx.run("MATCH (patient:Patient{firstName:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10", name=name)
+    result = tx.run(
+        "MATCH (patient:Patient{firstName:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10",
+        name=name)
 
     return [record['drug']['description'] for record in result]
+
+
+def get_drugs_encounter(tx, name, description):
+    result = tx.run(
+        "MATCH (p:Patient{firstName:$name})-[:HAS_ENCOUNTER]-(e:Encounter)-[:NEXT]-(e1:Encounter)-[:HAS_DRUG]-(d:Drug{description:$description}) MATCH (p)-[:HAS_ENCOUNTER]-(e)-[:HAS_DRUG]-(d) RETURN p,e,e1,d",
+        name=name, description=description)
+
+    return [record['e']['description'] for record in result]
+
 
 @app.route("/allergies/<name>", methods=['GET'])
 @validate_params(
@@ -26,6 +39,18 @@ def get_drugs_route(name):
         result = session.write_transaction(get_drugs, name)
 
     return {"drugs": result}
+
+
+# @app.route("/encounter/<name>", methods=['GET'])
+# @validate_params(
+#     Param('name', 'description', PATH, str)
+# )
+# def get_encounter_route(name, description):
+#     with driver.session() as session:
+#         result = session.write_transaction(get_drugs_encounter, name, description)
+#
+#     return {"encounter": result}
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

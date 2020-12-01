@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grace Chatbot</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpgk.com/@pusher/chatkit"></script>
+    <script src="https://unpkg.com/babel-standalone@latest/babel.min.js"></script>
+    <script src="index.js" type="text/babel"></script>
+
+    <center>
+        <table border="2" bordercolor="black">
+            <tr>
+                <td>
+                    <header>
+                        <div class="title">
+                            <center>
+                                <h1>Grace Chatbot <img src="https://img.icons8.com/android/24/000000/search.png"/> </h1>
+                            </center>
+
+                        </div>
+                    </header>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <center>
+                    <div class="container">
+                      <p>Hello. How are you today?</p>
+                      <span class="time-right">11:00</span>
+                    </div>
+
+                    <div class="container darker">
+                      <p>Hey! I'm fine. Thanks for asking!</p>
+                      <span class="time-left">11:01</span>
+                    </div>
+
+                    </center>
+
+                    <div class="search-bar">
+                        <center>
+                            <textarea id="message_input" name="message_input" rows="4" cols="60"></textarea>
+                            <img id = "voice-record" src="https://img.icons8.com/ios-filled/48/000000/voice-recorder.png"/>
+                            <img id = "send-button" src="https://img.icons8.com/material-rounded/24/000000/filled-sent.png"/>
+                        </center>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+
+
+</body>
+</html>
