@@ -1,0 +1,28 @@
+{
+  "name": "chatbot_frontend_comp0016",
+  "version": "1.0.0",
+  "description": "chatbot frontend app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexhein189/chatbot_frontend_comp0016.git"
+  },
+  "author": "Team 18",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexhein189/chatbot_frontend_comp0016/issues"
+  },
+  "homepage": "https://github.com/alexhein189/chatbot_frontend_comp0016#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "socket.io": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
