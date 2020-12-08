@@ -30,7 +30,7 @@ chatForm.addEventListener('submit', (e) => {
 
 function outputMessage(message) {
     const div = document.createElement('div');
-    div.classList.add('message');
+    message.server ? div.classList.add('bot-message') : div.classList.add('message');
     // div.innerHTML = `
     //  <p class="text">
     //      ${message.text}
@@ -39,7 +39,7 @@ function outputMessage(message) {
 
     const para = document.createElement('p');
     para.classList.add('text');
-    para.innerText = message;
+    para.innerText = message.message;
     div.appendChild(para);
     document.querySelector('.chat-messages').appendChild(div);
     // div.classList.add('message');
