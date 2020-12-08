@@ -6,32 +6,49 @@ const socketio = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+const neo4j = require('neo4j-driver');
+const getPrediction = require('./predict');
 
-//format message (we import it from the utils dir)
+const driver = neo4j.driver('bolt://20.68.4.32:7687/', neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'));
+
 const formatMessage = require('./public/utils/messages');
 
-//Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-//create a variable called botName
 const botName = 'Grace Bot';
 
-// Run when client connects
+const getDrugs = async (name) => {
+    const session = driver.session();
+    console.log(name);
+    try {
+        const result = await session.run(
+            "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10",
+            { name }
+        )
+        
+        console.log(result.records[0]['_fields'][2].properties.description);
+        return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
+    } finally {
+        await session.close()
+    }
+}
+
+const getMessage = async (msg) => {
+    const prediction = await getPrediction(msg);
+    switch(prediction.prediction) {
+        case 'getDrugs':
+            const data = await getDrugs(prediction.entities.DB_personName[0][0]);
+            return "This patient took: " + data.join(", ");
+        default:
+            return "Couldn't understand your question."
+    }
+}
+
 io.on('connection', socket => {
-    // console.log('New WS Connection...');
-    //
-    // socket.emit('message', 'Welcome to Grace ChatBot');
-
-    //listen of chatmessage
-    socket.on('chatMessage', (msg) => {
-
-        //get current user
-        //const user = getCurrentUser(socket.id);
-
-       //we first print it out in the server
-       //  console.log(msg);
-        //now we want to emit this back to the
-        io.emit('message', msg);
+    socket.on('chatMessage', async (msg) => {
+        io.emit('message', {'message': msg, 'server': false});
+        const response = await getMessage(msg);
+        io.emit('message', {'message': response, 'server': true});
     });
 });
 
