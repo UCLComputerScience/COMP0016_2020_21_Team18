@@ -55,3 +55,4 @@ function outputMessage(message) {
     // para.classlist.add('text');
     //
 }
+
