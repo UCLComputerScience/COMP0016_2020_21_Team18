@@ -109,7 +109,7 @@ a {
 .chat-container {
     font-family: "Times New Roman", serif;
     max-width: 1100px;
-    min-height: 500px;
+    max-height: 700px;
     background: #fff;
     border: 3px solid black;
     border-top-left-radius: 5px;
@@ -143,21 +143,29 @@ a {
 }
 
 .chat-header h1 {
-    margin-left: 400px;
+    margin-left: 350px;
+    font-size: 60px;
+    white-space: nowrap;
+    /*overflow: hidden;*/
 }
 
+.chit-chat {
+    height: 516px;
+}
 
 .chat-main {
     /*The grid-template-columns property specifies the number
     (and the widths) of columns in a grid layout*/
+    height: 466px;
     font-family: "Times New Roman", serif;
 }
 
 .chat-messages {
-    font-family: "Times New Roman", serif;
+    font-size: 26px;
     padding: 30px;
     /*This is the maximum height for the scrolling down*/
-    max-height: 300px;
+    max-height: 466px;
+    font-family: "Times New Roman", serif;
     overflow-y: scroll;
 }
 
@@ -173,7 +181,7 @@ a {
     margin-left: 40%;
     background-color: blue;
     color: white;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
     margin-bottom: 30px;
     overflow-wrap: break-word;
@@ -181,8 +189,9 @@ a {
 
 .bot-message {
     margin-right: 40%;
-    background-color: grey;
-    border-radius: 5px;
+    background-color: turquoise;
+    color: navy;
+    border-radius: 10px;
     padding: 10px;
     margin-bottom: 30px;
     overflow-wrap: break-word;
@@ -207,7 +216,6 @@ it's not included in the html*/
     /*margin-top: auto;*/
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 400px;
     padding-bottom: 10px;
 }
 
@@ -226,7 +234,7 @@ it's not included in the html*/
 
  .container {
      max-width: 600px;
-     margin: 50px auto
+     width: 400px;
  }
 
  .searchbar {
