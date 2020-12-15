@@ -161,7 +161,7 @@ a {
 }
 
 .chat-messages {
-    font-size: 26px;
+    font-size: 24px;
     padding: 30px;
     /*This is the maximum height for the scrolling down*/
     max-height: 466px;
@@ -178,7 +178,9 @@ a {
 /*}*/
 
 .chat-messages .message {
-    margin-left: 40%;
+    margin-left: 50%;
+    max-width: 400px;
+    float: right;
     background-color: blue;
     color: white;
     border-radius: 10px;
@@ -188,7 +190,9 @@ a {
 }
 
 .bot-message {
-    margin-right: 40%;
+    margin-right: 50%;
+    float: left;
+    max-width: 400px;
     background-color: turquoise;
     color: navy;
     border-radius: 10px;
