@@ -23,33 +23,24 @@ body {
 	margin: 20px;
 }
 
+.fa, .fab, .fad, .fal, .far, .fas {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    /* padding-left: 10px; */
+    padding-left: 5px;
+}
+
 ul {
     list-style: none;
 }
 
 a {
     text-decoration: none;
-}
-
-.btn {
-    width: 40px;
-    border-radius: 10px;
-    margin-left: 5px;
-    font-family: "Times New Roman", serif;
-    /*cursor is a pointer that indicates a link*/
-    cursor: pointer;
-    /*CSS has properties for specifying the padding for each side of an element:
-    padding-top,padding-right,padding-bottom,padding-left*/
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 5px;
-    padding-right: 20px;
-    background-image: url("icons/send-btn-icon.png");
-    background-size: 40px;
-    color: black;
-    /*border makes sure there is none around the border*/
-    border:0;
-    font-size: 17px;
 }
 
 .btn-search {
@@ -74,26 +65,30 @@ a {
     font-size: 17px;
 }
 
-.btn-microphone {
-/*    <img src="https://img.icons8.com/material/96/000000/microphone--v1.png"/>*/
+.btn {
     width: 40px;
     border-radius: 10px;
     margin-left: 5px;
-    font-family: "Times New Roman", serif;
     /*cursor is a pointer that indicates a link*/
     cursor: pointer;
     /*CSS has properties for specifying the padding for each side of an element:
     padding-top,padding-right,padding-bottom,padding-left*/
-    padding-top: 20px;
-    padding-bottom: 20px;
+    /*padding-top: 20px;*/
+    /*padding-bottom: 20px;*/
     padding-left: 5px;
     padding-right: 20px;
-    background-image: url("https://img.icons8.com/material/96/000000/microphone--v1.png");
-    background-size: 40px;
     color: black;
     /*border makes sure there is none around the border*/
     border:0;
     font-size: 17px;
+}
+
+.btn i.fa-paper-plane {
+    padding-left: 10;
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 /*i.fa-paper-plane {*/
