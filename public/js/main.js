@@ -21,7 +21,7 @@ chatForm.addEventListener('submit', (e) => {
     const msg = e.target.elements.msg.value;
 
     //emitting a message to the server
-    socket.emit('chatMessage', {"event": "message", "message": msg });
+    socket.emit('chatMessage', msg);
 
     //clear input
     e.target.elements.msg.value = '';
