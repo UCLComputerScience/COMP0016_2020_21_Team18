@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const getPrediction = async (text) => {
     const predictionKey = "5f068b567c6a4381a9ec95cdf932c252";
-    
     const queryParams = {
         "show-all-intents": true,
         "verbose":  true,
