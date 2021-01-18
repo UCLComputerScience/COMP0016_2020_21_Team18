@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 const getPrediction = async (text) => {
-    const predictionKey = "83edc74752354c77890f0ddbb9d36631";
-    
+    const predictionKey = "5f068b567c6a4381a9ec95cdf932c252";
+
     const queryParams = {
         "show-all-intents": true,
         "verbose":  true,
@@ -10,7 +10,7 @@ const getPrediction = async (text) => {
         "subscription-key": predictionKey
     }
 
-    const URI = `https://westeurope.api.cognitive.microsoft.com/luis/prediction/v3.0/apps/5fd996bf-0bfa-42e5-b7cc-bcc343592f1b/slots/production/predict`;
+    const URI = `https://westus.api.cognitive.microsoft.com/luis/prediction/v3.0/apps/2c7e50ec-9035-4b8f-987f-8c1d99dd7589/slots/production/predict`;
 
     const response = await axios.get(URI, {
         params: queryParams,
