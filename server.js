@@ -32,6 +32,22 @@ const getDrugs = async (name) => {
     }
 }
 
+const getConditions = async (name,wantedNode) => {
+    const session = driver.session();
+    console.log(name);
+    try {
+        const result = await session.run(
+            "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-"+wantedNode+" RETURN patient,encounter,drug LIMIT 10",
+            { name }
+        )
+
+        console.log(result.records[0]['_fields'][2].properties.description);
+        return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
+    } finally {
+        await session.close()
+    }
+}
+
 const getMessage = async (msg) => {
     const prediction = await getPrediction(msg);
     switch(prediction.prediction) {
