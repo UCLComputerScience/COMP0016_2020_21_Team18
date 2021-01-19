@@ -66,6 +66,9 @@ if ('speechSynthesis' in window) {
         
     stop.click(function() {
         recognition.stop();
+        record.removeClass("invisible");
+        stop.addClass("invisible")
+
     });
 
 } else {
