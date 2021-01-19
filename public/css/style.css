@@ -305,3 +305,7 @@ it's not included in the html*/
  .searchbar-open {
      width: 100%
  }
+
+.invisible {
+    display: none;
+}
