@@ -17,33 +17,44 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const botName = 'Grace Bot';
 
-const getDrugs = async (name) => {
-    const session = driver.session();
-    console.log(name);
-    try {
-        const result = await session.run(
-            "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10",
-            { name }
-        )
-
-        console.log(result.records[0]['_fields'][2].properties.description);
-        return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
-    } finally {
-        await session.close()
-    }
-}
+// const getNode = async (name,wantedNode,returnNode) => {
+//     const session = driver.session();
+//     console.log(name);
+//     try {
+//         const result = await session.run(
+//             "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-"+wantedNode+" RETURN patient,encounter,"+returnNode+" LIMIT 10",
+//             { name }
+//         )
+//
+//         console.log(result.records[0]['_fields'][2].properties.description);
+//         return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
+//     } finally {
+//         await session.close()
+//     }
+// }
 
 const getNode = async (name,wantedNode,returnNode) => {
     const session = driver.session();
-    console.log(name);
+    console.log("name is "+name);
     try {
+        console.log("MATCH (p:Patient{id:$name}) " +
+            "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+            "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+            "MATCH (e)-[:NEXT*0..]->(e2) " +
+            "MATCH (e2)-"+wantedNode+" " +
+            "WHERE "+returnNode+".description IS NOT NULL " +
+            "RETURN {date:e2.date, details:"+returnNode+".description}")
         const result = await session.run(
-            "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-"+wantedNode+" RETURN patient,encounter,"+returnNode+" LIMIT 10",
-            { name }
-        )
+            "MATCH (p:Patient{id:$name}) " +
+            "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+            "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+            "MATCH (e)-[:NEXT*0..]->(e2) " +
+            "MATCH (e2)-"+wantedNode+" " +
+            "WHERE "+returnNode+".description IS NOT NULL " +
+            "RETURN {date:e2.date, details:"+returnNode+".description}",{name})
 
         console.log(result.records[0]['_fields'][2].properties.description);
-        return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
+        return [...new Set(result.records.map(row => row['_fields'].properties.description))];
     } finally {
         await session.close()
     }
