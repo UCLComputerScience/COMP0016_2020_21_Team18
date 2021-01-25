@@ -74,7 +74,7 @@ const getMessage = async (msg) => {
         case 'getCarePlan':
             data = await getNode(prediction.entities.DB_personName[0][0],"[:HAS_CARE_PLAN]-(carePlan:CarePlan)","carePlan");
             return "This patient has: \n" + data.join(", ");
-        case 'None':
+        case 'getAllergies':
             data = await getNode(prediction.entities.DB_personName[0][0],"[:HAS_ALLERGY]-(allergy:Allergy)","allergy");
             return "This patient has: \n" + data.join(", ");
         case 'getProcedure':
