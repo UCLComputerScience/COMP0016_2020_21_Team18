@@ -1,6 +1,7 @@
 $(document).ready(function () {
     const searchBar = $("#search");
-    searchBar.keypress(function () {
+    const searchForm = $("#searchForm");
+    searchBar.on('input', function () {
         const searchBarText = searchBar.val().toLowerCase();
         $(".message").each(function (index) {
             if (!$(this).text().toLowerCase().includes(searchBarText)) {
@@ -17,4 +18,8 @@ $(document).ready(function () {
           }
       });
     });
+
+    searchForm.submit(function (event) {
+      event.preventDefault();
+    })
 });
