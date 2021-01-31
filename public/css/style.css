@@ -16,10 +16,22 @@
 }
 
 body {
-    font-family: 'Times New Roman', serif;
+    font-family: 'Roboto', sans-serif;
 	font-size: 16px;
     /* This margin makes sure it's not all the way stuck to the corners */
 	margin: 20px;
+}
+
+.fa, .fab, .fad, .fal, .far, .fas {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    /* padding-left: 10px; */
+    padding-left: 5px;
 }
 
 ul {
@@ -30,21 +42,60 @@ a {
     text-decoration: none;
 }
 
-.btn {
+.btn-search {
+/*    <img src="https://img.icons8.com/metro/104/000000/search.png"/>*/
+    margin-left: 400px;
+    width: 40px;
     border-radius: 10px;
-    margin-left: 5px;
     font-family: "Times New Roman", serif;
     /*cursor is a pointer that indicates a link*/
     cursor: pointer;
     /*CSS has properties for specifying the padding for each side of an element:
     padding-top,padding-right,padding-bottom,padding-left*/
-    padding: 5px 15px;
-    background:var(--light-color);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 5px;
+    padding-right: 20px;
+    background-image: url("https://img.icons8.com/ios-filled/150/000000/search.png");
+    background-size: 40px;
     color: black;
     /*border makes sure there is none around the border*/
     border:0;
     font-size: 17px;
 }
+
+.btn {
+    width: 40px;
+    border-radius: 10px;
+    margin-left: 5px;
+    /*cursor is a pointer that indicates a link*/
+    cursor: pointer;
+    /*CSS has properties for specifying the padding for each side of an element:
+    padding-top,padding-right,padding-bottom,padding-left*/
+    /*padding-top: 20px;*/
+    /*padding-bottom: 20px;*/
+    padding-left: 5px;
+    padding-right: 20px;
+    color: black;
+    /*border makes sure there is none around the border*/
+    border:0;
+    font-size: 17px;
+}
+
+.btn i.fa-paper-plane {
+    padding-left: 10;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+/*i.fa-paper-plane {*/
+/*    height: 60px;*/
+/*    width: 60px;*/
+/*}*/
+
+
 
 /*Chat page*/
 
@@ -52,6 +103,7 @@ a {
 .chat-container {
     font-family: "Times New Roman", serif;
     max-width: 1100px;
+    max-height: 700px;
     background: #fff;
     border: 3px solid black;
     border-top-left-radius: 5px;
@@ -72,8 +124,8 @@ a {
     */
     padding: 15px;
     border: 2px solid black;
-    background: white;
-    color: midnightblue;
+    background: #A0CFEC;
+    color: black;
 
     /*This makes only the top left and top right
     so that bottom is connected to the rest of the chat-continaer*/
@@ -84,18 +136,25 @@ a {
     justify-content: center;
 }
 
+.chat-header h1 {
+    margin-left: 350px;
+    font-size: 60px;
+    white-space: nowrap;
+    /*overflow: hidden;*/
+}
+
+.chit-chat {
+    height: 516px;
+}
 
 .chat-main {
-    /*The grid-template-columns property specifies the number
-    (and the widths) of columns in a grid layout*/
-    font-family: "Times New Roman", serif;
+    height: 100%;
 }
 
 .chat-messages {
-    font-family: "Times New Roman", serif;
+    font-size: 24px;
     padding: 30px;
-    /*This is the maximum height for the scrolling down*/
-    max-height: 300px;
+    max-height: 100%;
     overflow-y: scroll;
 }
 
@@ -108,10 +167,24 @@ a {
 /*}*/
 
 .chat-messages .message {
-    margin-left: 40%;
+    margin-left: 50%;
+    max-width: 400px;
+    float: right;
     background-color: blue;
     color: white;
-    border-radius: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
+    overflow-wrap: break-word;
+}
+
+.bot-message {
+    margin-right: 50%;
+    float: left;
+    max-width: 400px;
+    background-color: turquoise;
+    color: navy;
+    border-radius: 10px;
     padding: 10px;
     margin-bottom: 30px;
     overflow-wrap: break-word;
@@ -133,9 +206,9 @@ it's not included in the html*/
 }
 
 .chat-form-container {
+    /*margin-top: auto;*/
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
     padding-bottom: 10px;
 }
 
@@ -149,5 +222,9 @@ it's not included in the html*/
     font-size: 16px;
 	padding: 5px;
 	height: 40px;
-	flex: 1;
+    flex: 1;
+}
+
+.invisible {
+    display: none;
 }
