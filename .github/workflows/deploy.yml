@@ -18,7 +18,8 @@ jobs:
                 password: ${{ secrets.SSH_PASSWORD }}
                 envs: token
                 script: |
-                    git clone https://jmularski:$token@github.com/UCLComputerScience/COMP0016_2020_21_Team18
                     cd ./COMP0016_2020_21_Team18
+                    pm2 stop deploy.config.js
+                    git pull origin feat/actions
                     npm install
                     pm2 start deploy.config.js
