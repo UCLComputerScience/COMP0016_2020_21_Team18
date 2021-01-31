@@ -24,7 +24,7 @@ const getNode = async (name,wantedNode,returnNode) => {
         const result = await session.run(
             "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10",
             { name }
-        )
+        );
         console.log(result.records[0]['_fields'][2].properties.description);
         return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
     } finally {
