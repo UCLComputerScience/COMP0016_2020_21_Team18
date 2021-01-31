@@ -1,0 +1,20 @@
+name: Test
+
+on:
+    push:
+        branches:
+            - feat/tests
+    pull_request:
+        branches:
+            - master
+            - development
+            - feat/tests
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Jest Annotations & Coverage
+              uses: mattallty/jest-github-action@v1.0.3
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
