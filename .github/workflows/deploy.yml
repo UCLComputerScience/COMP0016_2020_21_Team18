@@ -18,11 +18,7 @@ jobs:
                 password: ${{ secrets.SSH_PASSWORD }}
                 envs: token
                 script: |
-                    cd ./COMP0016_2020_21_Team18
-                    pm2 stop deploy.config.js
-                    cd ..
-                    rm -rf ./COMP0016_2020_21_Team18
-                    git clone https://jmularski$token:@github.com/UCLComputerScience/COMP0016_2020_21_Team18
+                    git clone https://jmularski:$token@github.com/UCLComputerScience/COMP0016_2020_21_Team18
                     cd ./COMP0016_2020_21_Team18
                     npm install
                     pm2 start deploy.config.js
