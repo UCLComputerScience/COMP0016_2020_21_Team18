@@ -12,11 +12,10 @@ on:
 
 jobs:
     test:
+        name: Jest Annotations & Coverage
         runs-on: ubuntu-latest
         steps:
-            - name: Jest Annotations & Coverage
-              steps:
-                - uses: actions/checkout@v1
-                - uses: mattallty/jest-github-action@v1
-                  env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - uses: actions/checkout@v1
+            - uses: mattallty/jest-github-action@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
