@@ -22,15 +22,9 @@ const getNode = async (name,wantedNode,returnNode) => {
     console.log(name);
     try {
         const result = await session.run(
-<<<<<<< HEAD
             "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-[:HAS_DRUG]-(drug:Drug) RETURN patient,encounter,drug LIMIT 10",
             { name }
-        )
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> new neo4j access (worked for pitch demo)
+        );
         console.log(result.records[0]['_fields'][2].properties.description);
         return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
     } finally {
@@ -44,9 +38,6 @@ const getConditions = async (name,wantedNode) => {
     try {
         const result = await session.run(
             "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-"+wantedNode+" RETURN patient,encounter,drug LIMIT 10",
-=======
-            "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-"+wantedNode+" RETURN patient,encounter,"+returnNode+" LIMIT 10",
->>>>>>> feat(server): new queries added
             { name }
         )
 
