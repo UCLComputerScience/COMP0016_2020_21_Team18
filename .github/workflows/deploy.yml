@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+    push:
+        branches: [ feat/actions ]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy
+              uses: actions/checkout@v2
+              uses: appleboy/ssh-action@v0.1.2
+              with:
+                token: ${{ secrets.ACCESS_TOKEN }}
+                host: ${{secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USERNAME }}
+                password: ${{ secrets.SSH_PASSWORD }}
+                script: |
+                    git clone https://jmularski@${{ secrets.ACCESS_TOKEN }}@github.com/UCLComputerScience/COMP0016_2020_21_Team18
+                    npm install
+                    npm start

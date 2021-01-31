@@ -1,7 +1,3 @@
 node_modules
-<<<<<<< HEAD
 .idea
 package-lock.json
-=======
-*/.idea
->>>>>>> chore(*): removed .idea and added it to gitignore
