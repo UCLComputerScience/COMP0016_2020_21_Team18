@@ -16,6 +16,6 @@ jobs:
                 username: ${{ secrets.SSH_USERNAME }}
                 password: ${{ secrets.SSH_PASSWORD }}
                 script: |
-                    git clone https://jmularski@${{ secrets.ACCESS_TOKEN }}@github.com/UCLComputerScience/COMP0016_2020_21_Team18
+                    git clone https://jmularski:${{ secrets.ACCESS_TOKEN }}@github.com/UCLComputerScience/COMP0016_2020_21_Team18
                     npm install
-                    npm start
+                    pm2 start ./COMP0016_2020_21_Team18/deploy.config.js
