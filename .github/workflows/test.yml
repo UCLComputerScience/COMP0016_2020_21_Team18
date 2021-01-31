@@ -15,6 +15,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Jest Annotations & Coverage
-              uses: mattallty/jest-github-action@v1.0.3
+              uses: mattallty/jest-github-action@v1
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
