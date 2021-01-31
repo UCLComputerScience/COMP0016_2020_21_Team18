@@ -1,7 +1,3 @@
 node_modules
 .idea
-<<<<<<< HEAD
 package-lock.json
-=======
-package-lock.json
->>>>>>> chore(cleanup): removed unnecessary files
