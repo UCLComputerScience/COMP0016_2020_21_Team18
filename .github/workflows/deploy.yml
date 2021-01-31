@@ -2,7 +2,7 @@ name: Deploy
 
 on:
     push:
-        branches: [ feat/actions ]
+        branches: [ master ]
 
 jobs:
     deploy:
