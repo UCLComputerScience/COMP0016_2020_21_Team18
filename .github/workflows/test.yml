@@ -16,6 +16,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
+            - name: Install modules
+              run: yarn
+            - name: Run tests
+              run: yarn jest --json --outputFile="jest.results.json"
             - uses: mattallty/jest-github-action@v1
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
