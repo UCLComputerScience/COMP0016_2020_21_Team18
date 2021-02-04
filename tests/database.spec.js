@@ -1,15 +1,17 @@
 const { getNode } = require('../src/utils/database');
+const { Neo4jError } = require('neo4j-driver');
 jest.setTimeout(20000);
 
 describe("Database tests", () => {
     test("returns correct variables", async () => {
         const data = await getNode("Cristina921","[:HAS_DRUG]-(drug:Drug)","drug");
+        
+        //fix
+        expect(data).toStrictEqual([]);
+    })
 
-        expect(data).toStrictEqual([
-            "amLODIPine 2.5 MG Oral Tablet", 
-            "Hydrochlorothiazide 25 MG Oral Tablet", 
-            "Trinessa 28 Day Pack", 
-            "lisinopril 10 MG Oral Tablet"
-        ]);
+    test("returns error for wrong command", async () => {
+        //finish
+        //expect(getNode("Cristina921", "test", "test")).toThrow(Neo4jError)
     })
 })

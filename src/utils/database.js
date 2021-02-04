@@ -3,7 +3,7 @@ const driver = neo4j.driver('bolt://51.140.127.105:7687/', neo4j.auth.basic('neo
 
 const getNode = async (name, wantedNode, returnNode) => {
     const session = driver.session();
-    console.log(name);
+
     try {
         const result = await session.run(
             "MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-" + wantedNode + " RETURN patient,encounter," + returnNode + " LIMIT 10",

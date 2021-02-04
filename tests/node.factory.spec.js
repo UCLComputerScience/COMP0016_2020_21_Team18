@@ -49,6 +49,14 @@ describe("Node factory spec", () => {
                 "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
                 "returnNode": "procedure"
             }
+        ],
+        [
+            "random",
+            {
+                "databaseAction": "None",
+                "wantedNode": "None",
+                "returnNode": "None"
+            }
         ]
     ])("%i should return correct values", (input, output) => {
         const expectedNode = returnNodeFromPrediction(input);
