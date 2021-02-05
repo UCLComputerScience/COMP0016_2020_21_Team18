@@ -25,7 +25,7 @@ const getMessage = async (msg) => {
                 wantedNode,
                 returnNode
             );
-            return "This patient took: \n" + data.join(", ");
+            return "This patient's relevant data is: \n" + data.join(", ");
         default:
             return "Couldn't understand your question."
     }

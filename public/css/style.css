@@ -10,7 +10,7 @@
 
 *{
     box-sizing: border-box;
-    margin:0;
+    margin:1px;
     padding: 0;
 
 }
@@ -19,7 +19,7 @@ body {
     font-family: 'Roboto', sans-serif;
 	font-size: 16px;
     /* This margin makes sure it's not all the way stuck to the corners */
-	margin: 20px;
+	margin: 40px !important;
 }
 
 .fa, .fab, .fad, .fal, .far, .fas {
@@ -78,7 +78,7 @@ a {
     padding-right: 20px;
     color: black;
     /*border makes sure there is none around the border*/
-    border:0;
+    border: 0;
     font-size: 17px;
 }
 
