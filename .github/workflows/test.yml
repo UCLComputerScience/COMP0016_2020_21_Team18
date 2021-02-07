@@ -1,0 +1,22 @@
+name: Test
+
+on:
+    push:
+        branches:
+            - feat/tests
+    pull_request:
+        branches:
+            - master
+            - development
+            - feat/tests
+
+jobs:
+    test:
+        name: Jest Annotations & Coverage
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - name: Install modules
+              run: yarn
+            - name: Run tests
+              run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
