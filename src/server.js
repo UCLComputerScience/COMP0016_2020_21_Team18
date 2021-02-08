@@ -43,11 +43,12 @@ const getMessage = async (msg) => {
             var result = data[0][0] + ": " + data[0][1];
             for(var i=1;i<data.length;i++){
                 if(data[i][0]!==data[i-1][0]){
-                    console.log(data[i][1])
                     result += ", " + data[i][0]+": " + data[i][1];
                 }
                 else{
-                    result+= " + " + data[i][1];
+                    if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
+                        result+= " + " + data[i][1];
+                    }
                 }
             }
             return "This patient's relevant data is: \n" + result;
