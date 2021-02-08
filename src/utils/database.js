@@ -17,8 +17,11 @@ const getNode = async (name, wantedNode, returnNode) => {
             "RETURN e2," + returnNode,{name});
         //console.log("values: " + (result.records.map(row => row['_fields'][2].properties.description)));
         //return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
-        console.log("values: " + (result.records.map(row => row['_fields'][1].properties.description)));
-        return [...new Set(result.records.map(row => row['_fields'][1].properties.description))];
+        //console.log("values: " + (result.records.map(row => row['_fields'][1].properties.description)));
+        return [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.description)),
+                ...new Array(result.records.map(row => row['_fields'][0].properties.date)))]
+
+            //...new Set(result.records.map(row => row['_fields'][0].properties.date))];
 
     } catch (error) {
         return error;
