@@ -26,7 +26,7 @@ const getMessage = async (msg) => {
                 returnNode
             );*/
         case 'getNode':
-            data = await getNode(
+            data = await getVal(
                 'lisinopril 10 MG Oral Tablet',
                 '[:HAS_DRUG]-(drug:Drug)',
                 'drug'

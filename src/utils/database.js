@@ -1,6 +1,6 @@
 const neo4j = require('neo4j-driver');
 const driver = neo4j.driver('bolt://51.140.127.105:7687/', neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'));
-/*
+
 const getNode = async (name, wantedNode, returnNode) => {
     const session = driver.session();
 
@@ -53,10 +53,10 @@ const getNode = async (name, wantedNode, returnNode) => {
     } finally {
         await session.close()
     }
-}*/
+}
 
 //new funct
-const getNode = async (desc, wantedNode, returnNode) => {
+const getVal = async (desc, wantedNode, returnNode) => {
     const session = driver.session();
 
     try {
@@ -79,5 +79,6 @@ const getNode = async (desc, wantedNode, returnNode) => {
 }
 
 module.exports = {
-    getNode
+    getNode,
+    getVal
 }
