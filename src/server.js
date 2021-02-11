@@ -26,32 +26,7 @@ const getMessage = async (msg) => {
                 returnNode
             );
 
-            data = data[0].map(function (x, i) {
-                return [x, data[1][i]]
-            });
-
-            data.sort(compareColumn);
-            function compareColumn(a, b) {
-                if (a[0] === b[0]) {
-                    return 0;
-                }
-                else {
-                    return (a[0] < b[0]) ? -1 : 1;
-                }
-            }
-
-            var result = data[0][0] + ": " + data[0][1];
-            for(var i=1;i<data.length;i++){
-                if(data[i][0]!==data[i-1][0]){
-                    result += ", " + data[i][0]+": " + data[i][1];
-                }
-                else{
-                    if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
-                        result+= " + " + data[i][1];
-                    }
-                }
-            }
-            return "This patient's relevant data is: \n" + result;
+            return "This patient's relevant data is: \n" + data;
         default:
             return "Couldn't understand your question."
     }

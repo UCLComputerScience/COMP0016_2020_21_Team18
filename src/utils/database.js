@@ -18,9 +18,34 @@ const getNode = async (name, wantedNode, returnNode) => {
         //console.log("values: " + (result.records.map(row => row['_fields'][2].properties.description)));
         //return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
         //console.log("values: " + (result.records.map(row => row['_fields'][1].properties.description)));
-        return [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.description)),
-                ...new Array(result.records.map(row => row['_fields'][0].properties.date)))]
+        var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.description)),
+            ...new Array(result.records.map(row => row['_fields'][0].properties.date)))]
+        data = data[0].map(function (x, i) {
+            return [x, data[1][i]]
+        });
 
+        data.sort(compareColumn);
+        function compareColumn(a, b) {
+            if (a[0] === b[0]) {
+                return 0;
+            }
+            else {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+        }
+
+        var ret = data[0][0] + ": " + data[0][1];
+        for(var i=1;i<data.length;i++){
+            if(data[i][0]!==data[i-1][0]){
+                ret += ", " + data[i][0]+": " + data[i][1];
+            }
+            else{
+                if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
+                    ret+= " + " + data[i][1];
+                }
+            }
+        }
+        return ret
             //...new Set(result.records.map(row => row['_fields'][0].properties.date))];
 
     } catch (error) {
