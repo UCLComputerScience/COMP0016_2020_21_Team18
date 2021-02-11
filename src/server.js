@@ -19,12 +19,19 @@ const getMessage = async (msg) => {
     const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
     let data;
     switch(databaseAction) {
-        case 'getNode':
+        /*case 'getNode':
             data = await getNode(
                 prediction.entities.DB_personName[0][0],
                 wantedNode,
                 returnNode
+            );*/
+        case 'getNode':
+            data = await getNode(
+                'lisinopril 10 MG Oral Tablet',
+                '[:HAS_DRUG]-(drug:Drug)',
+                'drug'
             );
+
 
             return "This patient's relevant data is: \n" + data;
         default:

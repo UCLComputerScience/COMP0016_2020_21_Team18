@@ -1,6 +1,6 @@
 const neo4j = require('neo4j-driver');
 const driver = neo4j.driver('bolt://51.140.127.105:7687/', neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'));
-
+/*
 const getNode = async (name, wantedNode, returnNode) => {
     const session = driver.session();
 
@@ -47,6 +47,29 @@ const getNode = async (name, wantedNode, returnNode) => {
         }
         return ret
             //...new Set(result.records.map(row => row['_fields'][0].properties.date))];
+
+    } catch (error) {
+        return error;
+    } finally {
+        await session.close()
+    }
+}*/
+
+//new funct
+const getNode = async (desc, wantedNode, returnNode) => {
+    const session = driver.session();
+
+    try {
+        const result = await session.run(
+            "MATCH (p:Patient) " +
+            "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+            "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+            "MATCH (e)-[:NEXT*0..]->(e2) " +
+            "MATCH (e2)-"+wantedNode+" " +
+            "WHERE "+returnNode+".description = '" + desc + "' " +
+            "RETURN p," + returnNode,{desc});
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
+        return ret.join(", ")
 
     } catch (error) {
         return error;
