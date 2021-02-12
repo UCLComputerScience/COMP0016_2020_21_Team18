@@ -36,6 +36,12 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
                 "returnNode": "procedure"
             }
+        case 'getPatientDrug':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
+                "returnNode": "drug"
+            }
         default:
             return {
                 "databaseAction": "None",
