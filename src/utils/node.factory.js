@@ -42,6 +42,36 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
                 "returnNode": "drug"
             }
+        case 'getPatientCondition':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_CONDITION]-(condition:Condition)",
+                "returnNode": "condition"
+            }
+        case 'getPatientCarePlan':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_CARE_PLAN]-(carePlan:CarePlan)",
+                "returnNode": "carePlan"
+            }
+        case 'getPatientAllergies':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_ALLERGY]-(allergy:Allergy)",
+                "returnNode": "allergy"
+            }
+        case 'getPatientProcedures':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_PROCEDURE]-(procedure:Procedure)",
+                "returnNode": "procedure"
+            }
+        case 'getPatientObservation':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
+                "returnNode": "procedure"
+            }
         default:
             return {
                 "databaseAction": "None",
