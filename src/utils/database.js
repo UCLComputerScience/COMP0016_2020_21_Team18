@@ -56,7 +56,7 @@ const getNode = async (name, wantedNode, returnNode) => {
 }
 
 //new funct
-const getVal = async (desc, wantedNode, returnNode) => {
+const getVal = async (code, wantedNode, returnNode) => {
     const session = driver.session();
 
     try {
@@ -66,8 +66,8 @@ const getVal = async (desc, wantedNode, returnNode) => {
             "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
             "MATCH (e)-[:NEXT*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
-            "WHERE "+returnNode+".description = '" + desc + "' " +
-            "RETURN p," + returnNode,{desc});
+            "WHERE "+returnNode+".code = '" + code + "' " +
+            "RETURN p," + returnNode,{code});
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
         return ret.join(", ")
 
