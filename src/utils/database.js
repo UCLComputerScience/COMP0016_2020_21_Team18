@@ -34,14 +34,19 @@ const getNode = async (name, wantedNode, returnNode) => {
             }
         }
 
-        var ret = data[0][0] + ": " + data[0][1];
+        var temp = String(data[0][1])
+        var noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
+        var ret = data[0][0] + ":\n" + noLetter;
         for(var i=1;i<data.length;i++){
+            temp= String(data[i][1])
+            noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
             if(data[i][0]!==data[i-1][0]){
-                ret += "\n" + data[i][0]+":\n" + data[i][1];
+                ret += "\n" + data[i][0]+":\n" + noLetter;
             }
             else{
                 if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
-                    ret+= ",\n" + data[i][1];
+                    var temp= String(data[i][1])
+                    ret+= ",\n" + noLetter;
                 }
             }
         }
