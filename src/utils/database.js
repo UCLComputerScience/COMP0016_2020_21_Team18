@@ -36,7 +36,7 @@ const getNode = async (name, wantedNode, returnNode) => {
 
         var temp = String(data[0][1])
         var noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
-        var ret = data[0][0] + ":\n" + noLetter;
+        var ret = "The " + returnNode.toLowerCase()+ " data for this patient is:\n" +data[0][0] + ":\n" + noLetter;
         for(var i=1;i<data.length;i++){
             temp= String(data[i][1])
             noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
