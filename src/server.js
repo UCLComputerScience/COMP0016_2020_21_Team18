@@ -26,7 +26,7 @@ const getMessage = async (msg) => {
                 wantedNode,
                 returnNode
             );
-            return data;
+            return "The " + returnNode.toLowerCase()+ " data for this patient is:\n" +data;
             break
         case 'getVal':
             data = await getVal(
@@ -35,7 +35,7 @@ const getMessage = async (msg) => {
                 returnNode
             );
             //The patients with this returnNode are:
-            return "This patients with this "+ returnNode.toLowerCase()+" are: \n" + data;
+            return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
         default:
             return "Couldn't understand your question."
     }
