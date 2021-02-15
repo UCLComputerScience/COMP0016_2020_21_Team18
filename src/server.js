@@ -9,6 +9,7 @@ const io = socketio(server);
 const getPrediction = require('./utils/predict');
 const { getNode } = require('./utils/database');
 const { getVal } = require('./utils/database');
+const { getName } = require('./utils/database');
 const returnNodeFromPrediction = require('./utils/node.factory');
 const database = require('./utils/database');
 
@@ -19,6 +20,10 @@ const getMessage = async (msg) => {
     console.log(prediction);
     const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
     let data;
+    let name;
+    name = await getName(
+        prediction.entities.DB_personName[0][0]
+    );
     switch(databaseAction) {
         case 'getNode':
             data = await getNode(
@@ -26,7 +31,7 @@ const getMessage = async (msg) => {
                 wantedNode,
                 returnNode
             );
-            return "The " + returnNode.toLowerCase()+ " data for this patient is:\n" +data;
+            return "The " + returnNode.toLowerCase()+ " data for patient " + name + " is:\n" +data;
             break
         case 'getVal':
             data = await getVal(
