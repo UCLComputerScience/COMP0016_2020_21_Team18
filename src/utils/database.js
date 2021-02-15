@@ -37,11 +37,11 @@ const getNode = async (name, wantedNode, returnNode) => {
         var ret = data[0][0] + ": " + data[0][1];
         for(var i=1;i<data.length;i++){
             if(data[i][0]!==data[i-1][0]){
-                ret += ", " + data[i][0]+": " + data[i][1];
+                ret += "\n" + data[i][0]+":\n" + data[i][1];
             }
             else{
                 if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
-                    ret+= " + " + data[i][1];
+                    ret+= ",\n" + data[i][1];
                 }
             }
         }
