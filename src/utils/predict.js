@@ -16,8 +16,12 @@ const getPrediction = async (text) => {
     });
     const data = response.data;
 
+    console.log(data.prediction.intents);
+
+    const multiplePredictions = Object.entries(data.prediction.intents).filter(prediction => prediction[1].score > 0.15 ).map(prediction => prediction[0]);
+
     return { 
-        "prediction": data.prediction.topIntent,
+        "predictions": multiplePredictions,
         "entities": data.prediction.entities
     };
 }

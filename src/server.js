@@ -15,27 +15,37 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const getMessage = async (msg) => {
     const prediction = await getPrediction(msg);
-    console.log(prediction);
-    const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
-    let data;
-    switch(databaseAction) {
-        case 'getNode':
-            data = await getNode(
-                prediction.entities.DB_personName[0][0],
-                wantedNode,
-                returnNode
-            );
-            return "This patient's relevant data is: \n" + data.join(", ");
-        default:
-            return "Couldn't understand your question."
-    }
+    const results = [];
+    for (const predictionValue of prediction.predictions) {
+        const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(predictionValue);
+        console.log(predictionValue, databaseAction, wantedNode, returnNode)
+        let data;
+        switch(databaseAction) {
+            case 'getNode':
+                data = await getNode(
+                    prediction.entities.DB_personName[0][0],
+                    wantedNode,
+                    returnNode
+                );
+                results.push("This patient's relevant data is: \n" + data.join(", "));
+                break;
+            default:
+                results.push("Couldn't understand your question.");
+                break;
+        }
+    };
+    console.log(results);
+    return results;
 }
 
 io.on('connection', socket => {
     socket.on('chatMessage', async (msg) => {
         io.emit('message', {'message': msg, 'server': false});
-        const response = await getMessage(msg);
-        io.emit('message', {'message': response, 'server': true});
+        const responses = await getMessage(msg);
+        responses.forEach(response => {
+            console.log(response);
+            io.emit('message', {'message': response, 'server': true});
+        })
     });
 });
 
