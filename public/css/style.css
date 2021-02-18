@@ -8,6 +8,24 @@
 	--error-color: #d9534f;
 }
 
+.navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    position: absolute;
+}
+
+.pull-right {
+    float: right !important;
+}
+
+.navbar-light .navbar-brand
+{
+    font-weight: bolder;
+    font-family: Arial;
+    color:white !important;
+    font-size: 40px;
+}
+
 *{
     box-sizing: border-box;
     margin:1px;
@@ -152,6 +170,7 @@ a {
 }
 
 .chat-messages {
+    font-weight: bold;
     font-size: 24px;
     padding: 30px;
     max-height: 100%;

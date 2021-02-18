@@ -21,15 +21,16 @@ const getMessage = async (msg) => {
     const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
     let data;
     let name;
-    name = await getName(
-        prediction.entities.DB_personName[0][0]
-    );
+
     switch(databaseAction) {
         case 'getNode':
             data = await getNode(
                 prediction.entities.DB_personName[0][0],
                 wantedNode,
                 returnNode
+            );
+            name = await getName(
+                prediction.entities.DB_personName[0][0]
             );
             return "The " + returnNode.toLowerCase()+ " data for patient " + name + " is:\n" +data;
             break
