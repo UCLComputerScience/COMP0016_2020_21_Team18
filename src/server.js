@@ -42,6 +42,14 @@ const getMessage = async (msg) => {
             );
             //The patients with this returnNode are:
             return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
+            break
+        case 'getSame':
+            data = await getNode(
+                prediction.entities.DB_personName[0][0],
+                prediction.entities.DB_personName[0][1]
+            );
+            return "The matching data for the patients is:\n" +data;
+            break
         default:
             return "Couldn't understand your question."
     }

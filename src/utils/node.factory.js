@@ -74,6 +74,13 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
                 "returnNode": "procedure"
             }*/
+
+        case 'commonBetweenPatients'://new
+            return{
+                "databaseAction": "getSame",
+                "wantedNode": "",
+                "returnNode": ""
+            }
         default:
             return {
                 "databaseAction": "None",

@@ -88,6 +88,21 @@ const getVal = async (code, wantedNode, returnNode) => {
             "MATCH (e2)-"+wantedNode+" " +
             "WHERE "+returnNode+".code = '" + code + "' " +
             "RETURN p," + returnNode,{code});
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.description))]
+        return ret.join(", ")
+
+    } catch (error) {
+        return error;
+    } finally {
+        await session.close()
+    }
+}
+
+const getSame = async (code,codeTwo) => {
+    const session = driver.session();
+    try {
+        const result = await session.run(
+            ""
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
         return ret.join(", ")
 
@@ -102,4 +117,5 @@ module.exports = {
     getNode,
     getVal,
     getName
+    //,getSame
 }
