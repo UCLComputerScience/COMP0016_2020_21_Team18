@@ -75,7 +75,7 @@ function returnNodeFromPrediction(prediction) {
                 "returnNode": "procedure"
             }*/
 
-        case 'commonBetweenPatients'://new
+        case 'getCommon'://new
             return{
                 "databaseAction": "getSame",
                 "wantedNode": "",

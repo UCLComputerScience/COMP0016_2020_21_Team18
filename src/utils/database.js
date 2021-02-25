@@ -133,6 +133,7 @@ const getSame = async (code,codeTwo) => {
             "       end   " +
             "end as Steps "
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
+        ret.filter(n => n)
         return ret.join(", ")
 
     } catch (error) {
@@ -146,5 +147,5 @@ module.exports = {
     getNode,
     getVal,
     getName
-    //,getSame
+    ,getSame
 }
