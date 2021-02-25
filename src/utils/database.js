@@ -102,8 +102,37 @@ const getSame = async (code,codeTwo) => {
     const session = driver.session();
     try {
         const result = await session.run(
-            ""
-        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
+            "match (p:Patient { id:$code} )   " +
+            "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
+            "where apoc.node.degree.in(e, 'NEXT') = 0   " +
+            "match (e)-[:NEXT*0..]->(e2)   " +
+            "optional match (e2)-[:HAS_CARE_PLAN]->(cp:CarePlan)   " +
+            "optional match (e2)-[:HAS_PROCEDURE]->(proc:Procedure)   " +
+            "optional match (e2)-[:HAS_DRUG]->(d:Drug)   " +
+            "optional match (e2)-[:HAS_CONDITION]->(c:Condition)   " +
+            "optional match (e2)-[:HAS_ALLERGY]->(a:Allergy)" +
+
+            "match (p1:Patient { id:$codeTwo} )   " +
+            "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
+            "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
+            "match (ea)-[:NEXT*0..]->(eb)   " +
+            "optional match (eb)-[:HAS_CARE_PLAN]->(cp1:CarePlan)   " +
+            "optional match (eb)-[:HAS_PROCEDURE]->(proc1:Procedure)   " +
+            "optional match (eb)-[:HAS_DRUG]->(d1:Drug)   " +
+            "optional match (eb)-[:HAS_CONDITION]->(c1:Condition)   " +
+            "optional match (eb)-[:HAS_ALLERGY]->(a1:Allergy)   " +
+
+            "return distinct case when cp is not null and cp1 is not null and cp.description = cp1.description then { date:e2.date, details: cp.description}     " +
+            "   else case when proc is not null and proc1 is not null and proc.description = proc1.description then { date:e2.date, details: proc.description}     " +
+            "              else case when d is not null and d1 is not null and d.description = d1.description then {date:e2.date, details:d.description}     " +
+            "                   else case when c is not null and c1 is not null and c.description = c1.description then { date:e2.date, details: c.description}     " +
+            "                         else case when a is not null and a1 is not null and a.description = a1.description then { date:e2.date, details: a.description}    " +
+            "                   end   " +
+            "               end   " +
+            "           end   " +
+            "       end   " +
+            "end as Steps "
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
         return ret.join(", ")
 
     } catch (error) {
