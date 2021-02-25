@@ -131,7 +131,7 @@ const getSame = async (code,codeTwo) => {
             "               end   " +
             "           end   " +
             "       end   " +
-            "end as Steps "
+            "end as Steps ")
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
         ret.filter(n => n)
         return ret.join(", ")
