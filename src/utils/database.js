@@ -98,11 +98,11 @@ const getVal = async (code, wantedNode, returnNode) => {
     }
 }
 
-const getSame = async (code, wantedNode, returnNode) => {
+const getSame = async (name, otherName) => {
     const session = driver.session();
     try {
         const result = await session.run(
-            "match (p:Patient { firstName:'Cristina921'} )   " +
+            "match (p:Patient { id:$name} )   " +
             "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
             "where apoc.node.degree.in(e, 'NEXT') = 0   " +
             "match (e)-[:NEXT*0..]->(e2)   " +
@@ -112,7 +112,7 @@ const getSame = async (code, wantedNode, returnNode) => {
             "optional match (e2)-[:HAS_CONDITION]->(c:Condition)   " +
             "optional match (e2)-[:HAS_ALLERGY]->(a:Allergy)" +
 
-            "match (p1:Patient { firstName:'Emile522'} )   " +
+            "match (p1:Patient { id:$otherName} )   " +
             "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
             "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
             "match (ea)-[:NEXT*0..]->(eb)   " +
