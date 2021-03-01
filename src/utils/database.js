@@ -131,7 +131,7 @@ const getSame = async (name, otherName) => {
             "               end   " +
             "           end   " +
             "       end   " +
-            "end as Steps ")
+            "end as Steps ",{name,otherName})
         //var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
         //ret.filter(n => n)
         var ret = [...new Set(result.records.map(row => row['_fields'][0]))]
