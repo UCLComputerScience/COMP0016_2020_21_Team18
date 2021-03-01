@@ -98,11 +98,11 @@ const getVal = async (code, wantedNode, returnNode) => {
     }
 }
 
-const getSame = async (code,codeTwo) => {
+const getSame = async (code, wantedNode, returnNode) => {
     const session = driver.session();
     try {
         const result = await session.run(
-            "match (p:Patient { id:$code} )   " +
+            "match (p:Patient { firstName:'Cristina921'} )   " +
             "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
             "where apoc.node.degree.in(e, 'NEXT') = 0   " +
             "match (e)-[:NEXT*0..]->(e2)   " +
@@ -112,7 +112,7 @@ const getSame = async (code,codeTwo) => {
             "optional match (e2)-[:HAS_CONDITION]->(c:Condition)   " +
             "optional match (e2)-[:HAS_ALLERGY]->(a:Allergy)" +
 
-            "match (p1:Patient { id:$codeTwo} )   " +
+            "match (p1:Patient { firstName:'Emile522'} )   " +
             "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
             "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
             "match (ea)-[:NEXT*0..]->(eb)   " +
@@ -132,8 +132,12 @@ const getSame = async (code,codeTwo) => {
             "           end   " +
             "       end   " +
             "end as Steps ")
-        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
-        ret.filter(n => n)
+        //var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
+        //ret.filter(n => n)
+        var ret = [...new Set(result.records.map(row => row['_fields'][0]))]
+        ret = ret.filter(row => row !== null)
+        //console.log(ret)
+        ret = [...new Set(ret.map(row => row.details))]
         return ret.join(", ")
 
     } catch (error) {
@@ -146,6 +150,6 @@ const getSame = async (code,codeTwo) => {
 module.exports = {
     getNode,
     getVal,
-    getName
-    ,getSame
+    getName,
+    getSame
 }

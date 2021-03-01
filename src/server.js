@@ -10,6 +10,7 @@ const getPrediction = require('./utils/predict');
 const { getNode } = require('./utils/database');
 const { getVal } = require('./utils/database');
 const { getName } = require('./utils/database');
+const { getSame } = require('./utils/database');
 const returnNodeFromPrediction = require('./utils/node.factory');
 const database = require('./utils/database');
 
@@ -44,9 +45,9 @@ const getMessage = async (msg) => {
             return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
             break
         case 'getSame':
-            data = await getNode(
+            data = await getSame(
                 prediction.entities.DB_personName[0][0],
-                prediction.entities.DB_personName[0][1]
+                prediction.entities.DB_personName[0][1]//change to correct?
             );
             return "The matching data for the patients is:\n" +data;
             break
