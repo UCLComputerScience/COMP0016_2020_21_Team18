@@ -45,6 +45,8 @@ const getMessage = async (msg) => {
             return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
             break
         case 'getSame':
+            console.log(prediction.entities.DB_personName[0][0])
+            console.log(prediction.entities.DB_personName[1][0])
             data = await getSame(
                 prediction.entities.DB_personName[0][0],
                 prediction.entities.DB_personName[0][1]//change to correct?
