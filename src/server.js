@@ -22,7 +22,7 @@ const getMessage = async (msg) => {
     const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
     let data;
     let name;
-
+    console.log(databaseAction);
     switch(databaseAction) {
         case 'getNode':
             data = await getNode(
@@ -37,7 +37,7 @@ const getMessage = async (msg) => {
             break
         case 'getVal':
             data = await getVal(
-                prediction.entities.DB_personName[0][0],
+                prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
                 wantedNode,
                 returnNode
             );

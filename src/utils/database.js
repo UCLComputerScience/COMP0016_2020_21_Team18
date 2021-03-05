@@ -78,7 +78,6 @@ const getNode = async (name, wantedNode, returnNode) => {
 //new funct
 const getVal = async (code, wantedNode, returnNode) => {
     const session = driver.session();
-
     try {
         const result = await session.run(
             "MATCH (p:Patient) " +
@@ -86,9 +85,9 @@ const getVal = async (code, wantedNode, returnNode) => {
             "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
             "MATCH (e)-[:NEXT*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
-            "WHERE "+returnNode+".code = '" + code + "' " +
+            "WHERE "+returnNode+".description = '" + code + "' " +
             "RETURN p," + returnNode,{code});
-        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.description))]
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
         return ret.join(", ")
 
     } catch (error) {
@@ -138,7 +137,7 @@ const getSame = async (name, otherName) => {
         ret = ret.filter(row => row !== null)
         //console.log(ret)
         ret = [...new Set(ret.map(row => row.details))]
-        return ret.join(", ")
+        return ret.join(",\n ")
 
     } catch (error) {
         return error;
