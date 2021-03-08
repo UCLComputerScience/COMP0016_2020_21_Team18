@@ -39,7 +39,7 @@ const getNode = async (name, wantedNode, returnNode) => {
             return [x, data[1][i]]
         });
 
-        data.sort(compareColumn);
+        data.sort(compareColumn);//sort
         function compareColumn(a, b) {
             if (a[0] === b[0]) {
                 return 0;
@@ -55,12 +55,11 @@ const getNode = async (name, wantedNode, returnNode) => {
         for(var i=1;i<data.length;i++){
             temp= String(data[i][1])
             noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
-            if(data[i][0]!==data[i-1][0]){
+            if(data[i][0]!==data[i-1][0]){//if new drug
                 ret += "\n" + data[i][0]+":\n" + noLetter;
             }
-            else{
-                if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){
-                    var temp= String(data[i][1])
+            else{//if same drug
+                if(JSON.stringify(data[i][1])!==JSON.stringify(data[i-1][1])){//if no same time/date
                     ret+= ",\n" + noLetter;
                 }
             }
