@@ -51,6 +51,8 @@ const getMessage = async (msg) => {
                 prediction.entities.DB_personName[0][0],
                 prediction.entities.DB_personName[1][0]
             );
+            console.log(data + ":");
+            if (data===""){return "These patient have nothing in common";}
             return "The matching data for the patients is:\n" +data;
             break
         default:
