@@ -33,6 +33,7 @@ const getMessage = async (msg) => {
             name = await getName(
                 prediction.entities.DB_personName[0][0]
             );
+            if (data===""){return name + " has no data related to any "+returnNode.toLowerCase();}
             return "The " + returnNode.toLowerCase()+ " data for patient " + name + " is:\n" +data;
             break
         case 'getVal':
@@ -42,6 +43,7 @@ const getMessage = async (msg) => {
                 returnNode
             );
             //The patients with this returnNode are:
+            if (data===""){return "No patient have had encounters with "+returnNode.toLowerCase();}
             return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
             break
         case 'getSame':
