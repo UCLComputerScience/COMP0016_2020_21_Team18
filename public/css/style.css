@@ -8,6 +8,12 @@
 	--error-color: #d9534f;
 }
 
+.navbar.fixed-bottom.navbar-light.bg-primary {
+    height: 15% !important;
+}
+
+
+
 .navbar-brand {
     transform: translateX(-50%);
     left: 50%;
@@ -92,8 +98,9 @@ a {
     padding-top,padding-right,padding-bottom,padding-left*/
     /*padding-top: 20px;*/
     /*padding-bottom: 20px;*/
-    padding-left: 5px;
-    padding-right: 20px;
+    /*padding-left: 5px;*/
+    /*padding-right: 20px;*/
+
     color: black;
     /*border makes sure there is none around the border*/
     border: 0;
@@ -101,7 +108,7 @@ a {
 }
 
 .btn i.fa-paper-plane {
-    padding-left: 10;
+    padding-left: 10px;
 }
 
 .invisible {
@@ -113,6 +120,9 @@ a {
 /*    width: 60px;*/
 /*}*/
 
+.btn-default span {
+    font-size:48px;
+}
 
 
 /*Chat page*/
@@ -140,7 +150,7 @@ a {
     /*The padding makes the Grace Chatbot
     into a bigger box, more spacious
     */
-    padding: 15px;
+    padding: 10px;
     border: 2px solid black;
     background: #A0CFEC;
     color: black;
@@ -244,6 +254,21 @@ it's not included in the html*/
     flex: 1;
 }
 
+#chat-form{
+    height:100%;
+}
+
+.form-control-search{
+    height:100%;
+    width: 87% !important;
+    font-size:200%;
+}
+
 .invisible {
     display: none;
+}
+
+.col.btn.btn-default {
+    height: 100%;
+    width:100px;
 }
