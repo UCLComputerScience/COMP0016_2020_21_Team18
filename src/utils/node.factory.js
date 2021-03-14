@@ -1,79 +1,56 @@
 function returnNodeFromPrediction(prediction) {
     switch(prediction) {
-        case 'getDrugs':
+        case 'getProcedure':
             return {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
-                "returnNode": "drug"
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
+                "returnNode": "procedure"
             }
         case 'getConditions':
             return {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CONDITION]-(condition:Condition)",
+                "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition"
             }
-        case 'getCarePlan':
+
+        case 'getImmunization':
             return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CARE_PLAN]-(carePlan:CarePlan)",
-                "returnNode": "carePlan"
+                "databaseAction": "getEncounterlessNode",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization"
             }
-        case 'getAllergies':
-            return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_ALLERGY]-(allergy:Allergy)",
-                "returnNode": "allergy"
-            }
-        case 'getProcedures':
-            return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_PROCEDURE]-(procedure:Procedure)",
-                "returnNode": "procedure"
-            }
+
         case 'getObservation':
             return {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
-                "returnNode": "procedure"
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation"
             }
-        case 'getPatientDrugs':
+
+        case 'getPatientImmunization':
             return {
-                "databaseAction": "getVal",
-                "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
-                "returnNode": "drug"
+                "databaseAction": "getEncounterlessVal",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization"
             }
         case 'getPatientConditions':
             return {
                 "databaseAction": "getVal",
-                "wantedNode": "[:HAS_CONDITION]-(condition:Condition)",
+                "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition"
-            }
-        case 'getPatientCarePlan':
-            return {
-                "databaseAction": "getVal",
-                "wantedNode": "[:HAS_CARE_PLAN]-(carePlan:CarePlan)",
-                "returnNode": "carePlan"
-            }
-        case 'getPatientAllergies':
-            return {
-                "databaseAction": "getVal",
-                "wantedNode": "[:HAS_ALLERGY]-(allergy:Allergy)",
-                "returnNode": "allergy"
             }
         case 'getPatientProcedures':
             return {
                 "databaseAction": "getVal",
-                "wantedNode": "[:HAS_PROCEDURE]-(procedure:Procedure)",
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
                 "returnNode": "procedure"
             }
-            //needs different implementation due to fields
-            /*
         case 'getPatientObservation':
             return {
                 "databaseAction": "getVal",
-                "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
-                "returnNode": "procedure"
-            }*/
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation"
+            }
 
         case 'getCommon'://new
             return{

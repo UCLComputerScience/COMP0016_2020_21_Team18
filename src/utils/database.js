@@ -1,5 +1,5 @@
 const neo4j = require('neo4j-driver');
-const driver = neo4j.driver('bolt://51.140.127.105:7687/', neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'));
+const driver = neo4j.driver('bolt://182.92.220.170:7474/', neo4j.auth.basic('test', 'software'));
 
 const getName = async(name) =>{
     const session = driver.session();
@@ -7,13 +7,35 @@ const getName = async(name) =>{
         const result = await session.run(
         "Match (p:Patient{id:$name})return p", {name})
 
-        return[...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
+        return[...new Set(result.records.map(row => row['_fields'][0].properties.name))]
 
 } catch (error) {
     return error;
 } finally {
     await session.close()
 }
+}
+
+const getEncounterlessNode = async (name, wantedNode, returnNode) => {
+    const session = driver.session();
+
+    try {
+        const result = await session.run(
+            //"MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-" + wantedNode + " RETURN patient,encounter," + returnNode + " LIMIT 10",
+            //{ name });
+            "MATCH (p:Patient{id:$name}) " +
+            "MATCH (p)-" + wantedNode  +
+            "WHERE "+returnNode+".vaccineType IS NOT NULL " +
+            "RETURN " + returnNode,{name});
+        var ret = [...new Array(result.records.map(row => row['_fields'][0].properties.display))]//maybe no [0] after [fields]
+        return ret.join(",\n")
+        //...new Set(result.records.map(row => row['_fields'][0].properties.date))];
+
+    } catch (error) {
+        return error;
+    } finally {
+        await session.close()
+    }
 }
 
 const getNode = async (name, wantedNode, returnNode) => {
@@ -24,17 +46,17 @@ const getNode = async (name, wantedNode, returnNode) => {
             //"MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-" + wantedNode + " RETURN patient,encounter," + returnNode + " LIMIT 10",
             //{ name });
             "MATCH (p:Patient{id:$name}) " +
-            "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+            "MATCH (p)-[:has_encounter]-(e:Encounter) " +
             "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
-            "MATCH (e)-[:NEXT*0..]->(e2) " +
+            "MATCH (e)-[:next_encounter*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
-            "WHERE "+returnNode+".description IS NOT NULL " +
+            "WHERE "+returnNode+".display IS NOT NULL " +
             "RETURN e2," + returnNode,{name});
         //console.log("values: " + (result.records.map(row => row['_fields'][2].properties.description)));
         //return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
         //console.log("values: " + (result.records.map(row => row['_fields'][1].properties.description)));
-        var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.description)),
-            ...new Array(result.records.map(row => row['_fields'][0].properties.date)))]
+        var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.display)),
+            ...new Array(result.records.map(row => row['_fields'][0].properties.period_start)))]
         data = data[0].map(function (x, i) {
             return [x, data[1][i]]
         });
@@ -50,11 +72,11 @@ const getNode = async (name, wantedNode, returnNode) => {
         }
 
         var temp = String(data[0][1])
-        var noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
+        var noLetter = temp.substring(0,10) + " | " + temp.substring(11,19) // date formatiing
         var ret = data[0][0] + ":\n" + noLetter;
         for(var i=1;i<data.length;i++){
             temp= String(data[i][1])
-            noLetter = temp.substring(0,10) + " | " + temp.substring(11,19)
+            noLetter = temp.substring(0,10) + " | " + temp.substring(11,19) //date formatting
             if(data[i][0]!==data[i-1][0]){//if new drug
                 ret += "\n" + data[i][0]+":\n" + noLetter;
             }
@@ -74,19 +96,36 @@ const getNode = async (name, wantedNode, returnNode) => {
     }
 }
 
-//new funct
+const getEncounterlessVal = async (code, wantedNode, returnNode) => {
+    const session = driver.session();
+    try {
+        const result = await session.run(
+            "MATCH (p:Patient) " +
+            "MATCH (p)-"+ wantedNode  +
+            "WHERE "+returnNode+".display = '" + code + "' " +
+            "RETURN p," + returnNode,{code});
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
+        return ret.join(", ")
+
+    } catch (error) {
+        return error;
+    } finally {
+        await session.close()
+    }
+}
+
 const getVal = async (code, wantedNode, returnNode) => {
     const session = driver.session();
     try {
         const result = await session.run(
             "MATCH (p:Patient) " +
-            "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
-            "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
-            "MATCH (e)-[:NEXT*0..]->(e2) " +
+            "MATCH (p)-[:has_encounter]-(e:Encounter) " +
+            "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
+            "MATCH (e)-[:next_encounter*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
-            "WHERE "+returnNode+".description = '" + code + "' " +
+            "WHERE "+returnNode+".display = '" + code + "' " +
             "RETURN p," + returnNode,{code});
-        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.firstName))]
+        var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
         return ret.join(", ")
 
     } catch (error) {
@@ -101,42 +140,49 @@ const getSame = async (name, otherName) => {
     try {
         const result = await session.run(
             "match (p:Patient { id:$name} )   " +
-            "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
-            "where apoc.node.degree.in(e, 'NEXT') = 0   " +
-            "match (e)-[:NEXT*0..]->(e2)   " +
-            "optional match (e2)-[:HAS_CARE_PLAN]->(cp:CarePlan)   " +
-            "optional match (e2)-[:HAS_PROCEDURE]->(proc:Procedure)   " +
-            "optional match (e2)-[:HAS_DRUG]->(d:Drug)   " +
-            "optional match (e2)-[:HAS_CONDITION]->(c:Condition)   " +
-            "optional match (e2)-[:HAS_ALLERGY]->(a:Allergy)" +
+            "match (p)-[:has_encounter]-(e:Encounter)   " +
+            "where apoc.node.degree.in(e, 'next_encounter') = 0   " +
+            "match (e)-[:next_encounter*0..]->(e2)   " +
+            "optional match (e2)-[:has_observation]->(ob:Observation)   " +
+            "optional match (e2)-[:has_procedure]->(proc:Procedure)   " +
+            "optional match (e2)-[:has_condition]->(c:Condition)   " +
 
             "match (p1:Patient { id:$otherName} )   " +
-            "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
-            "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
-            "match (ea)-[:NEXT*0..]->(eb)   " +
-            "optional match (eb)-[:HAS_CARE_PLAN]->(cp1:CarePlan)   " +
-            "optional match (eb)-[:HAS_PROCEDURE]->(proc1:Procedure)   " +
-            "optional match (eb)-[:HAS_DRUG]->(d1:Drug)   " +
-            "optional match (eb)-[:HAS_CONDITION]->(c1:Condition)   " +
-            "optional match (eb)-[:HAS_ALLERGY]->(a1:Allergy)   " +
+            "match (p1)-[:has_encounter]-(ea:Encounter)   " +
+            "where apoc.node.degree.in(ea, 'next_encounter') = 0   " +
+            "match (ea)-[:next_encounter*0..]->(eb)   " +
+            "optional match (e2)-[:has_observation]->(ob1:Observation)   " +
+            "optional match (e2)-[:has_procedure]->(proc1:Procedure)   " +
+            "optional match (e2)-[:has_condition]->(c1:Condition)   " +
 
-            "return distinct case when cp is not null and cp1 is not null and cp.description = cp1.description then { date:e2.date, details: cp.description}     " +
-            "   else case when proc is not null and proc1 is not null and proc.description = proc1.description then { date:e2.date, details: proc.description}     " +
-            "              else case when d is not null and d1 is not null and d.description = d1.description then {date:e2.date, details:d.description}     " +
-            "                   else case when c is not null and c1 is not null and c.description = c1.description then { date:e2.date, details: c.description}     " +
-            "                         else case when a is not null and a1 is not null and a.description = a1.description then { date:e2.date, details: a.description}    " +
-            "                   end   " +
+            "return distinct case when ob is not null and ob1 is not null and ob.display = ob1.display then { date:e2.date, details: ob.display}     " +
+            "   else case when proc is not null and proc1 is not null and proc.display = proc1.display then { date:e2.date, details: proc.display}     " +
+            "                   else case when c is not null and c1 is not null and c.display = c1.display then { date:e2.date, details: c.display}     " +
             "               end   " +
-            "           end   " +
             "       end   " +
+            "end as Steps ",{name,otherName})
+        const sResult = await session.run(
+            "match (p:Patient { id:$name} )   " +
+            "optional match (p)-[:has_immunization]->(im:Immunization)   " +
+
+            "match (p1:Patient { id:$otherName} )   " +
+            "optional match (p1)-[:has_immunization]->(im1:Immunization)   " +
+
+            "return distinct case when im is not null and im1 is not null and ob.display = ob1.display then { date:e2.date, details: im.display}     " +
             "end as Steps ",{name,otherName})
         //var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.details))]
         //ret.filter(n => n)
         var ret = [...new Set(result.records.map(row => row['_fields'][0]))]
         ret = ret.filter(row => row !== null)
-        //console.log(ret)
         ret = [...new Set(ret.map(row => row.details))]
-        return ret.join(",\n ")
+
+        var sec = [...new Set(sResult.records.map(row => row['_fields'][0]))]//maybe no [0] after fields
+        sec = sec.filter(row => row !== null)
+        sec = [...new Set(sec.map(row => row.details))]
+
+        var firstPart = ret.join(",\n")
+        var secondPart = ret.join(",\n")
+        return firstpart+secondPart
 
     } catch (error) {
         return error;
@@ -149,5 +195,7 @@ module.exports = {
     getNode,
     getVal,
     getName,
-    getSame
+    getSame,
+    getEncounterlessNode,
+    getEncounterlessVal
 }

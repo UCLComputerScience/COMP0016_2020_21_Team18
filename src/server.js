@@ -11,6 +11,8 @@ const { getNode } = require('./utils/database');
 const { getVal } = require('./utils/database');
 const { getName } = require('./utils/database');
 const { getSame } = require('./utils/database');
+const { getEncounterlessNode } = require('./utils/database');
+const { getEncounterlessVal } = require('./utils/database');
 const returnNodeFromPrediction = require('./utils/node.factory');
 const database = require('./utils/database');
 
@@ -36,6 +38,18 @@ const getMessage = async (msg) => {
             if (data===""){return name + " has no data related to any "+returnNode.toLowerCase();}
             return "The " + returnNode.toLowerCase()+ " data for patient " + name + " is:\n" +data;
             break
+
+        case 'getEncounterlessNode':
+            data = await getEncounterlessNode(
+                prediction.entities.DB_personName[0][0],//for drug only, change general in luis?
+                wantedNode,
+                returnNode
+            );
+            //The patients with this returnNode are:
+            if (data===""){return name + " has no data related to any "+returnNode.toLowerCase();}
+            return "The " + returnNode.toLowerCase()+ " data for patient " + name + " is:\n" +data;
+            break
+        /*
         case 'getVal':
             data = await getVal(
                 prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
@@ -45,7 +59,19 @@ const getMessage = async (msg) => {
             //The patients with this returnNode are:
             if (data===""){return "No patient have had encounters with "+returnNode.toLowerCase();}
             return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
+            break*/
+
+        case 'getEncounterlessVal':
+            data = await getEncounterlessVal(
+                prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
+                wantedNode,
+                returnNode
+            );
+            //The patients with this returnNode are:
+            if (data===""){return "No patient have had encounters with "+returnNode.toLowerCase();}
+            return "This patients with this "+ returnNode.toLowerCase()+ " are: \n" + data;
             break
+
         case 'getSame':
             //console.log(prediction.entities.DB_personName[0][0])
             //console.log(prediction.entities.DB_personName[1][0])
