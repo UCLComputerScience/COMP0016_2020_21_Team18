@@ -21,13 +21,14 @@ app.use(express.static(path.join(__dirname, '../public')));
 const getMessage = async (msg) => {
     const prediction = await getPrediction(msg);
     console.log(prediction);
-    const { databaseAction, wantedNode, returnNode } = returnNodeFromPrediction(prediction.prediction);
+    const { databaseAction, wantedNode, returnNode, timeNode } = returnNodeFromPrediction(prediction.prediction);
     let data;
     let name;
     console.log(databaseAction);
     switch(databaseAction) {
         case 'getNode':
             data = await getNode(
+                prediction.entities.datetimeV2[0]["values"][0]["start"],//ADD ERROR CHECKING - SET TO UNDEFINED/NULL/ETC
                 prediction.entities.DB_personName[0][0],
                 wantedNode,
                 returnNode
@@ -41,9 +42,11 @@ const getMessage = async (msg) => {
 
         case 'getEncounterlessNode':
             data = await getEncounterlessNode(
-                prediction.entities.DB_personName[0][0],//for drug only, change general in luis?
+                prediction.entities.datetimeV2[0]["values"][0]["start"],
+                prediction.entities.DB_personName[0][0],
                 wantedNode,
-                returnNode
+                returnNode,
+                timeNode
             );
             //The patients with this returnNode are:
             if (data===""){return name + " has no data related to any "+returnNode.toLowerCase();}
@@ -52,6 +55,7 @@ const getMessage = async (msg) => {
         /*
         case 'getVal':
             data = await getVal(
+                prediction.entities.datetimeV2[0]["values"][0]["start"],
                 prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
                 wantedNode,
                 returnNode
@@ -63,9 +67,11 @@ const getMessage = async (msg) => {
 
         case 'getEncounterlessVal':
             data = await getEncounterlessVal(
+                prediction.entities.datetimeV2[0]["values"][0]["start"],
                 prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
                 wantedNode,
-                returnNode
+                returnNode,
+                timeNode
             );
             //The patients with this returnNode are:
             if (data===""){return "No patient have had encounters with "+returnNode.toLowerCase();}

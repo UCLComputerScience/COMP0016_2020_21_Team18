@@ -16,16 +16,19 @@ const getName = async(name) =>{
 }
 }
 
-const getEncounterlessNode = async (name, wantedNode, returnNode) => {
+const getEncounterlessNode = async (time, name, wantedNode, returnNode, timeFormat) => {
     const session = driver.session();
-
+    var l = ""
+    if(time!==undefined){
+        l="AND date(left("+returnNode+timeFormat+",10))>date('"+time+"')"
+    }
     try {
         const result = await session.run(
             //"MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-" + wantedNode + " RETURN patient,encounter," + returnNode + " LIMIT 10",
             //{ name });
             "MATCH (p:Patient{id:$name}) " +
             "MATCH (p)-" + wantedNode  +
-            "WHERE "+returnNode+".vaccineType IS NOT NULL " +
+            "WHERE "+returnNode+".vaccineType IS NOT NULL " +//specify vaccineType as seperate var from return
             "RETURN " + returnNode,{name});
         var ret = [...new Array(result.records.map(row => row['_fields'][0].properties.display))]//maybe no [0] after [fields]
         return ret.join(",\n")
@@ -38,10 +41,15 @@ const getEncounterlessNode = async (name, wantedNode, returnNode) => {
     }
 }
 
-const getNode = async (name, wantedNode, returnNode) => {
+const getNode = async (time, name, wantedNode, returnNode) => {
     const session = driver.session();
 
     try {
+        var l = ""
+        if(time!==undefined){
+            l="AND date(left(e2.period_start,10))>date('"+time+"')"
+        }
+
         const result = await session.run(
             //"MATCH (patient:Patient{id:$name})-[:HAS_ENCOUNTER]-(encounter:Encounter)-" + wantedNode + " RETURN patient,encounter," + returnNode + " LIMIT 10",
             //{ name });
@@ -51,6 +59,7 @@ const getNode = async (name, wantedNode, returnNode) => {
             "MATCH (e)-[:next_encounter*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
             "WHERE "+returnNode+".display IS NOT NULL " +
+            l +
             "RETURN e2," + returnNode,{name});
         //console.log("values: " + (result.records.map(row => row['_fields'][2].properties.description)));
         //return [...new Set(result.records.map(row => row['_fields'][2].properties.description))];
@@ -96,13 +105,19 @@ const getNode = async (name, wantedNode, returnNode) => {
     }
 }
 
-const getEncounterlessVal = async (code, wantedNode, returnNode) => {
+const getEncounterlessVal = async (time, code, wantedNode, returnNode, timeFormat) => {
     const session = driver.session();
+
+    var l = ""
+    if(time!==undefined){
+        l="AND date(left("+returnnode+timeFormat+",10))>date('"+time+"')"
+    }
     try {
         const result = await session.run(
             "MATCH (p:Patient) " +
             "MATCH (p)-"+ wantedNode  +
             "WHERE "+returnNode+".display = '" + code + "' " +
+            l +
             "RETURN p," + returnNode,{code});
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
         return ret.join(", ")
@@ -114,8 +129,12 @@ const getEncounterlessVal = async (code, wantedNode, returnNode) => {
     }
 }
 
-const getVal = async (code, wantedNode, returnNode) => {
+const getVal = async (time, code, wantedNode, returnNode) => {
     const session = driver.session();
+    var l = ""
+    if(time!==undefined){
+        l="AND date(left(e2.period_start,10))>date('"+time+"')"
+    }
     try {
         const result = await session.run(
             "MATCH (p:Patient) " +
@@ -124,6 +143,7 @@ const getVal = async (code, wantedNode, returnNode) => {
             "MATCH (e)-[:next_encounter*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
             "WHERE "+returnNode+".display = '" + code + "' " +
+            l+
             "RETURN p," + returnNode,{code});
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
         return ret.join(", ")

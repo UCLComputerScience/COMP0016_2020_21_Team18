@@ -1,16 +1,18 @@
 function returnNodeFromPrediction(prediction) {
     switch(prediction) {
         case 'getProcedure':
-            return {
+            return {//timenode is for specifying attriubte name time is held in for nodes that don't go through encounter
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
-                "returnNode": "procedure"
+                "returnNode": "procedure",
+                "timeNode": ""
             }
         case 'getConditions':
             return {
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_condition]-(condition:Condition)",
-                "returnNode": "condition"
+                "returnNode": "condition",
+                "timeNode": ""
             }
 
         case 'getImmunization':
@@ -24,45 +26,52 @@ function returnNodeFromPrediction(prediction) {
             return {
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
-                "returnNode": "observation"
+                "returnNode": "observation",
+                "timeNode": ""
             }
 
         case 'getPatientImmunization':
             return {
                 "databaseAction": "getEncounterlessVal",
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
-                "returnNode": "immunization"
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime"
             }
         case 'getPatientConditions':
             return {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_condition]-(condition:Condition)",
-                "returnNode": "condition"
+                "returnNode": "condition",
+                "timeNode": ""
             }
         case 'getPatientProcedures':
             return {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
-                "returnNode": "procedure"
+                "returnNode": "procedure",
+                "timeNode": ""
             }
         case 'getPatientObservation':
             return {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
-                "returnNode": "observation"
+                "returnNode": "observation",
+                "timeNode": ""
             }
 
         case 'getCommon'://new
             return{
                 "databaseAction": "getSame",
                 "wantedNode": "",
-                "returnNode": ""
+                "returnNode": "",
+                "timeNode": ""
             }
         default:
             return {
                 "databaseAction": "None",
                 "wantedNode": "None",
-                "returnNode": "None"
+                "returnNode": "None",
+                "timeNode": "null"
             }
     }
 }
