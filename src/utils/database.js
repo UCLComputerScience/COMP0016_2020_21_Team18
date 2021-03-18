@@ -28,7 +28,6 @@ const getEncounterlessNode = async (time, name, wantedNode, returnNode, timeForm
             //{ name });
             "MATCH (p:Patient{id:$name}) " +
             "MATCH (p)-" + wantedNode  +
-            "WHERE "+returnNode+".vaccineType IS NOT NULL " +//specify vaccineType as seperate var from return
             "RETURN " + returnNode,{name});
         var ret = [...new Array(result.records.map(row => row['_fields'][0].properties.display))]//maybe no [0] after [fields]
         return ret.join(",\n")
@@ -116,7 +115,7 @@ const getEncounterlessVal = async (time, code, wantedNode, returnNode, timeForma
         const result = await session.run(
             "MATCH (p:Patient) " +
             "MATCH (p)-"+ wantedNode  +
-            "WHERE "+returnNode+".display = '" + code + "' " +
+            "WHERE "+returnNode+".display = '" + code + "' " + //.display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
             l +
             "RETURN p," + returnNode,{code});
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]

@@ -19,7 +19,8 @@ function returnNodeFromPrediction(prediction) {
             return {
                 "databaseAction": "getEncounterlessNode",
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
-                "returnNode": "immunization"
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime"
             }
 
         case 'getObservation':
@@ -71,7 +72,7 @@ function returnNodeFromPrediction(prediction) {
                 "databaseAction": "None",
                 "wantedNode": "None",
                 "returnNode": "None",
-                "timeNode": "null"
+                "timeNode": ""
             }
     }
 }
