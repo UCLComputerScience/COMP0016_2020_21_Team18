@@ -104,7 +104,7 @@ const getNode = async (time, name, wantedNode, returnNode) => {
     }
 }
 
-const getEncounterlessVal = async (time, code, wantedNode, returnNode, timeFormat) => {
+const getEncounterlessVal = async (time, code, wantedNode, returnNode, timeFormat, detailNode) => {
     const session = driver.session();
 
     var l = ""
@@ -115,7 +115,7 @@ const getEncounterlessVal = async (time, code, wantedNode, returnNode, timeForma
         const result = await session.run(
             "MATCH (p:Patient) " +
             "MATCH (p)-"+ wantedNode  +
-            "WHERE "+returnNode+".display = '" + code + "' " + //.display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
+            "WHERE "+returnNode+detailNode+" = '" + code + "' " + //.display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
             l +
             "RETURN p," + returnNode,{code});
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]

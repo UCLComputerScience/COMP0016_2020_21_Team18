@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 const getMessage = async (msg) => {
     const prediction = await getPrediction(msg);
     console.log(prediction);
-    const { databaseAction, wantedNode, returnNode, timeNode } = returnNodeFromPrediction(prediction.prediction);
+    const { databaseAction, wantedNode, returnNode, timeNode ,detailNode} = returnNodeFromPrediction(prediction.prediction);
     let data;
     let name;
     console.log(databaseAction);
@@ -71,7 +71,8 @@ const getMessage = async (msg) => {
                 prediction.entities.DB_drugDescription[0][0],//for drug only, change general in luis?
                 wantedNode,
                 returnNode,
-                timeNode
+                timeNode,
+                detailNode
             );
             //The patients with this returnNode are:
             if (data===""){return "No patient have had encounters with "+returnNode.toLowerCase();}
