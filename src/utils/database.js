@@ -1,9 +1,12 @@
+const util = require('util');
 const neo4j = require('neo4j-driver');
 const driver = neo4j.driver('bolt://51.140.127.105:7687/', neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'));
 
-const getNode = async (name, wantedNode, returnNode) => {
+const getNode = async (name, dates, wantedNode, returnNode) => {
     const session = driver.session();
-
+    if (dates) {
+        console.log(dates);
+    }
     try {
         const result = await session.run(
             "MATCH (p:Patient{id:$name}) " +

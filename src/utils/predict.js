@@ -16,7 +16,7 @@ const getPrediction = async (text) => {
     });
     const data = response.data;
 
-    console.log(data.prediction.intents);
+    console.log(data.prediction.entities);
 
     const multiplePredictions = Object.entries(data.prediction.intents).filter(prediction => prediction[1].score > 0.15 ).map(prediction => prediction[0]);
 
@@ -26,4 +26,17 @@ const getPrediction = async (text) => {
     };
 }
 
-module.exports = getPrediction;
+const parseDate = (dates) => {
+    if (dates) {
+        const datesParsed = dates['values']();
+        for (const date of datesParsed) {
+            return date.values[0].resolution[0];
+        };
+    } 
+};
+
+
+module.exports = {
+    getPrediction,
+    parseDate
+};

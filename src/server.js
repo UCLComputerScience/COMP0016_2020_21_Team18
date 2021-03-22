@@ -6,7 +6,7 @@ const socketio = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const getPrediction = require('./utils/predict');
+const { getPrediction, parseDate } = require('./utils/predict');
 const { getNode } = require('./utils/database');
 const returnNodeFromPrediction = require('./utils/node.factory');
 const database = require('./utils/database');
@@ -24,6 +24,7 @@ const getMessage = async (msg) => {
             case 'getNode':
                 data = await getNode(
                     prediction.entities.DB_personName[0][0],
+                    "datetimeV2" in prediction.entities ? parseDate(prediction.entities.datetimeV2) : null,
                     wantedNode,
                     returnNode
                 );
