@@ -19,12 +19,13 @@
     <title>Grace Chatbot</title>
   </head>
   <body>
-    <nav
-      class="navbar navbar-expand-lg navbar-light bg-light justify-content-between fixed-top  "
-    >
-      <a class="navbar-brand" href="#">Grace</a>
 
-      <div id="navbarSupportedContent">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-end fixed-top  "
+    >
+        <a class="navbar-brand" href="#">Grace</a>
+
+
+      <div id="navbarSupportedContent" class="pull-right">
         <form class="form-inline my-2 my-lg-0" id="searchForm">
           <input
             class="form-control mr-sm-2"
@@ -36,30 +37,35 @@
         </form>
       </div>
     </nav>
+
     <main class="chat-main">
       <div class="chat-messages"></div>
       <div class="user-message"></div>
     </main>
-    <nav class="navbar fixed-bottom navbar-light bg-light">
+
+    <nav class="navbar fixed-bottom navbar-light bg-primary">
         <form id="chat-form" class="d-flex flex-row" style="width: 100%">
-                <div style="flex-grow: 1;">
-                    <input class="form-control" style="flex-grow: 1; width: 100%" type="text" name="msg" id="msg" value="" placeholder="Enter a message" aria-label="Message-box">
-                </div>
-                <div>
-                  <button class="col btn btn-default" type="button" id="recordWrapper">
-                      <span class="fas fa-microphone" id="record"></span>
-                  </button>
+<!--                <div class="form-control-div" style="flex-grow: 1;">-->
+                    <input class="form-control-search" type="text" name="msg" id="msg" value="" placeholder="Enter a message" aria-label="Message-box">
+<!--                </div>-->
+
+                <div class="microphone-button" style="float: left">
+                    <button class="col btn btn-default" type="button" id="recordWrapper">
+                        <span class="fas fa-microphone" id="record"></span>
+                    </button>
                 </div>
                 <div class="invisible" id="stopWrapper">
-                  <button class="col btn btn-default" id="stop" type="button">
-                    <span class="fas fa-stop"></span>
-                  </button>
+                    <button class="col btn btn-default" id="stop" type="button">
+                        <span class="fas fa-stop"></span>
+                    </button>
                 </div>
-                <div>
-                  <button class="col btn btn-default">
-                    <span class="fas fa-paper-plane"></span>
-                  </button>
+                <div class="send-button" style="float: right">
+                    <button class="col btn btn-default">
+                        <span class="fas fa-paper-plane"></span>
+                    </button>
                 </div>
+
+
             </div>
         </form>
     </nav>
