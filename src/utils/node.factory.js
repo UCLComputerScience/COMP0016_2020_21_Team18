@@ -1,46 +1,87 @@
 function returnNodeFromPrediction(prediction) {
     switch(prediction) {
-        case 'getDrugs':
-            return {
+        case 'getProcedure':
+            return {//timenode is for specifying attriubte name time is held in for nodes that don't go through encounter
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
-                "returnNode": "drug"
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
+                "returnNode": "procedure",
+                "timeNode": "",
+                "detailNode": ""
             }
         case 'getConditions':
             return {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CONDITION]-(condition:Condition)",
-                "returnNode": "condition"
+                "wantedNode": "[:has_condition]-(condition:Condition)",
+                "returnNode": "condition",
+                "timeNode": "",
+                "detailNode": ""
             }
-        case 'getCarePlan':
+
+        case 'getImmunization':
             return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CARE_PLAN]-(carePlan:CarePlan)",
-                "returnNode": "carePlan"
+                "databaseAction": "getEncounterlessNode",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime",
+                "detailNode": ""
             }
-        case 'getAllergies':
-            return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_ALLERGY]-(allergy:Allergy)",
-                "returnNode": "allergy"
-            }
-        case 'getProcedures':
-            return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_PROCEDURE]-(procedure:Procedure)",
-                "returnNode": "procedure"
-            }
+
         case 'getObservation':
             return {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
-                "returnNode": "procedure"
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation",
+                "timeNode": "",
+                "detailNode": ""
+            }
+
+        case 'getPatientImmunization':
+            return {
+                "databaseAction": "getEncounterlessVal",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime",
+                "detailNode": ".display"
+            }
+        case 'getPatientConditions':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_condition]-(condition:Condition)",
+                "returnNode": "condition",
+                "timeNode": ""
+            }
+        case 'getPatientProcedures':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
+                "returnNode": "procedure",
+                "timeNode": "",
+                "detailNode": ""
+            }
+        case 'getPatientObservation':
+            return {
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation",
+                "timeNode": "",
+                "detailNode": ""
+            }
+
+        case 'getCommon'://new
+            return{
+                "databaseAction": "getSame",
+                "wantedNode": "",
+                "returnNode": "",
+                "timeNode": "",
+                "detailNode": ""
             }
         default:
             return {
                 "databaseAction": "None",
                 "wantedNode": "None",
-                "returnNode": "None"
+                "returnNode": "None",
+                "timeNode": "",
+                "detailNode": ""
             }
     }
 }
