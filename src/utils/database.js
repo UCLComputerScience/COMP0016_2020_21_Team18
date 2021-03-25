@@ -58,7 +58,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         const result = await session.run(
             "MATCH (p:Patient{id:$name}) " +
             "MATCH (p)-[:has_encounter]-(e:Encounter) " +
-            "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+            "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
             "MATCH (e)-[:next_encounter*0..]->(e2) " +
             "MATCH (e2)-"+wantedNode+" " +
             "WHERE "+returnNode+".display IS NOT NULL " +
