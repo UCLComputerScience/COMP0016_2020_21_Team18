@@ -1,5 +1,5 @@
 const neo4j = require('neo4j-driver');
-const driver = neo4j.driver('bolt://182.92.220.170:7474/', neo4j.auth.basic('test', 'software'));
+const driver = neo4j.driver('bolt://182.92.220.170:7687/', neo4j.auth.basic('test', 'software'));
 
 function compareColumn(a, b) {
     if (a[0] === b[0]) {
@@ -52,7 +52,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     try {
         var dateQuery = dates !== null 
-            ? "AND date(left(e2.period_start,10))>date('" + times['start'] + "') AND date(left(e2.period_start,10))<date('" + times['end'] + "')"
+            ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))<date('" + dates['end'] + "')"
             : "";
 
         const result = await session.run(
@@ -101,7 +101,7 @@ const getEncounterlessVal = async (dates, code, wantedNode, returnNode, timeForm
     const session = driver.session();
 
     const dateQuery = dates !== null 
-        ? "AND date(left("+returnNode+timeFormat+",10))>date('"+times['start']+"') AND date(left("+returnNode+timeFormat+",10))<date('"+times['end']+"')"
+        ? "AND date(left("+returnNode+timeFormat+",10))>date('"+dates['start']+"') AND date(left("+returnNode+timeFormat+",10))<date('"+dates['end']+"')"
         : "";
  
     try {
@@ -125,7 +125,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
     const session = driver.session();
 
     const dateQuery = dates !== null 
-        ? "AND date(left(e2.period_start,10))>date('" + time['start'] + "') AND date(left(e2.period_start,10))>date('" + time['end'] + "')"
+        ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))>date('" + dates['end'] + "')"
         : "";
 
     try {

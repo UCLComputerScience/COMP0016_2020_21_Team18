@@ -16,7 +16,14 @@ function returnNodeFromPrediction(prediction) {
                 "timeNode": "",
                 "detailNode": ""
             }
-
+        case 'getDrugs':
+            return {
+                "databaseAction": "getNode",
+                "wantedNode": "[:has_drug]-(drug:Drug)",
+                "returnNode": "drug",
+                "timeNode": "",
+                "detailNode": ""
+            }
         case 'getImmunization':
             return {
                 "databaseAction": "getEncounterlessNode",
