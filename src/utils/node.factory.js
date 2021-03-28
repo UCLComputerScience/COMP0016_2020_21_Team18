@@ -16,14 +16,6 @@ function returnNodeFromPrediction(prediction) {
                 "timeNode": "",
                 "detailNode": ""
             }
-        case 'getDrugs':
-            return {
-                "databaseAction": "getNode",
-                "wantedNode": "[:has_drug]-(drug:Drug)",
-                "returnNode": "drug",
-                "timeNode": "",
-                "detailNode": ""
-            }
         case 'getImmunizations':
             return {
                 "databaseAction": "getEncounterlessNode",
@@ -74,7 +66,7 @@ function returnNodeFromPrediction(prediction) {
             }
 
         case 'getCommon'://new
-            return{
+            return {
                 "databaseAction": "getSame",
                 "wantedNode": "",
                 "returnNode": "",

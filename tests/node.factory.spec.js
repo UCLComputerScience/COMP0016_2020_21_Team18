@@ -3,51 +3,92 @@ const returnNodeFromPrediction = require('../src/utils/node.factory');
 describe("Node factory spec", () => {
     it.each([
         [
-            "getDrugs",
+            "getProcedures",
             {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_DRUG]-(drug:Drug)",
-                "returnNode": "drug"
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
+                "returnNode": "procedure",
+                "timeNode": "",
+                "detailNode": ""
             }
         ],
         [
             "getConditions",
             {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CONDITION]-(condition:Condition)",
-                "returnNode": "condition"
+                "wantedNode": "[:has_condition]-(condition:Condition)",
+                "returnNode": "condition",
+                "timeNode": "",
+                "detailNode": ""
             }
         ],
         [
-            "getCarePlan",
+            "getCommon",
             {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_CARE_PLAN]-(carePlan:CarePlan)",
-                "returnNode": "carePlan"
+                "databaseAction": "getSame",
+                "wantedNode": "",
+                "returnNode": "",
+                "timeNode": "",
+                "detailNode": ""
             }
         ],
         [
-            "getAllergies",
+            "getPatientObservation",
             {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_ALLERGY]-(allergy:Allergy)",
-                "returnNode": "allergy"
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation",
+                "timeNode": "",
+                "detailNode": ""
             }
         ],
         [
-            "getProcedures",
+            "getPatientProcedures",
             {
-                "databaseAction": "getNode",
-                "wantedNode": "[:HAS_PROCEDURE]-(procedure:Procedure)",
-                "returnNode": "procedure"
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_procedure]-(procedure:Procedure)",
+                "returnNode": "procedure",
+                "timeNode": "",
+                "detailNode": ""
+            }
+        ],
+        [
+            "getPatientConditions",
+            {
+                "databaseAction": "getVal",
+                "wantedNode": "[:has_condition]-(condition:Condition)",
+                "returnNode": "condition",
+                "timeNode": ""
+            }
+        ],
+        [
+            "getPatientImmunization",
+            {
+                "databaseAction": "getEncounterlessVal",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime",
+                "detailNode": ".display"
             }
         ],
         [
             "getObservation",
             {
                 "databaseAction": "getNode",
-                "wantedNode": "[:HAS_OBSERVATION]-(observation:Observation)",
-                "returnNode": "procedure"
+                "wantedNode": "[:has_observation]-(observation:Observation)",
+                "returnNode": "observation",
+                "timeNode": "",
+                "detailNode": ""
+            }
+        ],
+        [
+            "getImmunizations",
+            {
+                "databaseAction": "getEncounterlessNode",
+                "wantedNode": "[:has_immunization]-(immunization:Immunization)",
+                "returnNode": "immunization",
+                "timeNode": ".occuranceDateTime",
+                "detailNode": ""
             }
         ],
         [
@@ -55,7 +96,9 @@ describe("Node factory spec", () => {
             {
                 "databaseAction": "None",
                 "wantedNode": "None",
-                "returnNode": "None"
+                "returnNode": "None",
+                "timeNode": "",
+                "detailNode": ""
             }
         ]
     ])("%i should return correct values", (input, output) => {
