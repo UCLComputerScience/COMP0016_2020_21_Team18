@@ -13,7 +13,7 @@ function compareColumn(a, b) {
 const getName = async(name) =>{
     const session = driver.session();
     try {
-        const result = await session.run("MATCH (p:Patient{id:$name})return p", {name});
+        const result = await session.run("MATCH (p:Patient{name:$name})return p", {name});
 
         return [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
     } catch (error) {
@@ -32,7 +32,7 @@ const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFor
 
     try {
         const result = await session.run(
-            "MATCH (p:Patient{id:$name}) " +
+            "MATCH (p:Patient{name:$name}) " +
             "MATCH (p)-" + wantedNode  +
             dateQuery +
             "RETURN " + returnNode, { name });
@@ -49,14 +49,12 @@ const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFor
 const getNode = async (dates, name, wantedNode, returnNode) => {
     const session = driver.session();
 
-
     try {
         var dateQuery = dates !== null 
             ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))<date('" + dates['end'] + "')"
             : "";
-
         const result = await session.run(
-            "MATCH (p:Patient{id:$name}) " +
+            "MATCH (p:Patient{name:$name}) " +
             "MATCH (p)-[:has_encounter]-(e:Encounter) " +
             "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
             "MATCH (e)-[:next_encounter*0..]->(e2) " +
@@ -67,8 +65,6 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         
         var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.display)),
             ...new Array(result.records.map(row => row['_fields'][0].properties.period_start)))];
-        
-        console.log(data);
         
         data = data[0].map(function (x, i) {
             return [x, data[1][i]]
@@ -154,7 +150,7 @@ const getSame = async (name, otherName) => {
     const session = driver.session();
     try {
         const result = await session.run(
-            "match (p:Patient { id:$name} )   " +
+            "match (p:Patient { name:$name} )   " +
             "match (p)-[:has_encounter]-(e:Encounter)   " +
             "where apoc.node.degree.in(e, 'next_encounter') = 0   " +
             "match (e)-[:next_encounter*0..]->(e2)   " +
@@ -162,7 +158,7 @@ const getSame = async (name, otherName) => {
             "optional match (e2)-[:has_procedure]->(proc:Procedure)   " +
             "optional match (e2)-[:has_condition]->(c:Condition)   " +
 
-            "match (p1:Patient { id:$otherName} )   " +
+            "match (p1:Patient { name:$otherName} )   " +
             "match (p1)-[:has_encounter]-(ea:Encounter)   " +
             "where apoc.node.degree.in(ea, 'next_encounter') = 0   " +
             "match (ea)-[:next_encounter*0..]->(eb)   " +
@@ -178,10 +174,10 @@ const getSame = async (name, otherName) => {
             "end as Steps ",{name,otherName});
 
         const sResult = await session.run(
-            "match (p:Patient { id:$name} )   " +
+            "match (p:Patient { name:$name} )   " +
             "optional match (p)-[:has_immunization]->(im:Immunization)   " +
 
-            "match (p1:Patient { id:$otherName} )   " +
+            "match (p1:Patient { name:$otherName} )   " +
             "optional match (p1)-[:has_immunization]->(im1:Immunization)   " +
 
             "return distinct case when im is not null and im1 is not null and ob.display = ob1.display then { date:e2.date, details: im.display}     " +
