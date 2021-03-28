@@ -23,9 +23,9 @@ const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFor
             "MATCH (p)-" + wantedNode  +
             dateQuery +
             "RETURN " + returnNode, { name });
-
-        var ret = [...new Array(result.records.map(row => row['_fields'][0].properties.display))];
-        return ret.join(",\n");
+        
+        var ret = new Set(result.records.map(row => row['_fields'][0].properties.vaccineType));
+        return Array.from(ret).join(",") + "\n";
     } catch (error) {
         console.log(error)
         return "No matches found for this query";
@@ -52,7 +52,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
             "WHERE "+returnNode+".display IS NOT NULL " +
             dateQuery +
             "RETURN e2," + returnNode,{name});
-
+        
         var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.display)),
             ...new Array(result.records.map(row => row['_fields'][0].properties.period_start)))];
         

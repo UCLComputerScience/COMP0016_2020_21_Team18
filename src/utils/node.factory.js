@@ -24,7 +24,7 @@ function returnNodeFromPrediction(prediction) {
                 "timeNode": "",
                 "detailNode": ""
             }
-        case 'getImmunization':
+        case 'getImmunizations':
             return {
                 "databaseAction": "getEncounterlessNode",
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
@@ -32,7 +32,6 @@ function returnNodeFromPrediction(prediction) {
                 "timeNode": ".occuranceDateTime",
                 "detailNode": ""
             }
-
         case 'getObservation':
             return {
                 "databaseAction": "getNode",
