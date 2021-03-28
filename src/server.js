@@ -6,13 +6,9 @@ const socketio = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+const returnNodeFromPrediction = require('./utils/node.factory');
 const { getPrediction, parseDate } = require("./utils/predict");
-const { getNode } = require("./utils/database");
-const { getSame } = require("./utils/database");
-const { getEncounterlessNode } = require("./utils/database");
-const { getEncounterlessVal } = require("./utils/database");
-const returnNodeFromPrediction = require("./utils/node.factory");
-const database = require("./utils/database");
+const { getNode, getVal, getSame, getEncounterlessNode, getEncounterlessVal } = require("./utils/database");
 
 app.use(express.static(path.join(__dirname, "../public")));
 
@@ -20,11 +16,11 @@ const getMessage = async (msg) => {
   const prediction = await getPrediction(msg);
   const results = [];
   for (const predictionValue of prediction.predictions) {
-    const { databaseAction, wantedNode, returnNode, timeNode, detailNode } = returnNodeFromPrediction(
+    const { databaseAction, wantedNode, returnNode, timeNode, detailNode, entityNode } = returnNodeFromPrediction(
       predictionValue
     );
 
-    console.log(predictionValue, databaseAction, wantedNode, returnNode, timeNode, detailNode);
+    console.log(databaseAction, wantedNode, returnNode, timeNode, detailNode, entityNode);
 
     let data;
     const name = 'DB_personName' in prediction.entities ? prediction.entities.DB_personName[0][0] : '';
@@ -40,8 +36,29 @@ const getMessage = async (msg) => {
         //name = await getName(prediction.entities.DB_personName[0][0]);
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
+        } else {
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
         }
-        results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+
+        break;
+
+      case "getVal":
+        data = await getVal(
+          "datetimeV2" in prediction.entities ? parseDate(prediction.entities.datetimeV2) : null,
+          prediction.entities[entityNode][0][0],
+          wantedNode,
+          returnNode,
+          timeNode,
+          detailNode,
+          entityNode
+        );
+    
+        if (data === "") {
+          results.push("No patient have had encounters with " + returnNode.toLowerCase());
+        } else {
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
+        }
+    
         break;
 
       case "getEncounterlessNode":
@@ -55,26 +72,31 @@ const getMessage = async (msg) => {
 
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
+        } else {
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
         }
 
-        results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
         break;
+    
       case "getEncounterlessVal":
         data = await getEncounterlessVal(
           "datetimeV2" in prediction.entities ? parseDate(prediction.entities.datetimeV2) : null,
-          prediction.entities.DB_drugDescription[0][0],
+          prediction.entities[entityNode][0][0],
           wantedNode,
           returnNode,
           timeNode,
-          detailNode
+          detailNode,
+          entityNode
         );
 
         if (data === "") {
           results.push("No patient have had encounters with " + returnNode.toLowerCase());
+        } else {
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
         }
 
-        results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
         break;
+
       case "getSame":
         data = await getSame(
           prediction.entities.DB_personName[0][0],
@@ -83,10 +105,12 @@ const getMessage = async (msg) => {
 
         if (data === "") {
           results.push("These patient have nothing in common");
+        } else {
+          results.push("The matching data for the patients is:\n" + data);
         }
 
-        results.push("The matching data for the patients is:\n" + data);
         break;
+
       default:
         results.push("Couldn't understand your question.");
         break;
