@@ -1,16 +1,12 @@
-const path = require("path");
 const http = require("http");
-const express = require("express");
 const socketio = require("socket.io");
 
-const app = express();
+const app = require('./app');
 const server = http.createServer(app);
 const io = socketio(server);
 const returnNodeFromPrediction = require('./utils/node.factory');
 const { getPrediction, parseDate } = require("./utils/predict");
 const { getNode, getVal, getSame, getEncounterlessNode, getEncounterlessVal } = require("./utils/database");
-
-app.use(express.static(path.join(__dirname, "../public")));
 
 const getMessage = async (msg) => {
   const prediction = await getPrediction(msg);
@@ -133,5 +129,4 @@ io.on("connection", (socket) => {
 });
 
 const PORT = 3001 || process.env.PORT;
-
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

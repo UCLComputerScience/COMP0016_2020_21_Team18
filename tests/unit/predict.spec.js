@@ -1,4 +1,4 @@
-const { getPrediction } = require("../src/utils/predict");
+const { getPrediction } = require("../../src/utils/predict");
 jest.setTimeout(20000);
 
 describe("Prediction tests", () => {
