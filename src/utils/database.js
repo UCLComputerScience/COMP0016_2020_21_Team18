@@ -64,7 +64,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
             "WHERE "+returnNode+".display IS NOT NULL " +
             dateQuery +
             "RETURN e2," + returnNode,{name});
-
+        
         var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.display)),
             ...new Array(result.records.map(row => row['_fields'][0].properties.period_start)))];
         
