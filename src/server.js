@@ -31,18 +31,18 @@ const getMessage = async (msg) => {
     switch (databaseAction) {
       case "getNode":
         data = await getNode(
-          prediction.entities.DB_personName[0][0],
           "datetimeV2" in prediction.entities ? parseDate(prediction.entities.datetimeV2) : null,
+          prediction.entities.DB_personName[0][0],
           wantedNode,
           returnNode
         );
 
-        name = await getName(prediction.entities.DB_personName[0][0]);
+        //name = await getName(prediction.entities.DB_personName[0][0]);
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         }
 
-        results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+        results.push("The " + returnNode.toLowerCase() + " data for patient " + prediction.entities.DB_personName[0][0] + " is:\n" + data);
         break;
 
       case "getEncounterlessNode":

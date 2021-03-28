@@ -67,7 +67,9 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
         var data = [...new Array(...new Array(result.records.map(row => row['_fields'][1].properties.display)),
             ...new Array(result.records.map(row => row['_fields'][0].properties.period_start)))];
-
+        
+        console.log(data);
+        
         data = data[0].map(function (x, i) {
             return [x, data[1][i]]
         });
