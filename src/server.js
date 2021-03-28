@@ -41,7 +41,6 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         }
-
         results.push("The " + returnNode.toLowerCase() + " data for patient " + prediction.entities.DB_personName[0][0] + " is:\n" + data);
         break;
 

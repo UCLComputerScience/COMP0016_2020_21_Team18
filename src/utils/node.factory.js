@@ -1,6 +1,6 @@
 function returnNodeFromPrediction(prediction) {
     switch(prediction) {
-        case 'getProcedure':
+        case 'getProcedures':
             return {//timenode is for specifying attriubte name time is held in for nodes that don't go through encounter
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
