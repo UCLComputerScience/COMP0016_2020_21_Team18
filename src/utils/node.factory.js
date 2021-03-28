@@ -6,7 +6,8 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
                 "returnNode": "procedure",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         case 'getConditions':
             return {
@@ -14,7 +15,8 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         case 'getImmunizations':
             return {
@@ -22,31 +24,36 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
                 "returnNode": "immunization",
                 "timeNode": ".occuranceDateTime",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
-        case 'getObservation':
+        case 'getObservations':
             return {
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
                 "returnNode": "observation",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
 
-        case 'getPatientImmunization':
+        case 'getPatientImmunizations':
             return {
                 "databaseAction": "getEncounterlessVal",
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
                 "returnNode": "immunization",
                 "timeNode": ".occuranceDateTime",
-                "detailNode": ".display"
+                "detailNode": "vaccineType",
+                "entityNode": "DB_immunizationName"
             }
         case 'getPatientConditions':
             return {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition",
-                "timeNode": ""
+                "timeNode": "",
+                "detailNode": "display",
+                "entityNode": "DB_conditionName"
             }
         case 'getPatientProcedures':
             return {
@@ -54,24 +61,28 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
                 "returnNode": "procedure",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "display",
+                "entityNode": "DB_procedureName"
             }
-        case 'getPatientObservation':
+        case 'getPatientObservations':
             return {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
                 "returnNode": "observation",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": "display",
+                "entityNode": "DB_observationName"
             }
 
-        case 'getCommon'://new
+        case 'getCommon':
             return {
                 "databaseAction": "getSame",
                 "wantedNode": "",
                 "returnNode": "",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         default:
             return {
@@ -79,7 +90,8 @@ function returnNodeFromPrediction(prediction) {
                 "wantedNode": "None",
                 "returnNode": "None",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
     }
 }

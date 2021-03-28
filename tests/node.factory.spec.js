@@ -9,7 +9,8 @@ describe("Node factory spec", () => {
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
                 "returnNode": "procedure",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ],
         [
@@ -19,7 +20,8 @@ describe("Node factory spec", () => {
                 "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ],
         [
@@ -29,17 +31,20 @@ describe("Node factory spec", () => {
                 "wantedNode": "",
                 "returnNode": "",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ],
         [
-            "getPatientObservation",
+            "getPatientObservations",
             {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
                 "returnNode": "observation",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": "display",
+                "entityNode": "DB_observationName"
             }
         ],
         [
@@ -49,7 +54,8 @@ describe("Node factory spec", () => {
                 "wantedNode": "[:has_procedure]-(procedure:Procedure)",
                 "returnNode": "procedure",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "display",
+                "entityNode": "DB_procedureName"
             }
         ],
         [
@@ -58,27 +64,31 @@ describe("Node factory spec", () => {
                 "databaseAction": "getVal",
                 "wantedNode": "[:has_condition]-(condition:Condition)",
                 "returnNode": "condition",
-                "timeNode": ""
+                "timeNode": "",
+                "detailNode": "display",
+                "entityNode": "DB_conditionName"
             }
         ],
         [
-            "getPatientImmunization",
+            "getPatientImmunizations",
             {
                 "databaseAction": "getEncounterlessVal",
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
                 "returnNode": "immunization",
                 "timeNode": ".occuranceDateTime",
-                "detailNode": ".display"
+                "detailNode": "vaccineType",
+                "entityNode": "DB_immunizationName"
             }
         ],
         [
-            "getObservation",
+            "getObservations",
             {
                 "databaseAction": "getNode",
                 "wantedNode": "[:has_observation]-(observation:Observation)",
                 "returnNode": "observation",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ],
         [
@@ -88,7 +98,8 @@ describe("Node factory spec", () => {
                 "wantedNode": "[:has_immunization]-(immunization:Immunization)",
                 "returnNode": "immunization",
                 "timeNode": ".occuranceDateTime",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ],
         [
@@ -98,10 +109,11 @@ describe("Node factory spec", () => {
                 "wantedNode": "None",
                 "returnNode": "None",
                 "timeNode": "",
-                "detailNode": ""
+                "detailNode": "",
+                "entityNode": ""
             }
         ]
-    ])("%i should return correct values", (input, output) => {
+    ])("%s should return correct values", (input, output) => {
         const expectedNode = returnNodeFromPrediction(input);
         expect(expectedNode).toStrictEqual(output);
     })

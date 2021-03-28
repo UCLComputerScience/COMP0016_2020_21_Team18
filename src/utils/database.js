@@ -42,7 +42,6 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
             ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))<date('" + dates['end'] + "')"
             : "";
 
-        console.log(dateQuery)
         const result = await session.run(
             "MATCH (p:Patient{name:$name}) " +
             "MATCH (p)-[:has_encounter]-(e:Encounter) " +
@@ -97,11 +96,11 @@ const getEncounterlessVal = async (dates, code, wantedNode, returnNode, timeForm
         const result = await session.run(
             "MATCH (p:Patient) " +
             "MATCH (p)-"+ wantedNode  +
-            "WHERE "+returnNode+detailNode+" = '" + code + "' " + //.display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
+            "WHERE " + returnNode + "." + detailNode + " = '" + code + "' " + //.display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
             dateQuery +
             "RETURN p," + returnNode,{code});
 
-        const ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
+        const ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))];
         return ret.join(", ")
     } catch (error) {
         console.log(error)
@@ -115,7 +114,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
     const session = driver.session();
 
     const dateQuery = dates !== null 
-        ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))>date('" + dates['end'] + "')"
+        ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))<date('" + dates['end'] + "')"
         : "";
 
     try {
@@ -127,7 +126,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
             "MATCH (e2)-"+wantedNode+" " +
             "WHERE "+returnNode+".display = '" + code + "' " +
             dateQuery +
-            "RETURN p," + returnNode,{code});
+            "RETURN p," + returnNode);
 
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))];
         return ret.join(", ");
