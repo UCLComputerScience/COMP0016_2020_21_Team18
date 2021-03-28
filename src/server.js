@@ -37,7 +37,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         } else {
-          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is: " + data);
         }
 
         break;
@@ -56,7 +56,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("No patient have had encounters with " + returnNode.toLowerCase());
         } else {
-          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: " + data);
         }
     
         break;
@@ -73,7 +73,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         } else {
-          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is: " + data);
         }
 
         break;
@@ -92,7 +92,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("No patient have had encounters with " + returnNode.toLowerCase());
         } else {
-          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: " + data);
         }
 
         break;
@@ -106,7 +106,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("These patient have nothing in common");
         } else {
-          results.push("The matching data for the patients is:\n" + data);
+          results.push("The matching data for the patients is: " + data);
         }
 
         break;
