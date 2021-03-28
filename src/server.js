@@ -8,7 +8,6 @@ const server = http.createServer(app);
 const io = socketio(server);
 const { getPrediction, parseDate } = require("./utils/predict");
 const { getNode } = require("./utils/database");
-const { getName } = require("./utils/database");
 const { getSame } = require("./utils/database");
 const { getEncounterlessNode } = require("./utils/database");
 const { getEncounterlessVal } = require("./utils/database");
