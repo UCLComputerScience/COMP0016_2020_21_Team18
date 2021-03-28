@@ -36,9 +36,9 @@ const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFor
             "MATCH (p)-" + wantedNode  +
             dateQuery +
             "RETURN " + returnNode, { name });
-
-        var ret = [...new Array(result.records.map(row => row['_fields'][0].properties.display))];
-        return ret.join(",\n");
+        
+        var ret = new Set(result.records.map(row => row['_fields'][0].properties.vaccineType));
+        return Array.from(ret).join(",") + "\n";
     } catch (error) {
         return error;
     } finally {

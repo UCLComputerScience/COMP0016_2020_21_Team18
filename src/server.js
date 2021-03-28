@@ -27,7 +27,8 @@ const getMessage = async (msg) => {
 
     console.log(predictionValue, databaseAction, wantedNode, returnNode);
 
-    let data, name;
+    let data;
+    const name = 'DB_personName' in prediction.entities ? prediction.entities.DB_personName[0][0] : '';
     switch (databaseAction) {
       case "getNode":
         data = await getNode(
@@ -41,7 +42,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         }
-        results.push("The " + returnNode.toLowerCase() + " data for patient " + prediction.entities.DB_personName[0][0] + " is:\n" + data);
+        results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
         break;
 
       case "getEncounterlessNode":
@@ -54,7 +55,7 @@ const getMessage = async (msg) => {
         );
 
         if (data === "") {
-          results.push(prediction.entities.DB_personName[0][0] + " has no data related to any " + returnNode.toLowerCase());
+          results.push(name + " has no data related to any " + returnNode.toLowerCase());
         }
 
         results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
