@@ -24,7 +24,7 @@ const getMessage = async (msg) => {
       predictionValue
     );
 
-    console.log(predictionValue, databaseAction, wantedNode, returnNode);
+    console.log(predictionValue, databaseAction, wantedNode, returnNode, timeNode, detailNode);
 
     let data;
     const name = 'DB_personName' in prediction.entities ? prediction.entities.DB_personName[0][0] : '';
