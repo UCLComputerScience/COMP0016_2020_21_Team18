@@ -10,19 +10,6 @@ function compareColumn(a, b) {
     }
 }
 
-const getName = async(name) =>{
-    const session = driver.session();
-    try {
-        const result = await session.run("MATCH (p:Patient{name:$name})return p", {name});
-
-        return [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
-    } catch (error) {
-        return error;
-    } finally {
-        await session.close();
-    }
-}
-
 const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFormat) => {
     const session = driver.session();
 
@@ -40,7 +27,8 @@ const getEncounterlessNode = async (dates, name, wantedNode, returnNode, timeFor
         var ret = new Set(result.records.map(row => row['_fields'][0].properties.vaccineType));
         return Array.from(ret).join(",") + "\n";
     } catch (error) {
-        return error;
+        console.log(error)
+        return "No matches found for this query";
     } finally {
         await session.close()
     }
@@ -53,6 +41,8 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         var dateQuery = dates !== null 
             ? "AND date(left(e2.period_start,10))>date('" + dates['start'] + "') AND date(left(e2.period_start,10))<date('" + dates['end'] + "')"
             : "";
+
+        console.log(dateQuery)
         const result = await session.run(
             "MATCH (p:Patient{name:$name}) " +
             "MATCH (p)-[:has_encounter]-(e:Encounter) " +
@@ -89,7 +79,8 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         }
         return ret;
     } catch (error) {
-        return error;
+        console.log(error)
+        return "No matches found for this query";
     } finally {
         await session.close()
     }
@@ -113,7 +104,8 @@ const getEncounterlessVal = async (dates, code, wantedNode, returnNode, timeForm
         const ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))]
         return ret.join(", ")
     } catch (error) {
-        return error;
+        console.log(error)
+        return "No matches found for this query";
     } finally {
         await session.close()
     }
@@ -140,7 +132,8 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
         var ret = [...new Set(result.records.map(row => row['_fields'][0].properties.name))];
         return ret.join(", ");
     } catch (error) {
-        return error;
+        console.log(error)
+        return "No matches found for this query";
     } finally {
         await session.close()
     }
@@ -189,7 +182,8 @@ const getSame = async (name, otherName) => {
 
         return ret.join(",\n");
     } catch (error) {
-        return error;
+        console.log(error)
+        return "No matches found for this query";
     } finally {
         await session.close()
     }
@@ -198,7 +192,6 @@ const getSame = async (name, otherName) => {
 module.exports = {
     getNode,
     getVal,
-    getName,
     getSame,
     getEncounterlessNode,
     getEncounterlessVal
