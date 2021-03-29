@@ -22,5 +22,7 @@ jobs:
               run: yarn global add cypress
             - name: Run tests
               run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
+            - name: Start server
+              run: npm start &
             - name: Run E2E tests
-              run: npm start & && cd ./tests/e2e && ../../node_modules/.bin/cypress run
+              run: cd ./tests/e2e && ../../node_modules/.bin/cypress run
