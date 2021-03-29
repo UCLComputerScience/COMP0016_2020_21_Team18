@@ -1,14 +1,13 @@
-const moment = require('moment');
+const moment = require("moment");
 
 function formatMessage(username, text) {
-    return {
-        username,
-        text,
-        time: moment().format('h:mm a')
-    }
+  return {
+    username,
+    text,
+    time: moment().format("h:mm a"),
+  };
 }
 
-
-//Join user to chat
+// Join user to chat
 
 module.exports = formatMessage;

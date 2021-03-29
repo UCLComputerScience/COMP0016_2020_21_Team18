@@ -1,25 +1,25 @@
 name: Deploy
 
 on:
-    push:
-        branches: [ master ]
+  push:
+    branches: [master]
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Deploy to Azure
-              uses: appleboy/ssh-action@v0.1.2
-              env:
-                token: ${{ secrets.ACCESS_TOKEN }}
-              with:
-                host: ${{secrets.SSH_HOST }}
-                username: ${{ secrets.SSH_USERNAME }}
-                password: ${{ secrets.SSH_PASSWORD }}
-                envs: token
-                script: |
-                    cd ./COMP0016_2020_21_Team18
-                    pm2 stop deploy.config.js
-                    git pull origin feat/actions
-                    npm install .
-                    pm2 start deploy.config.js
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Azure
+        uses: appleboy/ssh-action@v0.1.2
+        env:
+          token: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          host: ${{secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: token
+          script: |
+            cd ./COMP0016_2020_21_Team18
+            pm2 stop deploy.config.js
+            git pull origin feat/actions
+            npm install .
+            pm2 start deploy.config.js

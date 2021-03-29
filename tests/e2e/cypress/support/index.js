@@ -1,1 +1,1 @@
-require('./sendMessage');
+require("./sendMessage");
