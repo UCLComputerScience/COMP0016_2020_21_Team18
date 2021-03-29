@@ -177,6 +177,7 @@ a {
 
 .chat-main {
     height: 100%;
+    margin-bottom:10vh;
 }
 
 .chat-messages {
