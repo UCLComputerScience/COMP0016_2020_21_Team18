@@ -23,4 +23,4 @@ jobs:
             - name: Run tests
               run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
             - name: Run E2E tests
-              run: cd ./tests/e2e && ../../node_modules/.bin/cypress run
+              run: npm start & && cd ./tests/e2e && ../../node_modules/.bin/cypress run
