@@ -1,4 +1,4 @@
-const returnNodeFromPrediction = require('../src/utils/node.factory');
+const returnNodeFromPrediction = require('../../src/utils/node.factory');
 
 describe("Node factory spec", () => {
     it.each([

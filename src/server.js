@@ -1,16 +1,12 @@
-const path = require("path");
 const http = require("http");
-const express = require("express");
 const socketio = require("socket.io");
 
-const app = express();
+const app = require('./app');
 const server = http.createServer(app);
 const io = socketio(server);
 const returnNodeFromPrediction = require('./utils/node.factory');
 const { getPrediction, parseDate } = require("./utils/predict");
 const { getNode, getVal, getSame, getEncounterlessNode, getEncounterlessVal } = require("./utils/database");
-
-app.use(express.static(path.join(__dirname, "../public")));
 
 const getMessage = async (msg) => {
   const prediction = await getPrediction(msg);
@@ -37,7 +33,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         } else {
-          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is: " + data);
         }
 
         break;
@@ -56,7 +52,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("No patient have had encounters with " + returnNode.toLowerCase());
         } else {
-          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: " + data);
         }
     
         break;
@@ -73,7 +69,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push(name + " has no data related to any " + returnNode.toLowerCase());
         } else {
-          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is:\n" + data);
+          results.push("The " + returnNode.toLowerCase() + " data for patient " + name + " is: " + data);
         }
 
         break;
@@ -92,7 +88,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("No patient have had encounters with " + returnNode.toLowerCase());
         } else {
-          results.push("This patients with this " + returnNode.toLowerCase() + " are: \n" + data);
+          results.push("This patients with this " + returnNode.toLowerCase() + " are: " + data);
         }
 
         break;
@@ -106,7 +102,7 @@ const getMessage = async (msg) => {
         if (data === "") {
           results.push("These patient have nothing in common");
         } else {
-          results.push("The matching data for the patients is:\n" + data);
+          results.push("The matching data for the patients is: " + data);
         }
 
         break;
@@ -133,5 +129,4 @@ io.on("connection", (socket) => {
 });
 
 const PORT = 3001 || process.env.PORT;
-
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
