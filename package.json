@@ -7,7 +7,9 @@
     "start": "node src/server",
     "dev": "nodemon server",
     "test": "jest",
-    "test:coverage": "jest --config ./jest.config.js --coverage --passWithNoTests"
+    "test:coverage": "jest --config ./jest.config.js --coverage --passWithNoTests",
+    "prettier": "./node_modules/.bin/prettier --write .",
+    "lint": "./node_modules/.bin/eslint . --fix-dry-run"
   },
   "repository": {
     "type": "git",
@@ -44,13 +46,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npm run prettier && npm run lint"
     }
-  },
-  "lint-staged": {
-    "./src/*.{js,jsx,ts,tsx}": [
-      "npx prettier --write",
-      "eslint src/*.js --fix-dry-run"
-    ]
   }
 }
