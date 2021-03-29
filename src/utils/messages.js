@@ -5,7 +5,7 @@ const { getPrediction, parseDate, parseNames } = require("./predict");
 const getMessages = async (msg) => {
   const prediction = await getPrediction(msg);
   const results = [];
-  for (const predictionValue of prediction.predictions) {
+  prediction.predictions.forEach(async (predictionValue) => {
     const {
       databaseAction,
       wantedNode,
@@ -14,15 +14,6 @@ const getMessages = async (msg) => {
       detailNode,
       entityNode,
     } = returnNodeFromPrediction(predictionValue);
-
-    console.log(
-      databaseAction,
-      wantedNode,
-      returnNode,
-      timeNode,
-      detailNode,
-      entityNode
-    );
 
     const names = parseNames(prediction.entities);
     const dates = parseDate(prediction.entities);
@@ -40,7 +31,7 @@ const getMessages = async (msg) => {
         prediction.entities
       )
     );
-  }
+  });
 
   return results;
 };

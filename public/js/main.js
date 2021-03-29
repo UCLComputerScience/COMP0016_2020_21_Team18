@@ -10,9 +10,11 @@ const socket = io();
 
 function outputMessage(message) {
   const div = document.createElement("div");
-  message.server
-    ? div.classList.add("bot-message")
-    : div.classList.add("message");
+  if (message.server) {
+    div.classList.add("bot-message");
+  } else {
+    div.classList.add("message");
+  }
   const para = document.createElement("p");
   para.classList.add("text");
   para.innerText = message.message;
@@ -35,7 +37,6 @@ chatForm.addEventListener("submit", (e) => {
 });
 
 socket.on("message", (message) => {
-  console.log(message);
   outputMessage(message);
 
   // this is so that everytime we get a message, we scroll down to the latest meessage

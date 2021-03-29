@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-console */
 
 const neo4j = require("neo4j-driver");
 
@@ -31,9 +32,7 @@ const getEncounterlessNode = async (
 
   try {
     const result = await session.run(
-      `${
-        "MATCH (p:Patient{name:$name}) " + "MATCH (p)-"
-      }${wantedNode}${dateQuery}RETURN ${returnNode}`,
+      `MATCH (p:Patient{name:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
       { name }
     );
 
@@ -127,12 +126,7 @@ const getEncounterlessVal = async (
 
   try {
     const result = await session.run(
-      `${
-        "MATCH (p:Patient) " + "MATCH (p)-"
-      }${wantedNode}WHERE ${returnNode}.${detailNode} = '${code}' ${
-        // .display not for vaccine but vaccineType REPLACE WITH GENERIC IN DEF
-        dateQuery
-      }RETURN p,${returnNode}`,
+      `MATCH (p:Patient) + MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' ${dateQuery} RETURN p,${returnNode}`,
       { code }
     );
 

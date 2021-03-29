@@ -30,9 +30,9 @@ const getPrediction = async (text) => {
 const parseDate = (entities) => {
   if ("datetimeV2" in entities) {
     const datesParsed = entities.datetimeV2.values();
-    for (const date of datesParsed) {
+    datesParsed.forEach((date) => {
       return date.values[0].resolution[0];
-    }
+    });
   }
 
   return null;

@@ -13,7 +13,7 @@ if ("speechSynthesis" in window) {
   recognition.continuous = false;
   recognition.interimResults = false;
 
-  recognition.onresult = function (event) {
+  recognition.onresult = (event) => {
     const current = event.resultIndex;
     const { transcript } = event.results[current][0];
 
