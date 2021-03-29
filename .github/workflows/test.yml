@@ -19,7 +19,7 @@ jobs:
             - name: Install modules
               run: yarn
             - name: Install cypress
-              run: yarn install -g cypress
+              run: yarn global add cypress
             - name: Run tests
               run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
             - name: Run E2E tests
