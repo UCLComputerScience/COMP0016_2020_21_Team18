@@ -259,7 +259,7 @@ it's not included in the html*/
 }
 
 .form-control-search {
-  height: 100%;
+  height: 100% !important;
   width: 87% !important;
   font-size: 200%;
 }
