@@ -10,11 +10,13 @@ const socket = io();
 
 function outputMessage(message) {
   const div = document.createElement("div");
+  
   if (message.server) {
     div.classList.add("bot-message");
   } else {
     div.classList.add("message");
   }
+
   const para = document.createElement("p");
   para.classList.add("text");
   para.innerText = message.message;
@@ -42,3 +44,12 @@ socket.on("message", (message) => {
   // this is so that everytime we get a message, we scroll down to the latest meessage
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("/serviceWorker.js")
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log("service worker not registered", err))
+  })
+}
