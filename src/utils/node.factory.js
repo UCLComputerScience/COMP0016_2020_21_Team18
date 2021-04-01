@@ -65,6 +65,7 @@ function returnNodeFromPrediction(prediction) {
         detailNode: ".address",
         entityNode: "",
       };
+      /*
     case "getObservations":
       return {
         databaseAction: "getNode",
@@ -73,7 +74,7 @@ function returnNodeFromPrediction(prediction) {
         timeNode: "",
         detailNode: "",
         entityNode: "",
-      };
+      };*/
 
     case "getPatientAddresses":
       return {
@@ -129,7 +130,7 @@ function returnNodeFromPrediction(prediction) {
         detailNode: "description",
         entityNode: "DB_procedureName",
       };
-    case "getPatientObservations":
+    /*case "getPatientObservations":
       return {
         databaseAction: "getVal",
         wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
@@ -137,7 +138,7 @@ function returnNodeFromPrediction(prediction) {
         timeNode: "",
         detailNode: "",
         entityNode: "DB_observationName",
-      };
+      };*/
 
     case "getCommon"://
       return {
