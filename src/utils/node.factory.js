@@ -139,7 +139,7 @@ function returnNodeFromPrediction(prediction) {
         entityNode: "DB_observationName",
       };
 
-    case "getCommon":
+    case "getCommon"://
       return {
         databaseAction: "getSame",
         wantedNode: "",

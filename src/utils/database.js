@@ -230,32 +230,25 @@ const getSame = async (name, otherName) => {
         "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
         "where apoc.node.degree.in(e, 'NEXT') = 0   " +
         "match (e)-[:NEXT*0..]->(e2)   " +
-        "optional match (e2)-[:has_observation]->(ob:Observation)   " +
-        "optional match (e2)-[:has_procedure]->(proc:Procedure)   " +
-        "optional match (e2)-[:has_condition]->(c:Condition)   " +
+        "match (e2)-[r]-(s)  "+
+
         "match (p1:Patient { firstName:$otherName} )   " +
         "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
         "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
         "match (ea)-[:NEXT*0..]->(eb)   " +
-        "optional match (eb)-[:has_observation]->(ob1:Observation)   " +
-        "optional match (eb)-[:has_procedure]->(proc1:Procedure)   " +
-        "optional match (eb)-[:has_condition]->(c1:Condition)   " +
-        "return distinct case when ob is not null and ob1 is not null and ob.description = ob1.description then { date:e2.date, details: ob.description}     " +
-        "   else case when proc is not null and proc1 is not null and proc.description = proc1.description then { date:e2.date, details: proc.description}     " +
-        "                   else case when c is not null and c1 is not null and c.description = c1.description then { date:e2.date, details: c.description}     " +
-        "               end   " +
-        "       end   " +
-        "end as Steps ",
+        "match (eb)-[a]-(b)"+
+        "where b.description = s.description"+
+        "return distinct { date:e2.date, details: b.description}" ,
       { name, otherName }
     );
 
     const sResult = await session.run(
       "match (p:Patient { firstName:$name} )   " +
-        "optional match (p)-[:has_immunization]->(im:Immunization)   " +
+        "match (p)-[r]-(s)" +
         "match (p1:Patient { firstName:$otherName} )   " +
-        "optional match (p1)-[:has_immunization]->(im1:Immunization)   " +
-        "return distinct case when im is not null and im1 is not null and ob.description = ob1.description then { date:e2.date, details: im.description}     " +
-        "end as Steps ",
+        "match (p1)-[a]-(b)"+
+        "WHERE s.address = b.address"
+        "return distinct { date:e2.date, details: b.address}     "
       { name, otherName }
     );
 
