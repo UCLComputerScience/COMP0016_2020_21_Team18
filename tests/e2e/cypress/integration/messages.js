@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 describe("Homepage", () => {
   it("successfully loads", () => {
     cy.visit("http://localhost:3001/");
@@ -9,8 +11,8 @@ describe("Sending a message", () => {
 
   before(() => {
     cy.visit("http://localhost:3001/");
-    cy.fixture('messages.json').then(response => {
-        data = response;
+    cy.fixture("messages.json").then((response) => {
+      data = response;
     });
   });
 
@@ -25,19 +27,19 @@ describe("Sending a message", () => {
   });
 });
 
-describe("Searching a message", function () {
-    let data;
+describe("Searching a message", () => {
+  let data;
 
-    before(() => {
-        cy.visit("http://localhost:3001/");
-        cy.fixture('messages.json').then(response => {
-            data = response;
-            cy.sendMessage(data.message);
-        });
+  before(() => {
+    cy.visit("http://localhost:3001/");
+    cy.fixture("messages.json").then((response) => {
+      data = response;
+      cy.sendMessage(data.message);
     });
+  });
 
-    it("can search a message", () => {
-        cy.get("#search").click().type(data.message);
-        cy.get(".message").last().should("contain", data.message);
-    })
-})
+  it("can search a message", () => {
+    cy.get("#search").click().type(data.message);
+    cy.get(".message").last().should("contain", data.message);
+  });
+});

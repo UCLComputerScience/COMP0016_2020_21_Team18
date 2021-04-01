@@ -1,28 +1,28 @@
 name: Test
 
 on:
-    push:
-        branches:
-            - feat/tests
-    pull_request:
-        branches:
-            - master
-            - development
-            - feat/tests
+  push:
+    branches:
+      - feat/tests
+  pull_request:
+    branches:
+      - master
+      - development
+      - feat/tests
 
 jobs:
-    test:
-        name: Jest Annotations & Coverage
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v1
-            - name: Install modules
-              run: yarn
-            - name: Install cypress
-              run: yarn global add cypress
-            - name: Run tests
-              run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
-            - name: Start server
-              run: npm start &
-            - name: Run E2E tests
-              run: cd ./tests/e2e && ../../node_modules/.bin/cypress run
+  test:
+    name: Jest Annotations & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install modules
+        run: yarn
+      - name: Install cypress
+        run: yarn global add cypress
+      - name: Run tests
+        run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
+      - name: Start server
+        run: npm start &
+      - name: Run E2E tests
+        run: cd ./tests/e2e && ../../node_modules/.bin/cypress run

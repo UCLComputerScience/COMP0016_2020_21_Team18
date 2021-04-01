@@ -1,51 +1,38 @@
-const record = $('#record');
-const stop = $('#stop');
-const messageInput = $('#msg');
-const recordWrapper = $('#recordWrapper');
-const stopWrapper = $('#stopWrapper');
+/* eslint-disable no-undef */
 
-if ('speechSynthesis' in window) {
-    const SpeechRecognition = window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-  
-    recognition.onstart = () => { 
-        console.log('Voice recognition started. Try speaking into the microphone.');
-    }
+const record = $("#record");
+const stop = $("#stop");
+const messageInput = $("#msg");
+const recordWrapper = $("#recordWrapper");
+const stopWrapper = $("#stopWrapper");
+let recognition;
 
-    recognition.onspeechend = function() {
-        console.log("ended");
-    }
-      
-    recognition.onerror = function(event) {
-        if(event.error == 'no-speech') {
-            console.log("no speech");
-        };
-    }
-    
-    recognition.onresult = function(event) {
-        const current = event.resultIndex;
-        const transcript = event.results[current][0].transcript;
+if ("speechSynthesis" in window) {
+  const SpeechRecognition = window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
 
-        console.log(transcript);
-      
-        messageInput.val(transcript);
-    }
+  recognition.onresult = (event) => {
+    const current = event.resultIndex;
+    const { transcript } = event.results[current][0];
 
-    record.click(function() {
-        recognition.start();
-        recordWrapper.addClass("invisible");
-        stopWrapper.removeClass("invisible");
-    });
-        
-    stop.click(function() {
-        recognition.stop();
-        recordWrapper.removeClass("invisible");
-        stopWrapper.addClass("invisible");
+    console.log(transcript);
 
-    });
+    messageInput.val(transcript);
+  };
 
+  record.click(() => {
+    recognition.start();
+    recordWrapper.addClass("invisible");
+    stopWrapper.removeClass("invisible");
+  });
+
+  stop.click(() => {
+    recognition.stop();
+    recordWrapper.removeClass("invisible");
+    stopWrapper.addClass("invisible");
+  });
 } else {
-    console.log('Speech recognition not supported 😢');
+  console.log("Speech recognition not supported 😢");
 }
