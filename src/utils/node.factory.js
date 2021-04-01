@@ -14,7 +14,7 @@ function returnNodeFromPrediction(prediction) {
     case "getProcedures":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
         timeNode: "",
         detailNode: "",
@@ -23,44 +23,44 @@ function returnNodeFromPrediction(prediction) {
     case "getConditions":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
         timeNode: "",
         detailNode: "",
         entityNode: "",
       };
-    case "getImmunizations":
+    case "getAddresses":
       return {
         databaseAction: "getEncounterlessNode",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
-        returnNode: "immunization",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
+        returnNode: "address",
         timeNode: ".occuranceDateTime",
-        detailNode: ".vaccineType",
+        detailNode: ".address",
         entityNode: "",
       };
     case "getObservations":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_observation]-(observation:Observation)",
+        wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
         timeNode: "",
         detailNode: "",
         entityNode: "",
       };
 
-    case "getPatientImmunizations":
+    case "getPatientAddresses":
       return {
         databaseAction: "getEncounterlessVal",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
         returnNode: "immunization",
         timeNode: ".occuranceDateTime",
-        detailNode: "vaccineType",
-        entityNode: "DB_immunizationName",
+        detailNode: "address",
+        entityNode: "DB_addressName",
       };
     case "getPatientConditions":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
         timeNode: "",
         detailNode: "display",
@@ -69,7 +69,7 @@ function returnNodeFromPrediction(prediction) {
     case "getPatientProcedures":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
         timeNode: "",
         detailNode: "display",
@@ -78,7 +78,7 @@ function returnNodeFromPrediction(prediction) {
     case "getPatientObservations":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_observation]-(observation:Observation)",
+        wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
         timeNode: "",
         detailNode: "",

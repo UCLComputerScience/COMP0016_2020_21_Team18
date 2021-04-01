@@ -9,8 +9,8 @@
 const neo4j = require("neo4j-driver");
 
 const driver = neo4j.driver(
-  "bolt://182.92.220.170:7687/",
-  neo4j.auth.basic("test", "software")
+  "bolt://51.140.127.105:7474//",
+  neo4j.auth.basic("neo4j", "Ok1gr18cRrXcjhm4byBw")
 );
 
 const compareColumn = (a, b) => {
@@ -48,7 +48,7 @@ const getEncounterlessNode = async (
 
   try {
     const result = await session.run(
-      `MATCH (p:Patient{name:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
+      `MATCH (p:Patient{firstName:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
       { name }
     );
 
@@ -83,19 +83,19 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     const result = await session.run(
       `${
-        "MATCH (p:Patient{name:$name}) " +
-        "MATCH (p)-[:has_encounter]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
-        "MATCH (e)-[:next_encounter*0..]->(e2) " +
+        "MATCH (p:Patient{firstName:$name}) " +
+        "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+        "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+        "MATCH (e)-[:NEXT*0..]->(e2) " +
         "MATCH (e2)-"
       }${wantedNode} ` +
-        `WHERE ${returnNode}.display IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
+        `WHERE ${returnNode}.description IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
       { name }
     );
 
     let data = Array.from(
       new Set([
-        result.records.map((row) => row._fields[1].properties.display),
+        result.records.map((row) => row._fields[1].properties.description),
         result.records.map((row) => row._fields[0].properties.period_start),
       ])
     );
@@ -196,12 +196,12 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
     const result = await session.run(
       `${
         "MATCH (p:Patient) " +
-        "MATCH (p)-[:has_encounter]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
-        "MATCH (e)-[:next_encounter*0..]->(e2) " +
+        "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
+        "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
+        "MATCH (e)-[:NEXT*0..]->(e2) " +
         "MATCH (e2)-"
       }${wantedNode} ` +
-        `WHERE ${returnNode}.display = '${code}' ${dateQuery}RETURN p,${returnNode}`
+        `WHERE ${returnNode}.description = '${code}' ${dateQuery}RETURN p,${returnNode}`
     );
 
     const ret = [
@@ -226,23 +226,23 @@ const getSame = async (name, otherName) => {
   const session = driver.session();
   try {
     const result = await session.run(
-      "match (p:Patient { name:$name} )   " +
-        "match (p)-[:has_encounter]-(e:Encounter)   " +
-        "where apoc.node.degree.in(e, 'next_encounter') = 0   " +
-        "match (e)-[:next_encounter*0..]->(e2)   " +
+      "match (p:Patient { firstName:$name} )   " +
+        "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
+        "where apoc.node.degree.in(e, 'NEXT') = 0   " +
+        "match (e)-[:NEXT*0..]->(e2)   " +
         "optional match (e2)-[:has_observation]->(ob:Observation)   " +
         "optional match (e2)-[:has_procedure]->(proc:Procedure)   " +
         "optional match (e2)-[:has_condition]->(c:Condition)   " +
-        "match (p1:Patient { name:$otherName} )   " +
-        "match (p1)-[:has_encounter]-(ea:Encounter)   " +
-        "where apoc.node.degree.in(ea, 'next_encounter') = 0   " +
-        "match (ea)-[:next_encounter*0..]->(eb)   " +
-        "optional match (e2)-[:has_observation]->(ob1:Observation)   " +
-        "optional match (e2)-[:has_procedure]->(proc1:Procedure)   " +
-        "optional match (e2)-[:has_condition]->(c1:Condition)   " +
-        "return distinct case when ob is not null and ob1 is not null and ob.display = ob1.display then { date:e2.date, details: ob.display}     " +
-        "   else case when proc is not null and proc1 is not null and proc.display = proc1.display then { date:e2.date, details: proc.display}     " +
-        "                   else case when c is not null and c1 is not null and c.display = c1.display then { date:e2.date, details: c.display}     " +
+        "match (p1:Patient { firstName:$otherName} )   " +
+        "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
+        "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
+        "match (ea)-[:NEXT*0..]->(eb)   " +
+        "optional match (eb)-[:has_observation]->(ob1:Observation)   " +
+        "optional match (eb)-[:has_procedure]->(proc1:Procedure)   " +
+        "optional match (eb)-[:has_condition]->(c1:Condition)   " +
+        "return distinct case when ob is not null and ob1 is not null and ob.description = ob1.description then { date:e2.date, details: ob.description}     " +
+        "   else case when proc is not null and proc1 is not null and proc.description = proc1.description then { date:e2.date, details: proc.description}     " +
+        "                   else case when c is not null and c1 is not null and c.description = c1.description then { date:e2.date, details: c.description}     " +
         "               end   " +
         "       end   " +
         "end as Steps ",
@@ -250,11 +250,11 @@ const getSame = async (name, otherName) => {
     );
 
     const sResult = await session.run(
-      "match (p:Patient { name:$name} )   " +
+      "match (p:Patient { firstName:$name} )   " +
         "optional match (p)-[:has_immunization]->(im:Immunization)   " +
-        "match (p1:Patient { name:$otherName} )   " +
+        "match (p1:Patient { firstName:$otherName} )   " +
         "optional match (p1)-[:has_immunization]->(im1:Immunization)   " +
-        "return distinct case when im is not null and im1 is not null and ob.display = ob1.display then { date:e2.date, details: im.display}     " +
+        "return distinct case when im is not null and im1 is not null and ob.description = ob1.description then { date:e2.date, details: im.description}     " +
         "end as Steps ",
       { name, otherName }
     );
