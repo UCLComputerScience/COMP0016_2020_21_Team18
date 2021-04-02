@@ -175,12 +175,8 @@ a {
 }
 
 .chat-main {
-<<<<<<< HEAD
   height: 100%;
-=======
-    height: 100%;
-    margin-bottom:10vh;
->>>>>>> c3dc130... Fixed message cutoff
+  margin-bottom:10vh;
 }
 
 .chat-messages {

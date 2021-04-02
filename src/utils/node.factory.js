@@ -11,10 +11,37 @@
  */
 function returnNodeFromPrediction(prediction) {
   switch (prediction) {
+    case "getDrugs":
+      return {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
+        returnNode: "drug",
+        timeNode: "",
+        detailNode: "",
+        entityNode: "",
+      };
+    case "getAllergies":
+      return {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
+        returnNode: "allergy",
+        timeNode: "",
+        detailNode: "",
+        entityNode: "",
+      };
+    case "getCarePlan":
+      return {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
+        returnNode: "carePlan",
+        timeNode: "",
+        detailNode: "",
+        entityNode: "",
+      };
     case "getProcedures":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
         timeNode: "",
         detailNode: "",
@@ -23,69 +50,97 @@ function returnNodeFromPrediction(prediction) {
     case "getConditions":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
         timeNode: "",
         detailNode: "",
         entityNode: "",
       };
-    case "getImmunizations":
+    case "getAddresses":
       return {
         databaseAction: "getEncounterlessNode",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
-        returnNode: "immunization",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
+        returnNode: "address",
         timeNode: ".occuranceDateTime",
-        detailNode: ".vaccineType",
+        detailNode: ".address",
         entityNode: "",
       };
+      /*
     case "getObservations":
       return {
         databaseAction: "getNode",
-        wantedNode: "[:has_observation]-(observation:Observation)",
+        wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
         timeNode: "",
         detailNode: "",
         entityNode: "",
-      };
+      };*/
 
-    case "getPatientImmunizations":
+    case "getPatientAddresses":
       return {
         databaseAction: "getEncounterlessVal",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
-        returnNode: "immunization",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
+        returnNode: "address",
         timeNode: ".occuranceDateTime",
-        detailNode: "vaccineType",
-        entityNode: "DB_immunizationName",
+        detailNode: "address",
+        entityNode: "DB_addressName",
       };
     case "getPatientConditions":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
         timeNode: "",
-        detailNode: "display",
+        detailNode: "description",
         entityNode: "DB_conditionName",
+      };
+    case "getPatientDrugs":
+      return {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
+        returnNode: "drug",
+        timeNode: "",
+        detailNode: "description",
+        entityNode: "DB_drugName",
+      };
+    case "getPatientAllergies":
+      return {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
+        returnNode: "allergy",
+        timeNode: "",
+        detailNode: "description",
+        entityNode: "DB_allergyName",
+      };
+    case "getPatientCarePlan":
+      return {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
+        returnNode: "careplan",
+        timeNode: "",
+        detailNode: "description",
+        entityNode: "DB_CarePlanName",
       };
     case "getPatientProcedures":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
         timeNode: "",
-        detailNode: "display",
+        detailNode: "description",
         entityNode: "DB_procedureName",
       };
-    case "getPatientObservations":
+    /*case "getPatientObservations":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:has_observation]-(observation:Observation)",
+        wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
         timeNode: "",
         detailNode: "",
         entityNode: "DB_observationName",
-      };
+      };*/
 
-    case "getCommon":
+    case "getCommon"://
       return {
         databaseAction: "getSame",
         wantedNode: "",
