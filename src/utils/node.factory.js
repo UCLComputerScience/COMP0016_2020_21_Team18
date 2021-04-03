@@ -77,6 +77,7 @@ function returnNodeFromPrediction(prediction) {
         detailNode: "address",
         entityNode: "DB_addressName",
       };
+
     case "getPatientConditions":
       return {
         databaseAction: "getVal",
@@ -91,7 +92,7 @@ function returnNodeFromPrediction(prediction) {
         wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
         returnNode: "drug",
         detailNode: "description",
-        entityNode: "DB_drugName",
+        entityNode: "DB_drugDescription",
       };
     case "getPatientAllergies":
       return {
@@ -107,7 +108,7 @@ function returnNodeFromPrediction(prediction) {
         wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
         returnNode: "careplan",
         detailNode: "description",
-        entityNode: "DB_CarePlanName",
+        entityNode: "DB_carePlanName",
       };
     case "getPatientProcedures":
       return {
