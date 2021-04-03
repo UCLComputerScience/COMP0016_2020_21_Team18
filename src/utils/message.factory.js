@@ -17,7 +17,6 @@ const {
  * @param {string} databaseAction Type of query which should be executed
  * @param {string} wantedNode Node that we want to query
  * @param {string} returnNode Node that we want to return
- * @param {string} timeNode Key of node containing value of the event
  * @param {*} detailNode Key of node of which value should be returned
  * @param {*} entityNode LUIS entity name that should be extracted for the query
  * @param {*} [primaryName] First full name extracted from LUIS entites, empty string if none
@@ -29,7 +28,6 @@ const getMessageFromPrediction = async (
   databaseAction,
   wantedNode,
   returnNode,
-  timeNode,
   detailNode,
   entityNode,
   primaryName,
@@ -53,7 +51,6 @@ const getMessageFromPrediction = async (
         entities[entityNode][0][0],
         wantedNode,
         returnNode,
-        timeNode,
         detailNode,
         entityNode
       );
@@ -69,7 +66,6 @@ const getMessageFromPrediction = async (
         primaryName,
         wantedNode,
         returnNode,
-        timeNode,
         detailNode
       );
 
@@ -84,7 +80,6 @@ const getMessageFromPrediction = async (
         entities[entityNode][0][0],
         wantedNode,
         returnNode,
-        timeNode,
         detailNode,
         entityNode
       );

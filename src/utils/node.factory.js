@@ -16,7 +16,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_DRUG]-(drug:Drug)",
         returnNode: "drug",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -25,7 +24,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
         returnNode: "allergy",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -34,7 +32,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
         returnNode: "carePlan",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -43,7 +40,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -52,7 +48,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -61,7 +56,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getEncounterlessNode",
         wantedNode: "[:HAS_ADDRESS]-(address:Address)",
         returnNode: "address",
-        timeNode: ".occuranceDateTime",
         detailNode: ".address",
         entityNode: "",
       };
@@ -71,7 +65,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getNode",
         wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };*/
@@ -81,7 +74,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getEncounterlessVal",
         wantedNode: "[:HAS_ADDRESS]-(address:Address)",
         returnNode: "address",
-        timeNode: ".occuranceDateTime",
         detailNode: "address",
         entityNode: "DB_addressName",
       };
@@ -90,7 +82,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
-        timeNode: "",
         detailNode: "description",
         entityNode: "DB_conditionName",
       };
@@ -99,7 +90,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
         returnNode: "drug",
-        timeNode: "",
         detailNode: "description",
         entityNode: "DB_drugName",
       };
@@ -108,7 +98,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
         returnNode: "allergy",
-        timeNode: "",
         detailNode: "description",
         entityNode: "DB_allergyName",
       };
@@ -117,7 +106,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
         returnNode: "careplan",
-        timeNode: "",
         detailNode: "description",
         entityNode: "DB_CarePlanName",
       };
@@ -126,7 +114,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
-        timeNode: "",
         detailNode: "description",
         entityNode: "DB_procedureName",
       };
@@ -135,17 +122,15 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getVal",
         wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
         returnNode: "observation",
-        timeNode: "",
         detailNode: "",
         entityNode: "DB_observationName",
       };*/
 
-    case "getCommon"://
+    case "getCommon":
       return {
         databaseAction: "getSame",
         wantedNode: "",
         returnNode: "",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
@@ -154,7 +139,6 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "None",
         wantedNode: "None",
         returnNode: "None",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       };
