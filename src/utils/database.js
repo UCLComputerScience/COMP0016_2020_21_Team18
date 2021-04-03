@@ -6,11 +6,11 @@
  * @copyright Great Ormond Street Hospital, 2020
  */
 
-const neo4j = require("neo4j-driver");
+const neo4j = require('neo4j-driver');
 
 const driver = neo4j.driver(
-  "bolt://51.140.127.105:7474//",
-  neo4j.auth.basic("neo4j", "Ok1gr18cRrXcjhm4byBw")
+  'bolt://51.140.127.105:7687/',
+  neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'),
 );
 
 const compareColumn = (a, b) => {
@@ -37,28 +37,27 @@ const getEncounterlessNode = async (
   wantedNode,
   returnNode,
   timeFormat,
-  detailNode
+  detailNode,
 ) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
-      : "";
+  const dateQuery = dates !== null
+    ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
+    : '';
 
   try {
     const result = await session.run(
       `MATCH (p:Patient{firstName:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
-      { name }
+      { name },
     );
 
     const ret = new Set(
-      result.records.map((row) => row._fields[0].properties[detailNode])
+      result.records.map((row) => row._fields[0].properties[detailNode]),
     );
-    return `${Array.from(ret).join(",")}\n`;
+    return `${Array.from(ret).join(',')}\n`;
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -74,30 +73,29 @@ const getEncounterlessNode = async (
  */
 const getNode = async (dates, name, wantedNode, returnNode) => {
   const session = driver.session();
-
+  console.log(name);
   try {
-    const dateQuery =
-      dates !== null
-        ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
-        : "";
+    const dateQuery = dates !== null
+      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
+      : '';
 
     const result = await session.run(
       `${
-        "MATCH (p:Patient{firstName:$name}) " +
-        "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
-        "MATCH (e)-[:NEXT*0..]->(e2) " +
-        "MATCH (e2)-"
-      }${wantedNode} ` +
-        `WHERE ${returnNode}.description IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
-      { name }
+        'MATCH (p:Patient{firstName:$name}) '
+        + 'MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) '
+        + "WHERE apoc.node.degree.in(e, 'NEXT') = 0 "
+        + 'MATCH (e)-[:NEXT*0..]->(e2) '
+        + 'MATCH (e2)-'
+      }${wantedNode} `
+        + `WHERE ${returnNode}.description IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
+      { name },
     );
 
     let data = Array.from(
       new Set([
         result.records.map((row) => row._fields[1].properties.description),
         result.records.map((row) => row._fields[0].properties.date),
-      ])
+      ]),
     );
 
     data = data[0].map((x, i) => [x, data[1][i]]);
@@ -127,7 +125,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
     return ret;
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -149,28 +147,27 @@ const getEncounterlessVal = async (
   wantedNode,
   returnNode,
   timeFormat,
-  detailNode
+  detailNode,
 ) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
-      : "";
+  const dateQuery = dates !== null
+    ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
+    : '';
 
   try {
     const result = await session.run(
       `MATCH (p:Patient) + MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' ${dateQuery} RETURN p,${returnNode}`,
-      { code }
+      { code },
     );
 
     const ret = [
       ...new Set(result.records.map((row) => row._fields[0].properties.name)),
     ];
-    return ret.join(", ");
+    return ret.join(', ');
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -187,30 +184,29 @@ const getEncounterlessVal = async (
 const getVal = async (dates, code, wantedNode, returnNode) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.date,10))<date('${dates.end}')`
-      : "";
+  const dateQuery = dates !== null
+    ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.date,10))<date('${dates.end}')`
+    : '';
 
   try {
     const result = await session.run(
       `${
-        "MATCH (p:Patient) " +
-        "MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'NEXT') = 0 " +
-        "MATCH (e)-[:NEXT*0..]->(e2) " +
-        "MATCH (e2)-"
-      }${wantedNode} ` +
-        `WHERE ${returnNode}.description = '${code}' ${dateQuery}RETURN p,${returnNode}`
+        'MATCH (p:Patient) '
+        + 'MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) '
+        + "WHERE apoc.node.degree.in(e, 'NEXT') = 0 "
+        + 'MATCH (e)-[:NEXT*0..]->(e2) '
+        + 'MATCH (e2)-'
+      }${wantedNode} `
+        + `WHERE ${returnNode}.description = '${code}' ${dateQuery}RETURN p,${returnNode}`,
     );
 
     const ret = [
       ...new Set(result.records.map((row) => row._fields[0].properties.name)),
     ];
-    return ret.join(", ");
+    return ret.join(', ');
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -226,30 +222,30 @@ const getSame = async (name, otherName) => {
   const session = driver.session();
   try {
     const result = await session.run(
-      "match (p:Patient { firstName:$name} )   " +
-        "match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   " +
-        "where apoc.node.degree.in(e, 'NEXT') = 0   " +
-        "match (e)-[:NEXT*0..]->(e2)   " +
-        "match (e2)-[r]-(s)  "+
+      'match (p:Patient { firstName:$name} )   '
+        + 'match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   '
+        + "where apoc.node.degree.in(e, 'NEXT') = 0   "
+        + 'match (e)-[:NEXT*0..]->(e2)   '
+        + 'match (e2)-[r]-(s)  '
 
-        "match (p1:Patient { firstName:$otherName} )   " +
-        "match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   " +
-        "where apoc.node.degree.in(ea, 'NEXT') = 0   " +
-        "match (ea)-[:NEXT*0..]->(eb)   " +
-        "match (eb)-[a]-(b)"+
-        "where b.description = s.description"+
-        "return distinct { date:e2.date, details: b.description}" ,
-      { name, otherName }
+        + 'match (p1:Patient { firstName:$otherName} )   '
+        + 'match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   '
+        + "where apoc.node.degree.in(ea, 'NEXT') = 0   "
+        + 'match (ea)-[:NEXT*0..]->(eb)   '
+        + 'match (eb)-[a]-(b)'
+        + 'where b.description = s.description'
+        + 'return distinct { date:e2.date, details: b.description}',
+      { name, otherName },
     );
 
     const sResult = await session.run(
-      "match (p:Patient { firstName:$name} )   " +
-        "match (p)-[r]-(s)" +
-        "match (p1:Patient { firstName:$otherName} )   " +
-        "match (p1)-[a]-(b)"+
-        "WHERE s.address = b.address"+
-        "return distinct { date:e2.date, details: b.address}",
-      { name, otherName }
+      'match (p:Patient { firstName:$name} )   '
+        + 'match (p)-[r]-(s)'
+        + 'match (p1:Patient { firstName:$otherName} )   '
+        + 'match (p1)-[a]-(b)'
+        + 'WHERE s.address = b.address'
+        + 'return distinct { date:e2.date, details: b.address}',
+      { name, otherName },
     );
 
     let ret = [
@@ -259,10 +255,10 @@ const getSame = async (name, otherName) => {
     ret = ret.filter((row) => row !== null);
     ret = [...new Set(ret.map((row) => row.details))];
 
-    return ret.join(",\n");
+    return ret.join(',\n');
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }

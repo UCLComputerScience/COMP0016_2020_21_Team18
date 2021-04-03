@@ -9,7 +9,7 @@
     "test": "jest",
     "test:coverage": "jest --config ./jest.config.js --coverage --passWithNoTests",
     "prettier": "./node_modules/.bin/prettier --write .",
-    "lint": "./node_modules/.bin/eslint . --fix-dry-run"
+    "lint": "./node_modules/.bin/eslint ./src --fix-dry-run"
   },
   "repository": {
     "type": "git",

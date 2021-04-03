@@ -33,11 +33,12 @@ const getMessageFromPrediction = async (
   primaryName,
   secondaryName,
   dates,
-  entities
+  entities,
 ) => {
   let data;
   switch (databaseAction) {
     case "getNode":
+      console.log(primaryName);
       data = await getNode(dates, primaryName, wantedNode, returnNode);
 
       if (data === "") {
