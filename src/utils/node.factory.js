@@ -89,7 +89,7 @@ function returnNodeFromPrediction(prediction) {
     case "getPatientDrugs":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
         returnNode: "drug",
         detailNode: "description",
         entityNode: "DB_drugDescription",

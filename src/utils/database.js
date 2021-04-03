@@ -199,9 +199,9 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
       }${wantedNode} `
         + `WHERE ${returnNode}.description = '${code}' ${dateQuery}RETURN p,${returnNode}`,
     );
-
+    console.log(result)
     const ret = [
-      ...new Set(result.records.map((row) => row._fields[0].properties.name)),
+      ...new Set(result.records.map((row) => row._fields[0].properties.firstName)),
     ];
     return ret.join(', ');
   } catch (error) {
@@ -232,19 +232,19 @@ const getSame = async (name, otherName) => {
         + 'match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   '
         + "where apoc.node.degree.in(ea, 'NEXT') = 0   "
         + 'match (ea)-[:NEXT*0..]->(eb)   '
-        + 'match (eb)-[a]-(b)'
-        + 'where b.description = s.description'
-        + 'return distinct { date:e2.date, details: b.description}',
+        + 'match (eb)-[a]-(b) '
+        + 'where b.description = s.description '
+        + 'return distinct { date:e2.date, details: b.description} ',
       { name, otherName },
     );
 
     const sResult = await session.run(
       'match (p:Patient { firstName:$name} )   '
-        + 'match (p)-[r]-(s)'
+        + 'match (p)-[r]-(s)  '
         + 'match (p1:Patient { firstName:$otherName} )   '
-        + 'match (p1)-[a]-(b)'
-        + 'WHERE s.address = b.address'
-        + 'return distinct { date:e2.date, details: b.address}',
+        + 'match (p1)-[a]-(b)  '
+        + 'WHERE s.address = b.address  '
+        + 'return distinct { det:p.firstName, details: b.address}',
       { name, otherName },
     );
 
