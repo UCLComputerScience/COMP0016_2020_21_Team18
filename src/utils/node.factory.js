@@ -11,6 +11,7 @@
  */
 function returnNodeFromPrediction(prediction) {
   switch (prediction) {
+
     case "getDrugs":
       return {
         databaseAction: "getNode",

@@ -150,20 +150,21 @@ const getEncounterlessVal = async (
   detailNode,
 ) => {
   const session = driver.session();
-
+  /*
   const dateQuery = dates !== null
     ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
-    : '';
+    : '';*/
 
   try {
     const result = await session.run(
-      `MATCH (p:Patient) + MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' ${dateQuery} RETURN p,${returnNode}`,
+      `MATCH (p:Patient) MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' RETURN p,${returnNode}`,
       { code },
     );
 
     const ret = [
-      ...new Set(result.records.map((row) => row._fields[0].properties.name)),
+      ...new Set(result.records.map((row) => row._fields[0].properties.firstName)),
     ];
+
     return ret.join(', ');
   } catch (error) {
     console.log(error);
