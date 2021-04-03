@@ -43,7 +43,7 @@ const getEncounterlessNode = async (
 
   const dateQuery =
     dates !== null
-      ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
+      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
       : "";
 
   try {
@@ -78,7 +78,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
   try {
     const dateQuery =
       dates !== null
-        ? `AND date(left(e2.period_start,10))>date('${dates.start}') AND date(left(e2.period_start,10))<date('${dates.end}')`
+        ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
         : "";
 
     const result = await session.run(
@@ -96,7 +96,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
     let data = Array.from(
       new Set([
         result.records.map((row) => row._fields[1].properties.description),
-        result.records.map((row) => row._fields[0].properties.period_start),
+        result.records.map((row) => row._fields[0].properties.date),
       ])
     );
 
@@ -189,7 +189,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
 
   const dateQuery =
     dates !== null
-      ? `AND date(left(e2.period_start,10))>date('${dates.start}') AND date(left(e2.period_start,10))<date('${dates.end}')`
+      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.date,10))<date('${dates.end}')`
       : "";
 
   try {

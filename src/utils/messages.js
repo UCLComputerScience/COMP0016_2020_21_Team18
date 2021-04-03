@@ -21,7 +21,6 @@ const getMessages = async (msg) => {
       databaseAction,
       wantedNode,
       returnNode,
-      timeNode,
       detailNode,
       entityNode,
     } = returnNodeFromPrediction(predictionValue);
@@ -33,7 +32,6 @@ const getMessages = async (msg) => {
         databaseAction,
         wantedNode,
         returnNode,
-        timeNode,
         detailNode,
         entityNode,
         names.length > 0 ? names[0] : "",
