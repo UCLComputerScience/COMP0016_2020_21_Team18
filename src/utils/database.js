@@ -238,13 +238,14 @@ const getSame = async (name, otherName, detailNode) => {
         + 'return distinct { date:e2.date, details: b.description} ',
       { name, otherName },
     );
-
-    const sResult = await session.run(
+    //console.log(detailNode)
+    console.log(name)
+    const sResult = await session.run(//change this to general case
       'match (p:Patient { firstName:$name} )   '
         + 'match (p)-[r]-(s)  '
         + 'match (p1:Patient { firstName:$otherName} )   '
         + 'match (p1)-[a]-(b)  '
-        + 'WHERE s.' + detailNode + '= b.'+ detailNode
+        + 'WHERE s.'+detailNode+' = b.'+detailNode
         + ' return distinct { det:p.firstName, details: b.'+detailNode +'}',
       { name, otherName},
     );
