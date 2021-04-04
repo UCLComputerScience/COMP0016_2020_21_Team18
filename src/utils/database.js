@@ -47,12 +47,12 @@ const getEncounterlessNode = async (
 
   try {
     const result = await session.run(
-      `MATCH (p:Patient{firstName:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
+      `MATCH (p:Patient{firstName:$name}) MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
       { name },
     );
-
     const ret = new Set(
-      result.records.map((row) => row._fields[0].properties[detailNode]),
+        //(row) => row._fields[0].properties
+      result.records.map( (row) => row._fields[0]),
     );
     return `${Array.from(ret).join(',')}\n`;
   } catch (error) {
@@ -160,7 +160,7 @@ const getEncounterlessVal = async (
       `MATCH (p:Patient) MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' RETURN p,${returnNode}`,
       { code },
     );
-
+    console.log(result)
     const ret = [
       ...new Set(result.records.map((row) => row._fields[0].properties.firstName)),
     ];

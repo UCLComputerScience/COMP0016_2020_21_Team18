@@ -52,11 +52,11 @@ function returnNodeFromPrediction(prediction) {
         detailNode: "",
         entityNode: "",
       };
-    case "getAddresses":
+    case "getAddress":
       return {
         databaseAction: "getEncounterlessNode",
         wantedNode: "[:HAS_ADDRESS]-(address:Address)",
-        returnNode: "address",
+        returnNode: "address.address",
         detailNode: ".address",
         entityNode: "",
       };

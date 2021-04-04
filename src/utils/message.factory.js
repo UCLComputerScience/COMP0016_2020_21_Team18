@@ -81,8 +81,8 @@ const getMessageFromPrediction = async (
         entities[entityNode][0][0],
         wantedNode,
         returnNode,
-        detailNode,
-        entityNode
+        entityNode,
+        detailNode
       );
 
       if (data === "") {
