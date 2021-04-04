@@ -219,7 +219,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
  * @param {string} otherName Another name extracted from LUIS entities ("DB_personName" key)
  * @returns {string} String containing list of similarities between two patients, "No matches found for this query" if none found.
  */
-const getSame = async (name, otherName) => {
+const getSame = async (name, otherName, detailNode) => {
   const session = driver.session();
   try {
     const result = await session.run(
@@ -244,9 +244,9 @@ const getSame = async (name, otherName) => {
         + 'match (p)-[r]-(s)  '
         + 'match (p1:Patient { firstName:$otherName} )   '
         + 'match (p1)-[a]-(b)  '
-        + 'WHERE s.address = b.address  '
-        + 'return distinct { det:p.firstName, details: b.address}',
-      { name, otherName },
+        + 'WHERE s.' + detailNode + '= b.'+ detailNode
+        + ' return distinct { det:p.firstName, details: b.'+detailNode +'}',
+      { name, otherName},
     );
 
     let ret = [

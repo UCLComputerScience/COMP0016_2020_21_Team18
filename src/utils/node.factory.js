@@ -133,7 +133,7 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getSame",
         wantedNode: "",
         returnNode: "",
-        detailNode: "",
+        detailNode: "address",
         entityNode: "",
       };
     default:
