@@ -14,6 +14,7 @@ if ("speechSynthesis" in window) {
   recognition.interimResults = false;
 
   recognition.onresult = (event) => {
+    console.log("test");
     const current = event.resultIndex;
     const { transcript } = event.results[current][0];
 
@@ -24,12 +25,14 @@ if ("speechSynthesis" in window) {
 
   record.click(() => {
     recognition.start();
+    console.log("start test");
     recordWrapper.addClass("invisible");
     stopWrapper.removeClass("invisible");
   });
 
   stop.click(() => {
     recognition.stop();
+    console.log("stop test");
     recordWrapper.removeClass("invisible");
     stopWrapper.addClass("invisible");
   });
