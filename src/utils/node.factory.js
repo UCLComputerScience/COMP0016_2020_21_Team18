@@ -59,16 +59,6 @@ function returnNodeFromPrediction(prediction) {
         detailNode: ".address",
         entityNode: "",
       };
-      /*
-    case "getObservations":
-      return {
-        databaseAction: "getNode",
-        wantedNode: "[:HAS_OBSERVATION]-(observation:Observation)",
-        returnNode: "observation",
-        detailNode: "",
-        entityNode: "",
-      };*/
-
     case "getPatientAddresses":
       return {
         databaseAction: "getEncounterlessVal",

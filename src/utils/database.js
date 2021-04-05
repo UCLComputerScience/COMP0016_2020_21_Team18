@@ -27,7 +27,6 @@ const compareColumn = (a, b) => {
  * @param {string} name First name extracted from LUIS entity (DB_personName)
  * @param {string} wantedNode Node that we want to query
  * @param {string} returnNode Node that we want to return
- * @param {string} timeFormat Key of node that contains date of event
  * @param {string} detailNode Key of node that contains value we want to return
  * @returns {string} String containing list of descriptions of returned elements separated by commas, or "No matches found for this query" if none found
  */
@@ -36,7 +35,6 @@ const getEncounterlessNode = async (
   name,
   wantedNode,
   returnNode,
-  timeFormat,
   detailNode,
 ) => {
   const session = driver.session();
@@ -56,7 +54,6 @@ const getEncounterlessNode = async (
     );
     return `${Array.from(ret).join(',')}\n`;
   } catch (error) {
-    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();
@@ -124,7 +121,6 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     return ret;
   } catch (error) {
-    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();
@@ -137,7 +133,6 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
  * @param {string} code Various codes obtained from LUIS entities
  * @param {string} wantedNode Node containing value that we want to query
  * @param {string} returnNode Node containing value that we want to return
- * @param {string} timeFormat Key of node that contains date of event
  * @param {string} detailNode Key of node that contains value we want to return
  * @returns {string} Returns list of wanted elements separated by commas, or "No matches found for this query" if none found
  */
@@ -146,7 +141,6 @@ const getEncounterlessVal = async (
   code,
   wantedNode,
   returnNode,
-  timeFormat,
   detailNode,
 ) => {
   const session = driver.session();
@@ -166,7 +160,6 @@ const getEncounterlessVal = async (
     ];
     return ret.join(', ');
   } catch (error) {
-    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();
@@ -205,7 +198,6 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
     ];
     return ret.join(', ');
   } catch (error) {
-    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();
@@ -257,7 +249,6 @@ const getSame = async (name, otherName) => {
 
     return ret.join(',\n');
   } catch (error) {
-    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();

@@ -38,7 +38,6 @@ const getMessageFromPrediction = async (
   let data;
   switch (databaseAction) {
     case "getNode":
-      console.log(primaryName);
       data = await getNode(dates, primaryName, wantedNode, returnNode);
 
       if (data === "") {
@@ -67,7 +66,7 @@ const getMessageFromPrediction = async (
         primaryName,
         wantedNode,
         returnNode,
-        detailNode
+        detailNode,
       );
 
       if (data === "") {
@@ -82,7 +81,7 @@ const getMessageFromPrediction = async (
         wantedNode,
         returnNode,
         detailNode,
-        entityNode
+        entityNode,
       );
 
       if (data === "") {
