@@ -104,7 +104,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     const unique = [];
     const uniqueDates = [];
-    const ret = data.map((row) => {
+    let ret = data.map((row) => {
       const temp = String(row[1]);
       const noLetter = `${temp.substring(0, 10)} | ${temp.substring(11, 19)}`; // date formatting
 
@@ -121,7 +121,8 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
       return null;
     });
-
+    ret = ret.filter((row) => row !== null);
+    //ret = [...new Set(ret.map((row) => row.details))];
     return ret;
   } catch (error) {
     console.log(error);
