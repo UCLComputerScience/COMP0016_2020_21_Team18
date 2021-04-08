@@ -39,10 +39,13 @@ const getMessageFromPrediction = async (
   switch (databaseAction) {
     case "getNode":
       data = await getNode(dates, primaryName, wantedNode, returnNode);
+      console.log(data);
+
 
       if (data === "") {
         return `${primaryName} has no data related to any ${returnNode.toLowerCase()}`;
       }
+
       return `The ${returnNode.toLowerCase()} data for patient ${primaryName} is: ${data}`;
 
     case "getVal":

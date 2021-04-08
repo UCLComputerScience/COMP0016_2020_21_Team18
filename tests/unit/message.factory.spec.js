@@ -17,15 +17,15 @@ const driver = neo4j.driver(
 
 describe("Message factory spec", () => {
   it.each([
-    ["getNode", sinon.spy(getNode)],
+    ["getNode", sinon.spy(getNode), ""],
     ["getVal", sinon.spy(getVal)],
     ["getEncounterlessNode", sinon.spy(getEncounterlessNode)],
     ["getEncounterlessVal", sinon.spy(getEncounterlessVal)],
     ["getSame", sinon.spy(getSame)],
-  ])("%s should call correct function", async (query, spy, done) => {
+  ])("%s should call correct function and return correct result", async (query, spy, done) => {
     const session = sinon.mock(driver.session);
     try {
-      await getMessageFromPrediction(
+      const message = await getMessageFromPrediction(
         query,
         null,
         null,
@@ -37,6 +37,7 @@ describe("Message factory spec", () => {
         null,
         null
       );
+      console.log(message);
     } catch (e) {}
     
     expect(spy.calledOnce);

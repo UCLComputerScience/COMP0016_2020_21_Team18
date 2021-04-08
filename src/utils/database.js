@@ -9,8 +9,8 @@
 const neo4j = require('neo4j-driver');
 
 const driver = neo4j.driver(
-  'bolt://51.140.127.105:7687/',
-  neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'),
+  process.env.NEO4J_HOST,
+  neo4j.auth.basic(process.env.NEO4J_USERNAME, process.env.NEO4J_PASSWORD),
 );
 
 const compareColumn = (a, b) => {
@@ -52,6 +52,7 @@ const getEncounterlessNode = async (
     const ret = new Set(
       result.records.map((row) => row._fields[0].properties[detailNode]),
     );
+
     return `${Array.from(ret).join(',')}\n`;
   } catch (error) {
     return 'No matches found for this query';
@@ -116,10 +117,10 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         return `\n${row[0]}:\n${noLetter}`;
       }
 
-      return null;
+      return '';
     });
 
-    return ret;
+    return ret || '';
   } catch (error) {
     return 'No matches found for this query';
   } finally {

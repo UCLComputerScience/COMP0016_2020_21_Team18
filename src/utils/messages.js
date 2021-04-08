@@ -23,7 +23,6 @@ const getMessages = async (msg) => {
       databaseAction,
       wantedNode,
       returnNode,
-      timeNode,
       detailNode,
       entityNode,
     } = returnNodeFromPrediction(predictionValue);
@@ -33,6 +32,7 @@ const getMessages = async (msg) => {
     const names = parseNames(prediction.entities);
 
     const dates = parseDate(prediction.entities);
+    console.log(dates);
     results.push(
       await getMessageFromPrediction(
         databaseAction,

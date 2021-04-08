@@ -34,8 +34,30 @@ describe("Parsing tests", () => {
     });
 
     test("returns date", async () => {
-      // fix me pls
-      expect(true).toStrictEqual(true);
+      const dates = parseDate(
+        { 
+          "datetimeV2": 
+          { 
+            values: () => (
+              [{
+                values: [
+                  {
+                    resolution: [{
+                      "start": "06.04.2021",
+                      "end": "07.04.2021"
+                    }]
+                  }
+                ]
+              }]
+            )
+          }
+        }
+      );
+
+      expect(dates).toStrictEqual({
+        "start": "06.04.2021",
+        "end": "07.04.2021"
+      });
     });
   });
 

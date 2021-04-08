@@ -23,6 +23,7 @@
   "homepage": "https://github.com/alexhein189/chatbot_frontend_comp0016#readme",
   "dependencies": {
     "axios": "^0.21.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "neo4j-driver": "^4.2.1",
