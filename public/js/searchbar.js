@@ -1,29 +1,20 @@
 /* eslint-disable no-undef */
 
-$(document).ready(() => {
-  const searchBar = $("#search");
-  const searchForm = $("#searchForm");
-  searchBar.on("input", () => {
+$(document).ready(function () {
+  const searchBar = $('#search');
+  const searchForm = $('#searchForm');
+  searchBar.on('input', function () {
     const searchBarText = searchBar.val().toLowerCase();
-    console.log(searchBarText);
-    $(".message").each(() => {
-      console.log($(this).text());
+    $('.text').each(function (index) {
       if (!$(this).text().toLowerCase().includes(searchBarText)) {
-        $(this).addClass("invisible");
+        $(this).parent().addClass('invisible');
       } else {
-        $(this).removeClass("invisible");
-      }
-    });
-    $(".bot-message").each(() => {
-      if (!$(this).text().toLowerCase().includes(searchBarText)) {
-        $(this).addClass("invisible");
-      } else {
-        $(this).removeClass("invisible");
+        $(this).parent().removeClass('invisible');
       }
     });
   });
 
-  searchForm.submit((event) => {
+  searchForm.submit(function(event) {
     event.preventDefault();
   });
 });
