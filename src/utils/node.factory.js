@@ -11,6 +11,7 @@
  */
 function returnNodeFromPrediction(prediction) {
   switch (prediction) {
+
     case "getDrugs":
       return {
         databaseAction: "getNode",
@@ -51,11 +52,11 @@ function returnNodeFromPrediction(prediction) {
         detailNode: "",
         entityNode: "",
       };
-    case "getAddresses":
+    case "getAddress":
       return {
         databaseAction: "getEncounterlessNode",
         wantedNode: "[:HAS_ADDRESS]-(address:Address)",
-        returnNode: "address",
+        returnNode: "address.address",
         detailNode: ".address",
         entityNode: "",
       };
@@ -79,7 +80,7 @@ function returnNodeFromPrediction(prediction) {
     case "getPatientDrugs":
       return {
         databaseAction: "getVal",
-        wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
         returnNode: "drug",
         detailNode: "description",
         entityNode: "DB_drugDescription",
@@ -122,7 +123,7 @@ function returnNodeFromPrediction(prediction) {
         databaseAction: "getSame",
         wantedNode: "",
         returnNode: "",
-        detailNode: "",
+        detailNode: "address",
         entityNode: "",
       };
     default:

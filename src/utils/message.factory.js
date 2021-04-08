@@ -83,8 +83,8 @@ const getMessageFromPrediction = async (
         entities[entityNode][0][0],
         wantedNode,
         returnNode,
-        detailNode,
         entityNode,
+        detailNode,
       );
 
       if (data === "") {
@@ -93,7 +93,7 @@ const getMessageFromPrediction = async (
       return `This patients with this ${returnNode.toLowerCase()} are: ${data}`;
 
     case "getSame":
-      data = await getSame(primaryName, secondaryName);
+      data = await getSame(primaryName, secondaryName, detailNode);
 
       if (data === "") {
         return "These patient have nothing in common";

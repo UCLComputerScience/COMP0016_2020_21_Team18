@@ -19,7 +19,7 @@ function outputMessage(message) {
 
   const para = document.createElement("p");
   para.classList.add("text");
-  para.innerText = message.message;
+  para.innerText = message.message.replace(',(,)+', ',');
   div.appendChild(para);
   document.querySelector(".chat-messages").appendChild(div);
 }
