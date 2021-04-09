@@ -11,7 +11,7 @@ Backend is developed using Node.JS, with Express framework handling the API side
 Frontend is developed using HTML/CSS/JS and statically rendered using SSR.
 
 ### Launching the project
-To launch the project either run `npm start` in the root directory, or use Dockerfile provided.
+To launch the project fill out the .example.env file and rename it to .env, run `npm start` in the root directory, or use Dockerfile provided using command `docker build . -t grace && docker run --env-file=.env grace`.
 
 ### Code style
 To maintain the quality of the code `ESLint` and `Prettier` are used as linter/formatters. To run them use `npm run lint`.

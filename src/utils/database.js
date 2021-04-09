@@ -119,8 +119,9 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
       return '';
     });
+
     ret = ret.filter((row) => row !== null);
-    //ret = [...new Set(ret.map((row) => row.details))];
+
     return ret;
   } catch (error) {
     return 'No matches found for this query';
@@ -146,10 +147,6 @@ const getEncounterlessVal = async (
   detailNode,
 ) => {
   const session = driver.session();
-  /*
-  const dateQuery = dates !== null
-    ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
-    : '';*/
 
   try {
     const result = await session.run(
@@ -232,8 +229,7 @@ const getSame = async (name, otherName, detailNode) => {
         + 'return distinct { date:e2.date, details: b.description} ',
       { name, otherName },
     );
-    //console.log(detailNode)
-    console.log(name)
+
     const sResult = await session.run(//change this to general case
       'match (p:Patient { firstName:$name} )   '
         + 'match (p)-[r]-(s)  '
@@ -241,14 +237,14 @@ const getSame = async (name, otherName, detailNode) => {
         + 'match (p1)-[a]-(b)  '
         + 'WHERE s.'+detailNode+' = b.'+detailNode
         + ' return distinct { det:p.firstName, details: b.'+detailNode +'}',
-      { name, otherName},
+      { name, otherName },
     );
 
     let ret = [
       ...new Set(result.records.map((row) => row._fields[0])),
       ...new Set(sResult.records.map((row) => row._fields[0])),
     ];
-    
+
     ret = ret.filter((row) => row !== null);
     ret = [...new Set(ret.map((row) => row.details))];
 

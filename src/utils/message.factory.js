@@ -10,10 +10,10 @@ const {
   getSame,
   getEncounterlessNode,
   getEncounterlessVal,
-} = require("./database");
+} = require('./database');
 
 /**
- * 
+ *
  * @param {string} databaseAction Type of query which should be executed
  * @param {string} wantedNode Node that we want to query
  * @param {string} returnNode Node that we want to return
@@ -37,18 +37,17 @@ const getMessageFromPrediction = async (
 ) => {
   let data;
   switch (databaseAction) {
-    case "getNode":
+    case 'getNode':
       data = await getNode(dates, primaryName, wantedNode, returnNode);
       console.log(data);
 
-
-      if (data === "") {
+      if (data === '') {
         return `${primaryName} has no data related to any ${returnNode.toLowerCase()}`;
       }
 
       return `The ${returnNode.toLowerCase()} data for patient ${primaryName} is: ${data}`;
 
-    case "getVal":
+    case 'getVal':
       data = await getVal(
         dates,
         entities[entityNode][0][0],
@@ -58,12 +57,12 @@ const getMessageFromPrediction = async (
         entityNode,
       );
 
-      if (data === "") {
+      if (data === '') {
         return `No patient have had encounters with ${returnNode.toLowerCase()}`;
       }
       return `This patients with this ${returnNode.toLowerCase()} are: ${data}`;
 
-    case "getEncounterlessNode":
+    case 'getEncounterlessNode':
       data = await getEncounterlessNode(
         dates,
         primaryName,
@@ -72,12 +71,12 @@ const getMessageFromPrediction = async (
         detailNode,
       );
 
-      if (data === "") {
+      if (data === '') {
         return `${primaryName} has no data related to any ${returnNode.toLowerCase()}`;
       }
       return `The ${returnNode.toLowerCase()} data for patient ${primaryName} is: ${data}`;
 
-    case "getEncounterlessVal":
+    case 'getEncounterlessVal':
       data = await getEncounterlessVal(
         dates,
         entities[entityNode][0][0],
@@ -87,16 +86,16 @@ const getMessageFromPrediction = async (
         detailNode,
       );
 
-      if (data === "") {
+      if (data === '') {
         return `No patient have had encounters with ${returnNode.toLowerCase()}`;
       }
       return `This patients with this ${returnNode.toLowerCase()} are: ${data}`;
 
-    case "getSame":
+    case 'getSame':
       data = await getSame(primaryName, secondaryName, detailNode);
 
-      if (data === "") {
-        return "These patient have nothing in common";
+      if (data === '') {
+        return 'These patient have nothing in common';
       }
       return `The matching data for the patients is: ${data}`;
 
