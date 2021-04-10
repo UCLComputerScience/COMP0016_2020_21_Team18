@@ -54,11 +54,11 @@ describe("Node factory spec", () => {
       },
     ],
     [
-      "getAddresses",
+      "getAddress",
       {
         databaseAction: "getEncounterlessNode",
         wantedNode: "[:HAS_ADDRESS]-(address:Address)",
-        returnNode: "address",
+        returnNode: "address.address",
         detailNode: ".address",
         entityNode: "",
       }
@@ -77,7 +77,7 @@ describe("Node factory spec", () => {
       "getPatientDrugs",
       {
         databaseAction: "getVal",
-        wantedNode: "[:HAS_DRUG]-(drug:Drugs)",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
         returnNode: "drug",
         detailNode: "description",
         entityNode: "DB_drugDescription",
@@ -109,7 +109,7 @@ describe("Node factory spec", () => {
         databaseAction: "getSame",
         wantedNode: "",
         returnNode: "",
-        detailNode: "",
+        detailNode: "address",
         entityNode: "",
       },
     ],

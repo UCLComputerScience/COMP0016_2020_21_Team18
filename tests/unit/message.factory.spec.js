@@ -17,7 +17,7 @@ const driver = neo4j.driver(
 
 describe("Message factory spec", () => {
   it.each([
-    ["getNode", sinon.spy(getNode), ""],
+    ["getNode", sinon.spy(getNode)],
     ["getVal", sinon.spy(getVal)],
     ["getEncounterlessNode", sinon.spy(getEncounterlessNode)],
     ["getEncounterlessVal", sinon.spy(getEncounterlessVal)],
