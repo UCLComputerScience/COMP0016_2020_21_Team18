@@ -28,9 +28,8 @@ const getPrediction = async (text) => {
   const { data } = response;
 
   const multiplePredictions = Object.entries(data.prediction.intents)
-    .filter((prediction) => prediction[1].score > data.prediction.intents['None'].score)
+    .filter((prediction) => (prediction[1].score > data.prediction.intents['None'].score && prediction[1].score > 0.1))
     .map((prediction) => prediction[0]);
-  console.log(data.prediction.intents);
 
   return {
     predictions: multiplePredictions,
