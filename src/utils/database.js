@@ -40,7 +40,7 @@ const getEncounterlessNode = async (
   const session = driver.session();
 
   const dateQuery = dates !== null
-    ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
+    ? `AND date(e2.date)>date(${dates.start}) AND date(e2.end)<date(${dates.end})`
     : '';
 
   try {
@@ -71,10 +71,9 @@ const getEncounterlessNode = async (
  */
 const getNode = async (dates, name, wantedNode, returnNode) => {
   const session = driver.session();
-  console.log(name);
   try {
     const dateQuery = dates !== null
-      ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.end,10))<date('${dates.end}')`
+      ? `AND date(e2.date)>date('${dates.start}') AND date(e2.end)<date('${dates.end}')`
       : '';
 
     const result = await session.run(
@@ -124,6 +123,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     return ret;
   } catch (error) {
+    console.log(error);
     return 'No matches found for this query';
   } finally {
     await session.close();
@@ -180,7 +180,7 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
   const session = driver.session();
 
   const dateQuery = dates !== null
-    ? `AND date(left(e2.date,10))>date('${dates.start}') AND date(left(e2.date,10))<date('${dates.end}')`
+    ? `AND date(e2.date)>date('${dates.start}') AND date(e2.date)<date('${dates.end}')`
     : '';
 
   try {
