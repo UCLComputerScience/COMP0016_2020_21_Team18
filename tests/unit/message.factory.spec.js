@@ -37,7 +37,6 @@ describe("Message factory spec", () => {
         null,
         null
       );
-      console.log(message);
     } catch (e) {}
     
     expect(spy.calledOnce);

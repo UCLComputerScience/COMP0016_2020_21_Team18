@@ -143,8 +143,9 @@ describe("Node factory spec", () => {
         entityNode: "",
       },
     ],
-  ])("%s should return correct values", (input, output) => {
+  ])("%s should return correct values", (input, output, done) => {
     const expectedNode = returnNodeFromPrediction(input);
     expect(expectedNode).toStrictEqual(output);
+    done();
   });
 });
