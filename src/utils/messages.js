@@ -16,7 +16,7 @@ const { getPrediction, parseDate, parseNames } = require("./predict");
 const getMessages = async (msg) => {
   const prediction = await getPrediction(msg);
   const results = [];
-
+  console.log("preds: " + prediction.predictions);
   for (const predictionValue of prediction.predictions) {
     console.log(predictionValue);
     const {

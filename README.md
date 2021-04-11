@@ -15,7 +15,7 @@ Backend is developed using Node.JS, with Express framework handling the API side
 Frontend is developed using HTML/CSS/JS and statically rendered using SSR.
 
 ### Launching the project
-To launch the project fill out the .example.env file using your LUIS API key and production endpoint and your Neo4J database access data and rename it to .env, run `npm start` in the root directory, or use Dockerfile provided using command `docker build . -t grace && docker run --env-file=.env grace`.
+To launch the project fill out the .example.env file using your LUIS API key and production endpoint and your Neo4J database access data and rename it to .env, run `npm install && npm start` in the root directory, or use Dockerfile provided using command `docker build . -t grace && docker run --env-file=.env grace`.
 
 ### Code style
 To maintain the quality of the code `ESLint` and `Prettier` are used as linter/formatters. To run them use `npm run lint`.
@@ -35,3 +35,4 @@ Code documentation is automatically generated using `JSDoc` and stored in `docs/
 - src - backend files
 - public - frontend files
 - docs/out - documentation
+- tests - testing files

@@ -74,7 +74,7 @@ const getMessageFromPrediction = async (
       if (data === '') {
         return `${primaryName} has no data related to any ${returnNode.toLowerCase()}`;
       }
-      return `The ${returnNode.toLowerCase()} data for patient ${primaryName} is: ${data}`;
+      return `The ${detailNode.toLowerCase().substr(1)} data for patient ${primaryName} is: ${data}`;
 
     case 'getEncounterlessVal':
       data = await getEncounterlessVal(

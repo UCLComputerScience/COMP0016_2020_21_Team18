@@ -120,7 +120,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
       return '';
     });
 
-    ret = ret.filter((row) => row !== null);
+    ret = ret.filter((row) => row !== '');
 
     return ret;
   } catch (error) {
@@ -137,6 +137,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
  * @param {string} wantedNode Node containing value that we want to query
  * @param {string} returnNode Node containing value that we want to return
  * @param {string} detailNode Key of node that contains value we want to return
+ * @param {string} timeFormat Node containing timestamp of the node
  * @returns {string} Returns list of wanted elements separated by commas, or "No matches found for this query" if none found
  */
 const getEncounterlessVal = async (
@@ -144,6 +145,7 @@ const getEncounterlessVal = async (
   code,
   wantedNode,
   returnNode,
+  timeFormat,
   detailNode,
 ) => {
   const session = driver.session();
