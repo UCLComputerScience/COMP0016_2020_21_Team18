@@ -20,6 +20,15 @@ jobs:
         run: yarn
       - name: Install cypress
         run: yarn global add cypress
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "NEO4J_HOST=$NEO4J_HOST" > .env
+          echo "NEO4J_USERNAME=$NEO4J_USERNAME" > .env
+          echo "NEO4J_PASSWORD=$NEO4J_PASSWORD" > .env
+          echo "LUIS_ENDPOINT$LUIS_ENDPOINT" > .env
+          echo "LUIS_KEY=$LUIS_KEY" > .env
+          cat .env
       - name: Run tests
         run: yarn jest --json --outputFile="jest.results.json" --passWithNoTests
       - name: Start server
