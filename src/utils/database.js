@@ -6,11 +6,11 @@
  * @copyright Great Ormond Street Hospital, 2020
  */
 
-const neo4j = require("neo4j-driver");
+const neo4j = require('neo4j-driver');
 
 const driver = neo4j.driver(
-  "bolt://182.92.220.170:7687/",
-  neo4j.auth.basic("test", "software")
+  process.env.NEO4J_HOST,
+  neo4j.auth.basic(process.env.NEO4J_USERNAME, process.env.NEO4J_PASSWORD),
 );
 
 const compareColumn = (a, b) => {
@@ -27,7 +27,6 @@ const compareColumn = (a, b) => {
  * @param {string} name First name extracted from LUIS entity (DB_personName)
  * @param {string} wantedNode Node that we want to query
  * @param {string} returnNode Node that we want to return
- * @param {string} timeFormat Key of node that contains date of event
  * @param {string} detailNode Key of node that contains value we want to return
  * @returns {string} String containing list of descriptions of returned elements separated by commas, or "No matches found for this query" if none found
  */
@@ -36,29 +35,27 @@ const getEncounterlessNode = async (
   name,
   wantedNode,
   returnNode,
-  timeFormat,
-  detailNode
+  detailNode,
 ) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
-      : "";
+  const dateQuery = dates !== null
+    ? `AND date(e2.date)>date(${dates.start}) AND date(e2.end)<date(${dates.end})`
+    : '';
 
   try {
     const result = await session.run(
-      `MATCH (p:Patient{name:$name}) " + "MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
-      { name }
+      `MATCH (p:Patient{firstName:$name}) MATCH (p)-${wantedNode} ${dateQuery} RETURN ${returnNode}`,
+      { name },
+    );
+    const ret = new Set(
+        //(row) => row._fields[0].properties
+      result.records.map( (row) => row._fields[0]),
     );
 
-    const ret = new Set(
-      result.records.map((row) => row._fields[0].properties[detailNode])
-    );
-    return `${Array.from(ret).join(",")}\n`;
+    return `${Array.from(ret).join(',')}\n`;
   } catch (error) {
-    console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -74,30 +71,28 @@ const getEncounterlessNode = async (
  */
 const getNode = async (dates, name, wantedNode, returnNode) => {
   const session = driver.session();
-
   try {
-    const dateQuery =
-      dates !== null
-        ? `AND date(left(e2.period_start,10))>date('${dates.start}') AND date(left(e2.period_start,10))<date('${dates.end}')`
-        : "";
+    const dateQuery = dates !== null
+      ? `AND date(e2.date)>date('${dates.start}') AND date(e2.end)<date('${dates.end}')`
+      : '';
 
     const result = await session.run(
       `${
-        "MATCH (p:Patient{name:$name}) " +
-        "MATCH (p)-[:has_encounter]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
-        "MATCH (e)-[:next_encounter*0..]->(e2) " +
-        "MATCH (e2)-"
-      }${wantedNode} ` +
-        `WHERE ${returnNode}.display IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
-      { name }
+        'MATCH (p:Patient{firstName:$name}) '
+        + 'MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) '
+        + "WHERE apoc.node.degree.in(e, 'NEXT') = 0 "
+        + 'MATCH (e)-[:NEXT*0..]->(e2) '
+        + 'MATCH (e2)-'
+      }${wantedNode} `
+        + `WHERE ${returnNode}.description IS NOT NULL ${dateQuery}RETURN e2,${returnNode}`,
+      { name },
     );
 
     let data = Array.from(
       new Set([
-        result.records.map((row) => row._fields[1].properties.display),
-        result.records.map((row) => row._fields[0].properties.period_start),
-      ])
+        result.records.map((row) => row._fields[1].properties.description),
+        result.records.map((row) => row._fields[0].properties.date),
+      ]),
     );
 
     data = data[0].map((x, i) => [x, data[1][i]]);
@@ -106,7 +101,7 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
 
     const unique = [];
     const uniqueDates = [];
-    const ret = data.map((row) => {
+    let ret = data.map((row) => {
       const temp = String(row[1]);
       const noLetter = `${temp.substring(0, 10)} | ${temp.substring(11, 19)}`; // date formatting
 
@@ -121,13 +116,15 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
         return `\n${row[0]}:\n${noLetter}`;
       }
 
-      return null;
+      return '';
     });
+
+    ret = ret.filter((row) => row !== '');
 
     return ret;
   } catch (error) {
     console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -139,8 +136,8 @@ const getNode = async (dates, name, wantedNode, returnNode) => {
  * @param {string} code Various codes obtained from LUIS entities
  * @param {string} wantedNode Node containing value that we want to query
  * @param {string} returnNode Node containing value that we want to return
- * @param {string} timeFormat Key of node that contains date of event
  * @param {string} detailNode Key of node that contains value we want to return
+ * @param {string} timeFormat Node containing timestamp of the node
  * @returns {string} Returns list of wanted elements separated by commas, or "No matches found for this query" if none found
  */
 const getEncounterlessVal = async (
@@ -149,28 +146,23 @@ const getEncounterlessVal = async (
   wantedNode,
   returnNode,
   timeFormat,
-  detailNode
+  detailNode,
 ) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(${returnNode}${timeFormat},10))>date('${dates.start}') AND date(left(${returnNode}${timeFormat},10))<date('${dates.end}')`
-      : "";
-
   try {
     const result = await session.run(
-      `MATCH (p:Patient) + MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' ${dateQuery} RETURN p,${returnNode}`,
-      { code }
+      `MATCH (p:Patient) MATCH (p)-${wantedNode} WHERE ${returnNode}.${detailNode} = '${code}' RETURN p,${returnNode}`,
+      { code },
     );
-
+    console.log(result)
     const ret = [
-      ...new Set(result.records.map((row) => row._fields[0].properties.name)),
+      ...new Set(result.records.map((row) => row._fields[0].properties.firstName)),
     ];
-    return ret.join(", ");
+
+    return ret.join(', ');
   } catch (error) {
-    console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -187,30 +179,28 @@ const getEncounterlessVal = async (
 const getVal = async (dates, code, wantedNode, returnNode) => {
   const session = driver.session();
 
-  const dateQuery =
-    dates !== null
-      ? `AND date(left(e2.period_start,10))>date('${dates.start}') AND date(left(e2.period_start,10))<date('${dates.end}')`
-      : "";
+  const dateQuery = dates !== null
+    ? `AND date(e2.date)>date('${dates.start}') AND date(e2.date)<date('${dates.end}')`
+    : '';
 
   try {
     const result = await session.run(
       `${
-        "MATCH (p:Patient) " +
-        "MATCH (p)-[:has_encounter]-(e:Encounter) " +
-        "WHERE apoc.node.degree.in(e, 'next_encounter') = 0 " +
-        "MATCH (e)-[:next_encounter*0..]->(e2) " +
-        "MATCH (e2)-"
-      }${wantedNode} ` +
-        `WHERE ${returnNode}.display = '${code}' ${dateQuery}RETURN p,${returnNode}`
+        'MATCH (p:Patient) '
+        + 'MATCH (p)-[:HAS_ENCOUNTER]-(e:Encounter) '
+        + "WHERE apoc.node.degree.in(e, 'NEXT') = 0 "
+        + 'MATCH (e)-[:NEXT*0..]->(e2) '
+        + 'MATCH (e2)-'
+      }${wantedNode} `
+        + `WHERE ${returnNode}.description = '${code}' ${dateQuery}RETURN p,${returnNode}`,
     );
-
+    console.log(result)
     const ret = [
-      ...new Set(result.records.map((row) => row._fields[0].properties.name)),
+      ...new Set(result.records.map((row) => row._fields[0].properties.firstName)),
     ];
-    return ret.join(", ");
+    return ret.join(', ');
   } catch (error) {
-    console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }
@@ -222,54 +212,47 @@ const getVal = async (dates, code, wantedNode, returnNode) => {
  * @param {string} otherName Another name extracted from LUIS entities ("DB_personName" key)
  * @returns {string} String containing list of similarities between two patients, "No matches found for this query" if none found.
  */
-const getSame = async (name, otherName) => {
+const getSame = async (name, otherName, detailNode) => {
   const session = driver.session();
   try {
     const result = await session.run(
-      "match (p:Patient { name:$name} )   " +
-        "match (p)-[:has_encounter]-(e:Encounter)   " +
-        "where apoc.node.degree.in(e, 'next_encounter') = 0   " +
-        "match (e)-[:next_encounter*0..]->(e2)   " +
-        "optional match (e2)-[:has_observation]->(ob:Observation)   " +
-        "optional match (e2)-[:has_procedure]->(proc:Procedure)   " +
-        "optional match (e2)-[:has_condition]->(c:Condition)   " +
-        "match (p1:Patient { name:$otherName} )   " +
-        "match (p1)-[:has_encounter]-(ea:Encounter)   " +
-        "where apoc.node.degree.in(ea, 'next_encounter') = 0   " +
-        "match (ea)-[:next_encounter*0..]->(eb)   " +
-        "optional match (e2)-[:has_observation]->(ob1:Observation)   " +
-        "optional match (e2)-[:has_procedure]->(proc1:Procedure)   " +
-        "optional match (e2)-[:has_condition]->(c1:Condition)   " +
-        "return distinct case when ob is not null and ob1 is not null and ob.display = ob1.display then { date:e2.date, details: ob.display}     " +
-        "   else case when proc is not null and proc1 is not null and proc.display = proc1.display then { date:e2.date, details: proc.display}     " +
-        "                   else case when c is not null and c1 is not null and c.display = c1.display then { date:e2.date, details: c.display}     " +
-        "               end   " +
-        "       end   " +
-        "end as Steps ",
-      { name, otherName }
+      'match (p:Patient { firstName:$name} )   '
+        + 'match (p)-[:HAS_ENCOUNTER]-(e:Encounter)   '
+        + "where apoc.node.degree.in(e, 'NEXT') = 0   "
+        + 'match (e)-[:NEXT*0..]->(e2)   '
+        + 'match (e2)-[r]-(s)  '
+
+        + 'match (p1:Patient { firstName:$otherName} )   '
+        + 'match (p1)-[:HAS_ENCOUNTER]-(ea:Encounter)   '
+        + "where apoc.node.degree.in(ea, 'NEXT') = 0   "
+        + 'match (ea)-[:NEXT*0..]->(eb)   '
+        + 'match (eb)-[a]-(b) '
+        + 'where b.description = s.description '
+        + 'return distinct { date:e2.date, details: b.description} ',
+      { name, otherName },
     );
 
-    const sResult = await session.run(
-      "match (p:Patient { name:$name} )   " +
-        "optional match (p)-[:has_immunization]->(im:Immunization)   " +
-        "match (p1:Patient { name:$otherName} )   " +
-        "optional match (p1)-[:has_immunization]->(im1:Immunization)   " +
-        "return distinct case when im is not null and im1 is not null and ob.display = ob1.display then { date:e2.date, details: im.display}     " +
-        "end as Steps ",
-      { name, otherName }
+    const sResult = await session.run(//change this to general case
+      'match (p:Patient { firstName:$name} )   '
+        + 'match (p)-[r]-(s)  '
+        + 'match (p1:Patient { firstName:$otherName} )   '
+        + 'match (p1)-[a]-(b)  '
+        + 'WHERE s.'+detailNode+' = b.'+detailNode
+        + ' return distinct { det:p.firstName, details: b.'+detailNode +'}',
+      { name, otherName },
     );
 
     let ret = [
       ...new Set(result.records.map((row) => row._fields[0])),
       ...new Set(sResult.records.map((row) => row._fields[0])),
     ];
+
     ret = ret.filter((row) => row !== null);
     ret = [...new Set(ret.map((row) => row.details))];
 
-    return ret.join(",\n");
+    return ret.join(',\n');
   } catch (error) {
-    console.log(error);
-    return "No matches found for this query";
+    return 'No matches found for this query';
   } finally {
     await session.close();
   }

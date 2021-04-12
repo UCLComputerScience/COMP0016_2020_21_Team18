@@ -5,7 +5,7 @@ module.exports = {
       script: "server.js",
       watch: true,
       merge_logs: true,
-      cwd: ".",
+      cwd: "./src",
     },
   ],
 };

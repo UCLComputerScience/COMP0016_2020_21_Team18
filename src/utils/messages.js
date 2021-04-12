@@ -16,24 +16,28 @@ const { getPrediction, parseDate, parseNames } = require("./predict");
 const getMessages = async (msg) => {
   const prediction = await getPrediction(msg);
   const results = [];
-  prediction.predictions.forEach(async (predictionValue) => {
+  console.log("preds: " + prediction.predictions);
+  for (const predictionValue of prediction.predictions) {
+    console.log(predictionValue);
     const {
       databaseAction,
       wantedNode,
       returnNode,
-      timeNode,
       detailNode,
       entityNode,
     } = returnNodeFromPrediction(predictionValue);
 
+    console.log(databaseAction);
+
     const names = parseNames(prediction.entities);
+
     const dates = parseDate(prediction.entities);
+    console.log(dates);
     results.push(
       await getMessageFromPrediction(
         databaseAction,
         wantedNode,
         returnNode,
-        timeNode,
         detailNode,
         entityNode,
         names.length > 0 ? names[0] : "",
@@ -42,8 +46,8 @@ const getMessages = async (msg) => {
         prediction.entities
       )
     );
-  });
-
+  };
+  console.log(results);
   return results;
 };
 

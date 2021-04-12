@@ -4,7 +4,7 @@
  * @copyright Great Ormond Street Hospital, 2020
  */
 
-const axios = require("axios");
+const axios = require('axios');
 
 /**
  * Gets predictions based on user queries
@@ -12,24 +12,37 @@ const axios = require("axios");
  * @returns {object} Returns object with two keys: prediction - user intent predicted by LUIS, entities - all entities found in user query
  */
 const getPrediction = async (text) => {
-  const predictionKey = "5f068b567c6a4381a9ec95cdf932c252";
+  const predictionKey = process.env.LUIS_KEY;
   const queryParams = {
-    "show-all-intents": true,
+    'show-all-intents': true,
     verbose: true,
     query: text,
-    "subscription-key": predictionKey,
+    'subscription-key': predictionKey,
   };
 
-  const URI =
-    "https://westus.api.cognitive.microsoft.com/luis/prediction/v3.0/apps/2c7e50ec-9035-4b8f-987f-8c1d99dd7589/slots/production/predict";
+  const URI = process.env.LUIS_ENDPOINT;
 
   const response = await axios.get(URI, {
     params: queryParams,
   });
   const { data } = response;
 
-  const multiplePredictions = Object.entries(data.prediction.intents)
-    .filter((prediction) => prediction[1].score > 0.15)
+  console.log(data.prediction.intents);
+
+  const intentObject = Object.entries(data.prediction.intents);
+
+  console.log(intentObject);
+
+  //if top entity returns probability over 75% return only top entity
+  if (intentObject[0][1].score > 0.75) {
+    return {
+      predictions: [ intentObject[0][0] ],
+      entities: data.prediction.entities
+    };
+  }
+
+  const multiplePredictions = intentObject
+    .filter((prediction) => (prediction[1].score > data.prediction.intents['None'].score && prediction[1].score > 0.05))
     .map((prediction) => prediction[0]);
 
   return {
@@ -44,11 +57,11 @@ const getPrediction = async (text) => {
  * @param {object} [dates] Dates extracted from LUIS entities, null if none parsed, otherwise object in format {"start": "start", "end": "end"}
  */
 const parseDate = (entities) => {
-  if ("datetimeV2" in entities) {
+  if ('datetimeV2' in entities) {
     const datesParsed = entities.datetimeV2.values();
-    datesParsed.forEach((date) => {
+    for (const date of datesParsed) {
       return date.values[0].resolution[0];
-    });
+    }
   }
 
   return null;
@@ -59,10 +72,9 @@ const parseDate = (entities) => {
  * @param {string} entities Entities found in user query
  * @returns {string[]} Names extracted from LUIS entities, empty string if none parsed
  */
-const parseNames = (entities) =>
-  "DB_personName" in entities
-    ? entities.DB_personName.map((name) => name[0])
-    : "";
+const parseNames = (entities) => ('DB_personName' in entities
+  ? entities.DB_personName.map((name) => name[0])
+  : '');
 
 module.exports = {
   getPrediction,

@@ -19,7 +19,7 @@ function outputMessage(message) {
 
   const para = document.createElement("p");
   para.classList.add("text");
-  para.innerText = message.message;
+  para.innerText = message.message.replace(/[,]{2,}/i, ',');
   div.appendChild(para);
   document.querySelector(".chat-messages").appendChild(div);
 }
@@ -48,7 +48,7 @@ socket.on("message", (message) => {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
-      .register("/serviceWorker.js")
+      .register("/js/serviceWorker.js")
       .then(res => console.log("service worker registered"))
       .catch(err => console.log("service worker not registered", err))
   })

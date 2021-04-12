@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const sinon = require("sinon");
+const neo4j = require('neo4j-driver');
 const getMessageFromPrediction = require("../../src/utils/message.factory");
 const {
   getNode,
@@ -9,6 +10,11 @@ const {
   getEncounterlessVal,
 } = require("../../src/utils/database");
 
+const driver = neo4j.driver(
+  'bolt://51.140.127.105:7687/',
+  neo4j.auth.basic('neo4j', 'Ok1gr18cRrXcjhm4byBw'),
+);
+
 describe("Message factory spec", () => {
   it.each([
     ["getNode", sinon.spy(getNode)],
@@ -16,9 +22,10 @@ describe("Message factory spec", () => {
     ["getEncounterlessNode", sinon.spy(getEncounterlessNode)],
     ["getEncounterlessVal", sinon.spy(getEncounterlessVal)],
     ["getSame", sinon.spy(getSame)],
-  ])("%s should call correct function", async (query, spy, done) => {
+  ])("%s should call correct function and return correct result", async (query, spy, done) => {
+    sinon.mock(neo4j.driver);
     try {
-      await getMessageFromPrediction(
+      const message = await getMessageFromPrediction(
         query,
         null,
         null,
@@ -31,7 +38,9 @@ describe("Message factory spec", () => {
         null
       );
     } catch (e) {}
+    
     expect(spy.calledOnce);
+    sinon.restore();
     done();
   });
 });

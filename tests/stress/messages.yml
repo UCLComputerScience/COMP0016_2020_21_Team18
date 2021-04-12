@@ -1,0 +1,21 @@
+config:
+    target: "http://localhost:3001"
+    phases:
+        - duration: 5
+          arrivalRate: 10
+    processor: "./messageGenerator.js"
+    engines:
+        socketio-v3: {}
+    
+scenarios:
+    - name: "Sending a message"
+      engine: socketio-v3
+      flow:
+        - function: "generateRandomMessage"
+        - loop:
+            - emit:
+                - chatMessage
+                - {{ message }}
+            - think: 1
+          count: 10
+    

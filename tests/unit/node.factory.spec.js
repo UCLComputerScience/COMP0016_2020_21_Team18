@@ -4,12 +4,41 @@ const returnNodeFromPrediction = require("../../src/utils/node.factory");
 describe("Node factory spec", () => {
   it.each([
     [
+      "getDrugs",
+      {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
+        returnNode: "drug",
+        detailNode: "",
+        entityNode: "",
+      }
+    ],
+    [
+      "getAllergies",
+      {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
+        returnNode: "allergy",
+        detailNode: "",
+        entityNode: "",
+      }
+    ],
+    [
+      "getCarePlan",
+      {
+        databaseAction: "getNode",
+        wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
+        returnNode: "carePlan",
+        detailNode: "",
+        entityNode: "",
+      }
+    ],
+    [
       "getProcedures",
       {
         databaseAction: "getNode",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       },
@@ -18,12 +47,61 @@ describe("Node factory spec", () => {
       "getConditions",
       {
         databaseAction: "getNode",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       },
+    ],
+    [
+      "getAddress",
+      {
+        databaseAction: "getEncounterlessNode",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
+        returnNode: "address.address",
+        detailNode: ".address",
+        entityNode: "",
+      }
+    ],
+    [
+      "getPatientAddresses",
+      {
+        databaseAction: "getEncounterlessVal",
+        wantedNode: "[:HAS_ADDRESS]-(address:Address)",
+        returnNode: "address",
+        detailNode: "address",
+        entityNode: "DB_addressName",
+      }
+    ],
+    [
+      "getPatientDrugs",
+      {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_DRUG]-(drug:Drug)",
+        returnNode: "drug",
+        detailNode: "description",
+        entityNode: "DB_drugDescription",
+      }
+    ],
+    [
+      "getPatientAllergies",
+      {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_ALLERGY]-(allergy:Allergy)",
+        returnNode: "allergy",
+        detailNode: "description",
+        entityNode: "DB_allergyName",
+      }
+    ],
+    [
+      "getPatientCarePlan",
+      {
+        databaseAction: "getVal",
+        wantedNode: "[:HAS_CARE_PLAN]-(careplan:CarePlan)",
+        returnNode: "careplan",
+        detailNode: "description",
+        entityNode: "DB_carePlanName",
+      }
     ],
     [
       "getCommon",
@@ -31,30 +109,17 @@ describe("Node factory spec", () => {
         databaseAction: "getSame",
         wantedNode: "",
         returnNode: "",
-        timeNode: "",
-        detailNode: "",
+        detailNode: "address",
         entityNode: "",
-      },
-    ],
-    [
-      "getPatientObservations",
-      {
-        databaseAction: "getVal",
-        wantedNode: "[:has_observation]-(observation:Observation)",
-        returnNode: "observation",
-        timeNode: "",
-        detailNode: "",
-        entityNode: "DB_observationName",
       },
     ],
     [
       "getPatientProcedures",
       {
         databaseAction: "getVal",
-        wantedNode: "[:has_procedure]-(procedure:Procedure)",
+        wantedNode: "[:HAS_PROCEDURE]-(procedure:Procedure)",
         returnNode: "procedure",
-        timeNode: "",
-        detailNode: "display",
+        detailNode: "description",
         entityNode: "DB_procedureName",
       },
     ],
@@ -62,44 +127,10 @@ describe("Node factory spec", () => {
       "getPatientConditions",
       {
         databaseAction: "getVal",
-        wantedNode: "[:has_condition]-(condition:Condition)",
+        wantedNode: "[:HAS_CONDITION]-(condition:Condition)",
         returnNode: "condition",
-        timeNode: "",
-        detailNode: "display",
+        detailNode: "description",
         entityNode: "DB_conditionName",
-      },
-    ],
-    [
-      "getPatientImmunizations",
-      {
-        databaseAction: "getEncounterlessVal",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
-        returnNode: "immunization",
-        timeNode: ".occuranceDateTime",
-        detailNode: "vaccineType",
-        entityNode: "DB_immunizationName",
-      },
-    ],
-    [
-      "getObservations",
-      {
-        databaseAction: "getNode",
-        wantedNode: "[:has_observation]-(observation:Observation)",
-        returnNode: "observation",
-        timeNode: "",
-        detailNode: "",
-        entityNode: "",
-      },
-    ],
-    [
-      "getImmunizations",
-      {
-        databaseAction: "getEncounterlessNode",
-        wantedNode: "[:has_immunization]-(immunization:Immunization)",
-        returnNode: "immunization",
-        timeNode: ".occuranceDateTime",
-        detailNode: "",
-        entityNode: "",
       },
     ],
     [
@@ -108,13 +139,13 @@ describe("Node factory spec", () => {
         databaseAction: "None",
         wantedNode: "None",
         returnNode: "None",
-        timeNode: "",
         detailNode: "",
         entityNode: "",
       },
     ],
-  ])("%s should return correct values", (input, output) => {
+  ])("%s should return correct values", (input, output, done) => {
     const expectedNode = returnNodeFromPrediction(input);
     expect(expectedNode).toStrictEqual(output);
+    done();
   });
 });
