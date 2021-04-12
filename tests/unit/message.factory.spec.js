@@ -23,7 +23,7 @@ describe("Message factory spec", () => {
     ["getEncounterlessVal", sinon.spy(getEncounterlessVal)],
     ["getSame", sinon.spy(getSame)],
   ])("%s should call correct function and return correct result", async (query, spy, done) => {
-    const session = sinon.mock(driver.session);
+    sinon.mock(neo4j.driver);
     try {
       const message = await getMessageFromPrediction(
         query,
