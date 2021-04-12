@@ -29,7 +29,19 @@ const getPrediction = async (text) => {
 
   console.log(data.prediction.intents);
 
-  const multiplePredictions = Object.entries(data.prediction.intents)
+  const intentObject = Object.entries(data.prediction.intents);
+
+  console.log(intentObject);
+
+  //if top entity returns probability over 75% return only top entity
+  if (intentObject[0][1].score > 0.75) {
+    return {
+      predictions: [ intentObject[0][0] ],
+      entities: data.prediction.entities
+    };
+  }
+
+  const multiplePredictions = intentObject
     .filter((prediction) => (prediction[1].score > data.prediction.intents['None'].score && prediction[1].score > 0.05))
     .map((prediction) => prediction[0]);
 
